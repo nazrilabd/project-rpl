@@ -1,0 +1,50 @@
+{% extends "base.html" %} 
+
+{% block title %}Daftar Buku{% endblock %}
+
+{% block content %}
+<h2>Daftar Buku Tersedia</h2>
+
+<table border="1">
+    <thead>
+        <tr>
+            <th>Sampul</th>
+            <th>Judul</th>
+            <th>Penulis</th>
+            <th>Genre</th>
+            <th>Stok</th>
+            <th>Aksi</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for book in books %}
+        <tr>
+            <td>
+                {% if book.cover_image %}
+                    <img src="{{ book.cover_image.url }}" alt="Sampul {{ book.title }}" style="max-width: 50px; height: auto;">
+                {% else %}
+                    (Tanpa Sampul)
+                {% endif %}
+            </td>
+            <td>{{ book.title }}</td>
+            <td>{{ book.author }}</td>
+            <td>
+                {% for g in book.genre.all %}
+                    {{ g.name }}{% if not forloop.last %}, {% endif %} 
+                {% endfor %}
+            </td>
+            <td>{{ book.stock }}</td>
+            <td>
+                {% if user.is_authenticated and book.stock > 0 %}
+                    <a href="{% url 'request_loan' book.id %}">Ajukan Peminjaman</a>
+                {% elif book.stock == 0 %}
+                    (Kosong)
+                {% else %}
+                    (Login Untuk meminjam buku)
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

@@ -1,0 +1,60 @@
+{% extends "base.html" %} 
+
+{% block title %}Peminjaman Saya{% endblock %}
+
+{% block content %}
+<h2>Peminjaman Saya</h2>
+
+<table border="1">
+    <thead>
+        <tr>
+            <th>Buku</th>
+            <th>Tanggal Pinjam</th>
+            <th>Jatuh Tempo</th>
+            <th>Status</th>
+            <th>Denda</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for loan in loans %}
+        <tr>
+            <td>{{ loan.book.title }}</td>
+            <td>
+                {% if loan.borrow_date %}
+                    {{ loan.borrow_date }}
+                {% else %}
+                    -
+                {% endif %}
+            </td>
+            <td>
+                {% if loan.due_date %}
+                    {{ loan.due_date }}
+                {% else %}
+                    -
+                {% endif %}
+            </td>
+            <td>
+                {% if loan.status == 'approved' %}
+                    <span style="color: blue;">Sedang Dipinjam</span>
+                {% elif loan.status == 'pending' %}
+                    <span style="color: orange;">Menunggu Persetujuan</span>
+                {% elif loan.status == 'rejected' %}
+                    <span style="color: grey;">Ditolak</span>
+                {% elif loan.status == 'returned' %}
+                    <span style="color: green;">Dikembalikan ({{ loan.return_date|default:"-" }})</span>
+                {% endif %}
+            </td>
+            <td>
+                {% if loan.status == 'returned' and loan.fine_amount > 0 %}
+                    <span style="color: darkred;">Rp {{ loan.fine_amount }}</span>
+                {% elif loan.status == 'returned' and loan.fine_amount == 0 %}
+                    Rp 0.00
+                {% else %}
+                    -
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

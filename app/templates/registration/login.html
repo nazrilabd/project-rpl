@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}Login Anggota{% endblock %}
+
+{% block content %}
+<h2>Login ke Perpustakaan</h2>
+
+{% if form.errors %}
+    <p style="color: red;">Nama pengguna atau kata sandi tidak valid. Silakan coba lagi.</p>
+{% endif %}
+
+<form method="post" action="{% url 'login' %}">
+    {% csrf_token %}
+    
+    {{ form.as_p }}
+    
+    <button type="submit">Login</button>
+    
+    <input type="hidden" name="next" value="{{ next }}" />
+</form>
+
+<p>Belum punya akun? (Anda bisa membuatnya melalui Admin)</p>
+{% endblock %}
