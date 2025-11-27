@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block title %}Logout Berhasil{% endblock %}
+
+{% block content %}
+<h2>Anda telah berhasil keluar (Logged Out)</h2>
+
+<p>Terima kasih telah menggunakan layanan perpustakaan.</p>
+
+<p><a href="{% url 'login' %}">Login kembali</a></p>
+<p><a href="{% url 'book_list' %}">Lihat daftar buku</a></p>
+{% endblock %}

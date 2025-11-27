@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+
+{% block title %}Error{% endblock %}
+
+{% block content %}
+<h2 style="color: red;">Terjadi Kesalahan!</h2>
+<p>{{ message }}</p>
+<a href="{% url 'book_list' %}">Kembali ke Daftar Buku</a>
+{% endblock %}
