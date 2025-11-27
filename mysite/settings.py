@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 
 from pathlib import Path
 import dj_database_url
+import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -23,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-)*=k23*7+s2dx2=54wg*1sp&^h&+k1gb)5v_(+y_4cwud*w0z0'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get('DEBUG') or True
 
 ALLOWED_HOSTS = ["*"]
 
@@ -38,6 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'library.apps.LibraryConfig',
+    'cloudinary_storage',
+    'cloudinary',
 ]
 
 MIDDLEWARE = [
@@ -128,3 +131,25 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 MEDIA_ROOT = BASE_DIR / 'media'
 MEDIA_URL = '/media/'
 LOGIN_REDIRECT_URL = "/"
+
+# CLOUDINARY_CLOUD_NAME = 'dh7irimdt'
+# CLOUDINARY_API_KEY = '484759343223795'
+# CLOUDINARY_API_SECRET = 'hb2BrS7fjv9JF1vDn70l8lWdsNs'
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': 'dh7irimdt',
+    'API_KEY':'484759343223795',
+    'API_SECRET': 'hb2BrS7fjv9JF1vDn70l8lWdsNs'
+}
+# Ganti DEFAULT_FILE_STORAGE agar Django menyimpan file media di Cloudinary
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+# settings.py (KHUSUS UNTUK DJANGO 4.2+)
+
+STORAGES = {
+    "default": {
+        "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
+    },
+    # JANGAN UBAH BAGIAN STATICFILES INI, biarkan tetap default
+    "staticfiles": {
+        "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
+    },
+}
