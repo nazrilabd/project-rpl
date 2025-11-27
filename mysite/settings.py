@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-)*=k23*7+s2dx2=54wg*1sp&^h&+k1gb)5v_(+y_4cwud*w0z0
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['.vercel.app',"*"]
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -48,7 +48,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
+
     
 ]
 
@@ -77,7 +77,7 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 
 DATABASES = {
     'default': dj_database_url.config(
-        default='postgresql://postgres:HIjEbAaFUzBeEVhxIjLqJDnYHLRUDWom@yamabiko.proxy.rlwy.net:21905/railway',
+        default='postgresql://postgres:JCSoOLrGQWIAeKLIktrFMAoXKZgBoEso@switchback.proxy.rlwy.net:51295/railway',
         conn_max_age=600
     )
 }
