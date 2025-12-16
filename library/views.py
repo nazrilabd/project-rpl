@@ -47,7 +47,7 @@ def book_list_by_genre(request,genre):
     context ={
         "genre":genre,
         "books":halaman_buku,
-        "title_heading":f"Daftar Buku Dengan Gendre : {genre}"
+        "title_heading":f"Daftar Buku Dengan Genre  {genre}"
     }
     return render(request,'pages/book_by_genre.html',context)
 def search_books(request):
@@ -67,7 +67,7 @@ def search_books(request):
     context ={
         "query":query,
         "books":halaman_buku,
-        "title_heading":f"Hasil Daftar Buku Dengan Query : {query} "
+        "title_heading":f"Hasil Pencarian {query} "
     }
     return render(request,'library/search.html',context)
 @login_required

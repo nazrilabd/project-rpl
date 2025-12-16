@@ -3,10 +3,43 @@
 {% block title %}Logout Berhasil{% endblock %}
 
 {% block content %}
-<h2>Anda telah berhasil keluar (Logged Out)</h2>
-
-<p>Terima kasih telah menggunakan layanan perpustakaan.</p>
-
-<p><a href="{% url 'login' %}">Login kembali</a></p>
-<p><a href="{% url 'home' %}">Kembali Ke Beranda</a></p>
+<div class="min-vh-100 d-flex align-items-center justify-content-center bg-warning bg-gradient py-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6 col-lg-5">
+                <div class="card shadow-lg border-0 rounded-4">
+                    <div class="card-body text-center p-5">
+                        <div class="mb-4">
+                            <i class="bi bi-check-circle-fill text-success display-1"></i>
+                        </div>
+                        
+                        <h2 class="fw-bold mb-3">Logout Berhasil!</h2>
+                        
+                        <p class="text-muted mb-4">
+                            Terima kasih telah menggunakan layanan perpustakaan kami. 
+                            Anda telah berhasil keluar dari sistem.
+                        </p>
+                        
+                        <div class="d-grid gap-3">
+                            <a href="{% url 'login' %}" class="btn btn-success btn-lg">
+                                <i class="bi bi-box-arrow-in-right me-2"></i>Login Kembali
+                            </a>
+                            
+                            <a href="{% url 'home' %}" class="btn btn-outline-warning btn-lg">
+                                <i class="bi bi-house-door me-2"></i>Kembali ke Beranda
+                            </a>
+                        </div>
+                        
+                        <div class="mt-4 pt-4 border-top">
+                            <p class="text-muted small mb-0">
+                                <i class="bi bi-shield-check me-1"></i>
+                                Sesi Anda telah berakhir dengan aman
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
