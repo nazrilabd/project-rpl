@@ -1,0 +1,76 @@
+{% extends "base.html" %} 
+
+{% block title %}Daftar Buku{% endblock %}
+{% block content %}
+<div class="container my-5">
+    <h1>Riwayat Peminjaman Saya</h1>
+    <p class="lead">Selamat datang, {{ user.username }}. Berikut daftar buku yang sedang atau pernah Anda pinjam.</p>
+
+    {% if loans %}
+    <div class="table-responsive">
+        <table class="table table-striped table-hover align-middle">
+            <thead class="table-dark">
+                <tr>
+                    <th>No</th>
+                    <th>Buku</th>
+                    <th>Tanggal Pinjam</th>
+                    <th>Jatuh Tempo</th>
+                    <th>Status</th>
+                    <th>Denda</th>
+                    <th>Aksi</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for pinjam in loans %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>
+                        <strong><a href="{% url 'detail_book' pk=pinjam.book.pk %}">{{ pinjam.buku.judul }}</a></strong>
+                        <br><small class="text-muted">{{ pinjam.book.title }}</small>
+                    </td>
+
+                    <td>{{ pinjam.borrow_date |date:"d M Y" }}</td>
+
+                    <td>
+                        <span class="fw-bold">{{ pinjam.due_date |date:"d M Y" }}</span>
+                    </td>
+
+                    <td>
+                        {% if pinjam.status == 'rejected' %}
+                            <span class="badge bg-danger">{{ pinjam.get_status_display }}</span>
+                        {% elif pinjam.status == 'pending' %}
+                            <span class="badge bg-warning text-dark">{{ pinjam.get_status_display }}</span>
+                        {% else %}
+                            <span class="badge bg-success">{{ pinjam.get_status_display }}</span>
+                        {% endif %}
+                    </td>
+
+                    <td>
+                        {% if pinjam.denda > 0 %}
+                            <span class="text-danger fw-bold">Rp{{ pinjam.denda|floatformat:0 }}</span>
+                        {% else %}
+                            <span class="text-success">Rp0</span>
+                        {% endif %}
+                    </td>
+                    
+                    <td>
+                        {% if pinjam.status == 'PINJAM' %}
+                            <button class="btn btn-sm btn-info" disabled>Perpanjang</button>
+                        {% else %}
+                            <button class="btn btn-sm btn-secondary" disabled>Selesai</button>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <div class="alert alert-info" role="alert">
+        Anda belum memiliki riwayat peminjaman buku.
+    </div>
+    {% endif %}
+{% include 'components/pagination.html' with halaman_buku=loans %}
+</div>
+
+{% endblock %}

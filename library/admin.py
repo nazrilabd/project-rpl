@@ -14,10 +14,11 @@ class GenreAdmin(admin.ModelAdmin):
 # --- Register Book ---
 @admin.register(Book)
 class BookAdmin(admin.ModelAdmin):
-    list_display = ('title', 'author', 'get_genres', 'isbn', 'stock') 
-    search_fields = ('title', 'author', 'isbn')
+    list_display = ('title','description','publication_year', 'author', 'get_genres', 'isbn', 'stock') 
+    search_fields = ('title','description', 'author', 'isbn')
     list_filter = ('author', 'publication_year', 'genre')
-    
+    # Menyertakan ManyToManyField (tags) di form admin
+    filter_horizontal = ('genre',) 
     def get_genres(self, obj):
         return ", ".join([g.name for g in obj.genre.all()])
     get_genres.short_description = 'Genre'

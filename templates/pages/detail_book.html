@@ -1,0 +1,67 @@
+{% extends 'base.html' %} 
+{% block content %}
+<div class="container my-5">
+    <div class="row">
+        
+        <div class="col-md-6">
+            <div class="card shadow-lg">
+                <div class="d-block w-200" style="height: 350px; overflow: hidden;">
+                    <img src="{{ book.cover_image.url }}" class="h-100 object-fit-contain card-img-top" style="object-fit:contain;" alt="Cover {{ buku.judul }}">
+                </div>
+                
+                <div class="card-body">
+                    <h5 class="card-title text-primary">{{ book.title }}</h5>
+                    <p class="card-text">
+                        Author {{ book.author }}
+                    </p>
+                    <hr>
+                    <p class="mb-1">
+                        <small class="text-muted">Nomor Buku: {{ book.isbn }}</small>
+                    </p>
+                    <a href="{% url 'request_loan' book.id %}" class="
+                    {% if book.stock == 0 %}
+                      disabled
+                    {% endif %}
+                    btn btn-warning w-100 mt-3
+                    ">
+                        <i class="bi bi-book-fill"></i> Pinjam Buku Ini
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-5">
+            <h2>{{ buku.judul }}</h2>
+            
+            <div class="mb-3">
+              
+                {% for genre in book.genre.all %}
+                    <span class="badge bg-success me-1 rounded-pill">
+                        {{ genre.name }}
+                    </span>
+                {% endfor %}
+            </div>
+
+            <h4 class="mt-4">Deskripsi Lengkap</h4>
+            <p>{{ book.description|default:"Deskripsi buku ini belum tersedia." }}</p>
+
+            <table class="table table-bordered mt-4">
+                <tbody>
+                    <tr>
+                        <th style="width: 30%;">Penulis</th>
+                        <td>{{ book.author }}</td>
+                    </tr>
+                    <tr>
+                        <th>Tahun Terbit</th>
+                        <td>{{ book.year_added|default:"-" }}</td>
+                    </tr>
+                    <tr>
+                        <th>Stok Tersedia</th>
+                        <td><span class="fw-bold text-success">{{ book.stock }}</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock content %}

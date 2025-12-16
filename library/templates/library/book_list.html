@@ -1,50 +1,38 @@
 {% extends "base.html" %} 
 
 {% block title %}Daftar Buku{% endblock %}
-
 {% block content %}
+{% include "library/search_form.html" %}
 <h2>Daftar Buku Tersedia</h2>
-
-<table border="1">
-    <thead>
-        <tr>
-            <th>Sampul</th>
-            <th>Judul</th>
-            <th>Penulis</th>
-            <th>Genre</th>
-            <th>Stok</th>
-            <th>Aksi</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for book in books %}
-        <tr>
-            <td>
-                {% if book.cover_image %}
-                    <img src="{{ book.cover_image.url }}" alt="Sampul {{ book.title }}" style="max-width: 50px; height: auto;">
+{% include "library/card.html" with books=books %}
+{% endblock %} 
+{% comment %}
+    Component ini mengharapkan variabel 'books' (queryset atau list buku)
+    dan 'title' (judul bagian) untuk diteruskan saat di-include.
+{% endcomment %}
+{% comment %} 
+<h2 class="text-center mb-5">{{ title|default:"Daftar Buku" }}</h2>
+<div class="row row-cols-1 row-cols-md-3 g-4">
+    {% for book in books %}
+    <div class="col">
+        <div class="card h-100 book-card">
+            <img src="{{ book.cover_url }}" class="card-img-top book-cover" alt="{{ book.title }}">
+            <div class="card-body">
+                <h5 class="card-title">{{ book.title }}</h5>
+                <p class="card-text small text-muted">
+                    Penulis: {{ book.author }}<br>
+                    Penerbit: {{ book.publisher }}<br>
+                    Stock: {{ book.stock }}
+                </p>
+                {% if user.is_authenticated %}
+                    <a href="{% url 'pinjam_buku' book.pk %}" class="btn btn-purple btn-sm">Pinjam</a>
                 {% else %}
-                    (Tanpa Sampul)
+                    <a href="{% url 'login' %}" class="btn btn-purple btn-sm">Lihat Detail</a>
                 {% endif %}
-            </td>
-            <td>{{ book.title }}</td>
-            <td>{{ book.author }}</td>
-            <td>
-                {% for g in book.genre.all %}
-                    {{ g.name }}{% if not forloop.last %}, {% endif %} 
-                {% endfor %}
-            </td>
-            <td>{{ book.stock }}</td>
-            <td>
-                {% if user.is_authenticated and book.stock > 0 %}
-                    <a href="{% url 'request_loan' book.id %}">Ajukan Peminjaman</a>
-                {% elif book.stock == 0 %}
-                    (Kosong)
-                {% else %}
-                    (Login Untuk meminjam buku)
-                {% endif %}
-            </td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
-{% endblock %}
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <p class="text-center w-100">Belum ada buku dalam daftar.</p>
+    {% endfor %}
+</div> {% endcomment %}

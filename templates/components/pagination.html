@@ -1,0 +1,34 @@
+{% if halaman_buku.has_other_pages %}
+<nav aria-label="Navigasi Halaman Buku" class="mt-5">
+    <ul class="pagination justify-content-center">
+        
+        <li class="page-item {% if not halaman_buku.has_previous %}disabled{% endif %}">
+            <a class="page-link" 
+               href="{% if halaman_buku.has_previous %}?page={{ halaman_buku.previous_page_number }}{% endif %}{% if query %}&query={{ query }}{% endif %}" 
+               aria-label="Sebelumnya">
+                <span aria-hidden="true">&laquo;</span>
+            </a>
+        </li>
+
+        {% for i in halaman_buku.paginator.page_range %}
+            {% if halaman_buku.number == i %}
+                <li class="page-item active" aria-current="page">
+                    <span class="page-link">{{ i }}</span>
+                </li>
+            {% elif i > halaman_buku.number|add:'-3' and i < halaman_buku.number|add:'3' %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ i }}{% if query %}&query={{ query }}{% endif %}">{{ i }}</a>
+                </li>
+            {% endif %}
+        {% endfor %}
+
+        <li class="page-item {% if not halaman_buku.has_next %}disabled{% endif %}">
+            <a class="page-link" 
+               href="{% if halaman_buku.has_next %}?page={{ halaman_buku.next_page_number }}{% endif %}{% if query %}&query={{ query }}{% endif %}" 
+               aria-label="Berikutnya">
+                <span aria-hidden="true">&raquo;</span>
+            </a>
+        </li>
+    </ul>
+</nav>
+{% endif %}

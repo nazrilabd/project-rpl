@@ -1,0 +1,9 @@
+{% extends "base.html" %} 
+
+{% block title %}Daftar Buku{% endblock %}
+
+{% block content %}
+
+<h2>Daftar Buku Dengan Genre {{genre}}</h2>
+{% include "library/card.html" with books=books %}
+{% endblock %}
