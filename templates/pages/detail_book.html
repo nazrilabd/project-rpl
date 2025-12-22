@@ -33,12 +33,11 @@
         <div class="col-md-5">
             <h2>{{ buku.judul }}</h2>
             
-            <div class="mb-3">
+            <div class=" mt-4">
               
-                {% for genre in book.genre.all %}
-                    <span class="badge bg-success me-1 rounded-pill">
-                        {{ genre.name }}
-                    </span>
+                {% for tag in book.genre.all %}
+     <a href="{% url 'book_by_genre' genre=tag.name %}" class="badge bg-success text-decoration-none">{{tag.name}}</a>
+                     
                 {% endfor %}
             </div>
 
@@ -53,7 +52,7 @@
                     </tr>
                     <tr>
                         <th>Tahun Terbit</th>
-                        <td>{{ book.year_added|default:"-" }}</td>
+                        <td>{{ book.publication_year|default:"-" }}</td>
                     </tr>
                     <tr>
                         <th>Stok Tersedia</th>
