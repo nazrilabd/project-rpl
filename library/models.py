@@ -59,7 +59,7 @@ class Loan(models.Model):
     borrow_date = models.DateField(null=True, blank=True, verbose_name="Tanggal Peminjaman")
     due_date = models.DateField(null=True, blank=True, verbose_name="Tanggal Jatuh Tempo")
     return_date = models.DateField(null=True, blank=True, verbose_name="Tanggal Pengembalian")
-    
+    is_paid = models.BooleanField(default=False, verbose_name="Denda Sudah Dibayar")
     fine_amount = models.DecimalField(
         max_digits=6, 
         decimal_places=2, 
@@ -84,7 +84,23 @@ class Loan(models.Model):
                 fine = delay * FINE_PER_DAY
                 return float(fine)
         return 0.00
+    @property
+    def current_fine(self):
+        """Menghitung denda berjalan jika buku belum dikembalikan dan sudah lewat tempo."""
+        FINE_PER_DAY = 1000
+        
+        # Jika sudah dikembalikan, gunakan denda yang sudah tercatat tetap
+        if self.status == 'returned':
+            return self.fine_amount
             
+        # Jika belum dikembalikan (approved) dan sudah lewat jatuh tempo
+        if self.status == 'approved' and self.due_date:
+            today = date.today()
+            if today > self.due_date:
+                delay = (today - self.due_date).days
+                return delay * FINE_PER_DAY
+                
+        return 0
     def save(self, *args, **kwargs):
         if self.status == 'returned' and not self.fine_amount and self.return_date:
             self.fine_amount = self.calculate_fine()

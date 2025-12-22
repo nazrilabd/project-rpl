@@ -110,3 +110,27 @@ def my_loans(request):
     loans = paginator.get_page(page_number)
     context = {'loans': loans}
     return render(request, 'pages/my_loans.html', context)
+
+
+# library/views.py
+
+@login_required
+def cancel_loan(request, loan_id):
+    """Membatalkan pengajuan peminjaman oleh user."""
+    # Pastikan peminjaman milik user yang login dan statusnya masih pending
+    loan = get_object_or_404(Loan, id=loan_id, member=request.user)
+
+    if loan.status == 'pending':
+        # Jika Anda ingin menghapus datanya sama sekali:
+        loan.delete()
+        
+        # ATAU jika ingin statusnya berubah jadi 'cancelled' (lebih disarankan untuk history):
+        # loan.status = 'cancelled'
+        # loan.save()
+        
+        return redirect('my_loans')
+    else:
+        # Jika sudah disetujui (approved), user tidak boleh asal batal
+        return render(request, 'library/error.html', {
+            'message': 'Peminjaman yang sudah disetujui tidak dapat dibatalkan. Silakan hubungi admin.'
+        })

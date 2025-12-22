@@ -4,7 +4,7 @@ from django.contrib import admin
 from .models import Book, Loan, Genre
 from django.utils import timezone
 from datetime import timedelta 
-
+from django.db.models import F
 # --- Register Genre ---
 @admin.register(Genre)
 class GenreAdmin(admin.ModelAdmin):
@@ -29,8 +29,8 @@ class LoanAdmin(admin.ModelAdmin):
     list_display = ('book', 'member', 'status', 'borrow_date', 'due_date', 'fine_amount') 
     list_filter = ('status', 'due_date', 'borrow_date') 
     raw_id_fields = ('book', 'member')
-    actions = ['approve_loan', 'mark_as_returned', 'reject_loan']
-    readonly_fields = ('fine_amount',) 
+    actions = ['approve_loan', 'mark_as_returned', 'reject_loan','mark_fine_as_paid']
+    # readonly_fields = ('fine_amount',) 
     
     fields = (
         ('book', 'member'), 
@@ -50,7 +50,7 @@ class LoanAdmin(admin.ModelAdmin):
                 loan.status = 'approved'
                 loan.save()
                 
-                loan.book.stock -= 1
+                loan.book.stock =F('stock') - 1
                 loan.book.save()
             else:
                 self.message_user(request, f"Buku '{loan.book.title}' kehabisan stok. Peminjaman ini dilewati.", level='warning')
@@ -76,9 +76,14 @@ class LoanAdmin(admin.ModelAdmin):
             loan.status = 'returned'
             loan.save() 
             
-            loan.book.stock += 1
+            loan.book.stock =F('stock') + 1
             loan.book.save()
             
         self.message_user(request, f"Total {loans_to_return.count()} peminjaman berhasil dikembalikan. Denda telah dihitung.")
     
     mark_as_returned.short_description = "Tandai sebagai Dikembalikan"
+
+    def mark_fine_as_paid(self, request, queryset):
+        updated = queryset.update(is_paid=True)
+        self.message_user(request, f"{updated} peminjaman telah ditandai lunas.")
+    mark_fine_as_paid.short_description = "Tandai denda sudah lunas"

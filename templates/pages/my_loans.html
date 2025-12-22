@@ -17,6 +17,7 @@
                     <th>Jatuh Tempo</th>
                     <th>Status</th>
                     <th>Denda</th>
+                    <th>Status Denda</th>
                     <th>Aksi</th>
                 </tr>
             </thead>
@@ -46,18 +47,29 @@
                     </td>
 
                     <td>
-                        {% if pinjam.denda > 0 %}
-                            <span class="text-danger fw-bold">Rp{{ pinjam.denda|floatformat:0 }}</span>
+                        {% if pinjam.current_fine > 0 %}
+                            <span class="text-danger fw-bold">Rp{{ pinjam.current_fine|floatformat:0 }}</span>
                         {% else %}
                             <span class="text-success">Rp0</span>
                         {% endif %}
                     </td>
-                    
+                    <td >
+                     
+                            {% if pinjam.current_fine > 0 %}
+                                {% if pinjam.is_paid %}
+                                    <span class="badge bg-success">Lunas</span>
+                                {% else %}
+                                    <span class="badge bg-danger">Belum Bayar</span>
+                                {% endif %}
+                            {% else %}
+                                <span class="badge bg-success">Belum Ada</span>
+                            {% endif %}
+                  
+                    </td>
+                                        
                     <td>
-                        {% if pinjam.status == 'PINJAM' %}
-                            <button class="btn btn-sm btn-info" disabled>Perpanjang</button>
-                        {% else %}
-                            <button class="btn btn-sm btn-secondary" disabled>Selesai</button>
+                        {% if pinjam.status == 'pending' %}
+                            <a href="{% url 'cancel_loan' loan_id=pinjam.pk %}" class="btn btn-sm btn-danger">Batalkan</a>
                         {% endif %}
                     </td>
                 </tr>
