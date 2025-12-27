@@ -3,6 +3,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
+from django.db.models import Avg
 from datetime import date
 
 # --- Model Genre ---
@@ -28,14 +29,48 @@ class Book(models.Model):
     isbn = models.CharField(max_length=13, unique=True, verbose_name="ISBN")
     publication_year = models.IntegerField(verbose_name="Tahun Terbit")
     stock = models.IntegerField(default=1, verbose_name="Stok Tersedia")
+    @property
+    def average_rating(self):
+        # Menghitung rata-rata rating dari model Review yang terhubung
+        avg = self.reviews.aggregate(Avg('rating'))['rating__avg']
+        return round(avg, 1) if avg else 0
 
+    @property
+    def total_reviews(self):
+        return self.reviews.count()
+    
     class Meta:
         verbose_name = "Buku"
         verbose_name_plural = "Daftar Buku"
 
     def __str__(self):
         return self.title
+    
+# --- Model Review ---
+class Review(models.Model):
+    # Cukup gunakan angka 1-5
+    RATING_CHOICES = (
+        (1, '1'),
+        (2, '2'),
+        (3, '3'),
+        (4, '4'),
+        (5, '5'),
+    )
 
+    book = models.ForeignKey(Book, on_delete=models.CASCADE, related_name='reviews', verbose_name="Buku")
+    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Pengguna")
+    rating = models.PositiveSmallIntegerField(choices=RATING_CHOICES, default=5, verbose_name="Rating")
+    comment = models.TextField(verbose_name="Isi Review")
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="Tanggal Review")
+
+    class Meta:
+        verbose_name = "Review Buku"
+        verbose_name_plural = "Daftar Review"
+        # Mencegah satu user memberikan lebih dari satu review pada buku yang sama
+        unique_together = ('book', 'user')
+
+    def __str__(self):
+        return f"{self.user.username} - {self.book.title} ({self.rating}/5)"
 # --- Model Loan ---
 class Loan(models.Model):
     # Pilihan Status Peminjaman

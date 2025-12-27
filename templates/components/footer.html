@@ -1,18 +1,112 @@
-<footer class="bg-light text-secondary mt-5 py-4 border-top">
+<footer class="footer-premium pt-5 pb-4 mt-5">
     <div class="container">
-        <div class="row">
-            
-            <div class="col-md-6 text-center text-md-start">
-                <p class="mb-0">&copy; 2025 Perpustakaan Jendela Bangsa. Semua Hak Dilindungi.</p>
+        <div class="row g-4 mb-5">
+            <div class="col-lg-4 text-center text-lg-start">
+                <h3 class="fw-black text-success mb-3">Book<span class="text-warning">Verse.</span></h3>
+                <p class="text-secondary small lh-lg pe-lg-4">
+                    Membangun ekosistem literasi digital modern yang menghubungkan ribuan buku dengan jutaan pembaca di seluruh dunia. Baca, ulas, dan berbagi inspirasi.
+                </p>
+                <div class="d-flex justify-content-center justify-content-lg-start gap-3 mt-4">
+                    <a href="#" class="social-icon"><i class="bi bi-instagram"></i></a>
+                    <a href="#" class="social-icon"><i class="bi bi-facebook"></i></a>
+                    <a href="#" class="social-icon"><i class="bi bi-twitter-x"></i></a>
+                </div>
             </div>
-            
-            <div class="col-md-6 text-center text-md-end">
-                <ul class="list-inline mb-0">
-                    <li class="list-inline-item"><a href="#" class="text-secondary text-decoration-none">Kebijakan Privasi</a></li>
-                    <li class="list-inline-item">|</li>
-                    <li class="list-inline-item"><a href="#" class="text-secondary text-decoration-none">Syarat & Ketentuan</a></li>
+
+            <div class="col-6 col-lg-2 offset-lg-1">
+                <h6 class="fw-bold text-dark mb-4">Navigasi</h6>
+                <ul class="list-unstyled footer-links">
+                    <li><a href="/">Beranda</a></li>
+                    <li><a href="{% url 'book_list' %}">Koleksi Buku</a></li>
+                    <li><a href="#tentang">Tentang Kami</a></li>
+                    <li><a href="#lokasi">Lokasi</a></li>
                 </ul>
+            </div>
+
+            <div class="col-6 col-lg-2">
+                <h6 class="fw-bold text-dark mb-4">Dukungan</h6>
+                <ul class="list-unstyled footer-links">
+                    <li><a href="#">Bantuan</a></li>
+                    <li><a href="#">Privasi</a></li>
+                    <li><a href="#">Ketentuan</a></li>
+                    <li><a href="#">Kontak</a></li>
+                </ul>
+            </div>
+
+            <div class="col-lg-3 text-center text-lg-start">
+                <h6 class="fw-bold text-dark mb-4">Berlangganan</h6>
+                <p class="small text-muted mb-3">Dapatkan update buku terbaru langsung di emailmu.</p>
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control border-success border-opacity-25 rounded-start-pill ps-3" placeholder="Email kamu..." aria-label="Recipient's username">
+                    <button class="btn btn-success rounded-end-pill px-3" type="button">
+                        <i class="bi bi-send"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <hr class="border-secondary opacity-10">
+
+        <div class="row align-items-center pt-3">
+            <div class="col-md-6 text-center text-md-start">
+                <p class="mb-0 small text-muted">
+                    &copy; 2025 <span class="fw-bold text-success">BookVerse.</span> Semua Hak Dilindungi.
+                </p>
+            </div>
+            <div class="col-md-6 text-center text-md-end mt-2 mt-md-0">
+                <p class="mb-0 small text-muted">Dibuat dengan <i class="bi bi-heart-fill text-danger"></i> untuk Literasi Indonesia</p>
             </div>
         </div>
     </div>
 </footer>
+
+<style>
+    .footer-premium {
+        background-color: #fcfdf9; /* Senada dengan background utama */
+        border-top: 1px solid rgba(25, 135, 84, 0.1);
+    }
+
+    .fw-black { font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 800; }
+
+    .footer-links li {
+        margin-bottom: 12px;
+    }
+
+    .footer-links a {
+        color: #6c757d;
+        text-decoration: none;
+        font-size: 0.9rem;
+        transition: all 0.3s ease;
+    }
+
+    .footer-links a:hover {
+        color: #198754;
+        padding-left: 5px;
+    }
+
+    .social-icon {
+        width: 38px;
+        height: 38px;
+        background: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        color: #198754;
+        border: 1px solid rgba(25, 135, 84, 0.1);
+        text-decoration: none;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+    }
+
+    .social-icon:hover {
+        background: #FFD23F;
+        color: #004E32;
+        transform: translateY(-3px);
+    }
+
+    .form-control:focus {
+        box-shadow: none;
+        border-color: #198754;
+    }
+</style>

@@ -1,0 +1,33 @@
+<div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header border-0">
+                <h5 class="modal-title">Konfirmasi Aksi Anda</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center py-4">
+                <i class="bi bi-exclamation-octagon text-danger" style="font-size: 4rem;"></i>
+                <h5 class="mt-3">Apakah Anda yakin?</h5>
+             
+            </div>
+            <div class="modal-footer border-0 justify-content-center pb-4">
+                <form id="deleteForm" method="POST" action="">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-warning px-4">Ya</button>
+                </form>
+                <button type="button" class="btn btn-success px-4" data-bs-dismiss="modal">Batal</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function openDeleteModal(deleteUrl) {
+    // 1. Masukkan URL hapus ke atribut 'action' pada form di dalam modal
+    document.getElementById('deleteForm').setAttribute('action', deleteUrl);
+    
+    // 2. Tampilkan modal secara manual
+    var myModal = new bootstrap.Modal(document.getElementById('deleteConfirmModal'));
+    myModal.show();
+}
+</script>

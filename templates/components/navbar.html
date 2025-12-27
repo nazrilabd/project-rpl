@@ -9,6 +9,9 @@
         <li class="nav-item">
           <a class="nav-link {% if request.resolver_match.url_name == 'home' %}active{% endif %}" aria-current="page" href="{% url 'home' %}">Beranda</a>
         </li>
+        <li class="nav-item">
+          <a class="nav-link {% if request.resolver_match.url_name == 'book_list' %}active{% endif %}" href="{% url 'book_list' %}">List Buku</a>
+        </li>
         {% if user.is_authenticated %}
         <li class="nav-item">
           <a class="nav-link {% if request.resolver_match.url_name == 'my_loans' %}active{% endif %}" href="{% url 'my_loans' %}">Peminjaman</a>

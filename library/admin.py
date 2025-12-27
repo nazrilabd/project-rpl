@@ -22,6 +22,14 @@ class BookAdmin(admin.ModelAdmin):
     def get_genres(self, obj):
         return ", ".join([g.name for g in obj.genre.all()])
     get_genres.short_description = 'Genre'
+from django.contrib import admin
+from .models import Genre, Book, Loan, Review
+
+@admin.register(Review)
+class ReviewAdmin(admin.ModelAdmin):
+    list_display = ('book', 'user', 'rating', 'created_at')
+    list_filter = ('rating', 'created_at')
+    search_fields = ('book__title', 'user__username', 'comment')
 
 # --- Register Loan ---
 @admin.register(Loan)

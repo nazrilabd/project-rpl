@@ -69,7 +69,11 @@
                                         
                     <td>
                         {% if pinjam.status == 'pending' %}
-                            <a href="{% url 'cancel_loan' loan_id=pinjam.pk %}" class="btn btn-sm btn-danger">Batalkan</a>
+                            <button type="button" 
+                                    class="btn btn-sm btn-danger" 
+                                    onclick="openDeleteModal('{% url 'cancel_loan' pinjam.pk %}')">
+                                Batalkan
+                            </button>
                         {% endif %}
                     </td>
                 </tr>

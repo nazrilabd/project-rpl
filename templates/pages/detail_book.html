@@ -1,65 +1,162 @@
 {% extends 'base.html' %} 
 {% block content %}
-<div class="container my-5">
-    <div class="row">
-        
-        <div class="col-md-6">
-            <div class="card shadow-lg">
-                <div class="d-block w-200" style="height: 350px; overflow: hidden;">
-                    <img src="{{ book.cover_image.url }}" class="h-100 object-fit-contain card-img-top" style="object-fit:contain;" alt="Cover {{ buku.judul }}">
-                </div>
-                
-                <div class="card-body">
-                    <h5 class="card-title text-primary">{{ book.title }}</h5>
-                    <p class="card-text">
-                        Author {{ book.author }}
-                    </p>
-                    <hr>
-                    <p class="mb-1">
-                        <small class="text-muted">Nomor Buku: {{ book.isbn }}</small>
-                    </p>
-                    <a href="{% url 'request_loan' book.id %}" class="
-                    {% if book.stock == 0 %}
-                      disabled
-                    {% endif %}
-                    btn btn-warning w-100 mt-3
-                    ">
-                        <i class="bi bi-book-fill"></i> Pinjam Buku Ini
-                    </a>
-                </div>
-            </div>
-        </div>
+<style>
+    .detail-bg {
+        background-color: #fcfdf9; /* Light Creamy Green */
+        min-height: 100vh;
+    }
+    .fw-black { font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 800; }
+    
+    /* Membuat sidebar menempel di atas saat scroll (Hanya Desktop) */
+    @media (min-width: 992px) {
+        .sticky-sidebar {
+            position: sticky;
+            top: 2rem; /* Jarak dari atas layar */
+            height: fit-content;
+        }
+    }
 
-        <div class="col-md-5">
-            <h2>{{ buku.judul }}</h2>
+    /* Card Cover & Action */
+    .action-card {
+        background: #ffffff;
+        border-radius: 32px;
+        border: 1px solid rgba(0,0,0,0.05);
+        box-shadow: 0 20px 40px rgba(0,0,0,0.05);
+        padding: 24px;
+    }
+
+    .img-frame {
+        background: #f8f9fa;
+        border-radius: 24px;
+        padding: 15px;
+        margin-bottom: 20px;
+        text-align: center;
+    }
+
+    .img-frame img {
+        max-height: 350px;
+        width: auto;
+        border-radius: 12px;
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    }
+
+    .btn-loan-gold {
+        background-color: var(--bs-warning);
+        color: #004E32 !important;
+        font-weight: 800;
+        border-radius: 16px;
+        padding: 16px;
+        transition: all 0.3s ease;
+        border: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .btn-loan-gold:hover {
+        transform: scale(1.02);
+        box-shadow: 0 10px 20px rgba(255, 210, 63, 0.4);
+    }
+
+    .info-badge {
+        background: rgba(25, 135, 84, 0.08);
+        color: #198754;
+        font-weight: 700;
+        border-radius: 12px;
+        padding: 10px 15px;
+    }
+</style>
+
+<div class="detail-bg py-4 py-lg-5">
+    <div class="container">
+        <div class="row g-4 g-lg-5">
             
-            <div class=" mt-4">
-              
-                {% for tag in book.genre.all %}
-     <a href="{% url 'book_by_genre' genre=tag.name %}" class="badge bg-success text-decoration-none">{{tag.name}}</a>
-                     
-                {% endfor %}
+            <div class="col-lg-4 order-lg-2">
+                <div class="sticky-sidebar">
+                    <div class="action-card text-center">
+                        <div class="img-frame">
+                            <img src="{{ book.cover_image.url }}" class="img-fluid" alt="{{ book.title }}">
+                        </div>
+                        
+                        <h4 class="fw-black text-dark mb-1 d-lg-none">{{ book.title|title }}</h4>
+                        <p class="text-muted small mb-4">ISBN: {{ book.isbn }}</p>
+
+                        <div class="d-grid gap-2">
+                            <a href="{% url 'request_loan' book.id %}" class="btn btn-loan-gold shadow-sm fs-5">
+                                <i class="bi bi-bookmark-plus-fill"></i> PINJAM SEKARANG
+                            </a>
+                            
+                            <div class="d-flex justify-content-between mt-3 px-2">
+                                <div class="text-start">
+                                    <small class="text-muted d-block">Stok Tersedia</small>
+                                    <span class="fw-bold text-success">{{ book.stock }} Buku</span>
+                                </div>
+                                <div class="text-end">
+                                    <small class="text-muted d-block">Rating</small>
+                                    <span class="fw-bold text-dark"><i class="bi bi-star-fill text-warning"></i> {{ book.average_rating|floatformat:1 }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
-            <h4 class="mt-4">Deskripsi Lengkap</h4>
-            <p>{{ book.description|default:"Deskripsi buku ini belum tersedia." }}</p>
+            <div class="col-lg-8 order-lg-1">
+                <div class="pe-lg-4">
+                    <nav aria-label="breadcrumb" class="mb-3">
+                        <ol class="breadcrumb mb-0">
+                            <li class="breadcrumb-item"><a href="/" class="text-success text-decoration-none small fw-bold">Home</a></li>
+                            <li class="breadcrumb-item active small fw-bold text-muted" aria-current="page">Detail</li>
+                        </ol>
+                    </nav>
 
-            <table class="table table-bordered mt-4">
-                <tbody>
-                    <tr>
-                        <th style="width: 30%;">Penulis</th>
-                        <td>{{ book.author }}</td>
-                    </tr>
-                    <tr>
-                        <th>Tahun Terbit</th>
-                        <td>{{ book.publication_year|default:"-" }}</td>
-                    </tr>
-                    <tr>
-                        <th>Stok Tersedia</th>
-                        <td><span class="fw-bold text-success">{{ book.stock }}</span></td>
-                    </tr>
-                </tbody>
-            </table>
+                    <h1 class="display-4 fw-black text-dark mb-2">{{ book.title|title }}</h1>
+                    <p class="fs-5 text-muted mb-4">Oleh <span class="text-success fw-bold">{{ book.author|title }}</span></p>
+
+                    <div class="d-flex flex-wrap gap-2 mb-5">
+                        {% for tag in book.genre.all %}
+                        <span class="badge bg-white border border-success-subtle text-success px-3 py-2 rounded-pill shadow-sm fw-bold">
+                            {{ tag.name|upper }}
+                        </span>
+                        {% endfor %}
+                    </div>
+
+                    <div class="mb-5">
+                        <h4 class="fw-black mb-3 border-start border-success border-4 ps-3">Tentang Buku Ini</h4>
+                        <div class="fs-6 text-secondary lh-lg" style="text-align: justify;">
+                            {{ book.description|linebreaks|default:"Belum ada deskripsi untuk buku ini." }}
+                        </div>
+                    </div>
+
+                    <div class="row g-3 mb-5">
+                        <div class="col-sm-6">
+                            <div class="info-badge d-flex align-items-center gap-3">
+                                <i class="bi bi-calendar3 fs-4"></i>
+                                <div>
+                                    <small class="d-block text-muted opacity-75 fw-medium">Tahun Terbit</small>
+                                    <span>{{ book.publication_year|default:"-" }}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="info-badge d-flex align-items-center gap-3" style="background: rgba(255, 193, 7, 0.1); color: #856404;">
+                                <i class="bi bi-person-badge fs-4"></i>
+                                <div>
+                                    <small class="d-block text-muted opacity-75 fw-medium">Penulis Utama</small>
+                                    <span>{{ book.author|title }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="pt-4 border-top">
+                        <h4 class="fw-black mb-4">Ulasan Pembaca</h4>
+                        {% include "components/review.html" with book=book reviews=reviews %}
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
 </div>

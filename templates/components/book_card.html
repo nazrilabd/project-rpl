@@ -1,34 +1,121 @@
-<div class="container my-3">
-    <h2 class="mb-4">{{title}}</h2>
+<div class="container my-5 px-4 px-lg-0">
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-end mb-5 gap-3">
+        <div class="animate__animated animate__fadeIn">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-2">
+                    <li class="breadcrumb-item"><a href="{% url 'home' %}" class="text-success text-decoration-none small fw-bold">Home</a></li>
+                    <li class="breadcrumb-item active small fw-bold" aria-current="page text-muted">List Buku</li>
+                </ol>
+            </nav>
+            <h2 class="fw-black display-5 mb-0 text-dark">{{ title|upper }}</h2>
+            <div class="bg-warning rounded-pill mt-2" style="height: 5px; width: 60px;"></div>
+        </div>
+        <p class="text-muted small mb-0 fw-medium">Menampilkan {{ books.count }} Buku Terbaik</p>
+    </div>
+
     {% if books %}
-    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-4 g-4">
         {% for book in books %}
-        <div class="col">
-            <div class="card h-100 shadow-sm">
-                <img src="{{book.cover_image.url}}" class="card-img-top" alt="Cover Buku 1" style="height: 200px; object-fit:cover;">
-                <div class="card-body">
-                    <h5 class="card-title">{{book.title}}</h5>
-                    <div>
+        <div class="col animate__animated animate__fadeInUp">
+            <div class="card h-100 border-0 shadow-sm rounded-5 overflow-hidden card-book">
+                <div class="position-relative">
+                    <img src="{{book.cover_image.url}}" class="card-img-top img-cover" alt="{{ book.title }}">
+                    
+                    <div class="position-absolute top-0 start-0 m-3 d-flex flex-wrap gap-1">
                         {% for tag in book.genre.all %}
-                        <a href="{% url 'book_by_genre' genre=tag.name %}" class="badge bg-success text-decoration-none mb-2">{{tag.name}}</a>
+                        <a href="{% url 'book_by_genre' genre=tag.name %}" class="badge bg-success-glass text-white text-decoration-none py-2 px-3 rounded-pill fw-bold" style="backdrop-filter: blur(5px); font-size: 10px;">
+                            {{ tag.name|upper }}
+                        </a>
                         {% endfor %}
                     </div>
-                        <p class="card-text"><small class="text-muted">Penulis: {{book.author}}</small></p>
-                        <p class="card-text text-success fw-bold">Stok: {{book.stock}}</p>
-                        <a href="{% url 'detail_book' pk=book.pk %}" class="btn btn-warning text-white w-100">Detail</a>
+
+                    <div class="position-absolute bottom-0 end-0 m-3">
+                        <span class="badge bg-warning text-success shadow-sm py-2 px-3 rounded-pill fw-bold">
+                            <i class="bi bi-star-fill"></i> {{ book.average_rating|floatformat:1 }}
+                        </span>
+                    </div>
+                </div>
+
+                <div class="card-body p-4 d-flex flex-column">
+                    <h5 class="card-title fw-black text-dark mb-1 lh-sm">{{ book.title|title }}</h5>
+                    <p class="small text-muted mb-3">Oleh <span class="text-success fw-bold">{{ book.author|title }}</span></p>
+                    
+                    <div class="mt-auto">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <span class="small text-muted fw-bold"><i class="bi bi-box-seam me-1"></i> Stok</span>
+                            <span class="badge bg-success-soft text-success rounded-pill px-3">{{ book.stock }} Buku</span>
+                        </div>
+                        
+                        <a href="{% url 'detail_book' pk=book.pk %}" class="btn btn-warning btn-lg w-100 rounded-pill text-success fw-black shadow-warning-sm border-0 py-2 fs-6">
+                            Lihat Detail
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
-      {% endfor %}
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="text-center py-5 rounded-5 bg-white shadow-sm border border-warning border-opacity-25">
+        <div class="py-5">
+            <i class="bi bi-journal-x display-1 text-warning opacity-50"></i>
+            <h3 class="fw-black mt-4">Yah, Belum Ada Buku!</h3>
+            <p class="text-muted">Database kami sedang beristirahat atau pencarianmu tidak ditemukan.</p>
+            <a href="/" class="btn btn-outline-success rounded-pill px-4 mt-3 fw-bold">Kembali ke Beranda</a>
         </div>
-        {% else %}
-        <div class="alert alert-info mt-4" role="alert">
-            <h4 class="alert-heading">Yah Data Bukunya Kosong!</h4>
-            <p>Saat ini, belum ada data buku yang terdaftar di dalam database atau hasil pencarian Anda tidak ditemukan.</p>
-            <hr>
-            <p class="mb-0">Silakan hubungi administrator atau coba kembali nanti.</p>
-        </div>
-        
+    </div>
     {% endif %}
 </div>
-{% include 'components/pagination.html' with halaman_buku=books %}
+
+<div class="container pb-5">
+    {% include 'components/pagination.html' with halaman_buku=books %}
+</div>
+
+<style>
+    /* Editorial Style Overrides */
+    .fw-black { font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 800; }
+    
+    .card-book {
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        background: #ffffff;
+    }
+
+    .card-book:hover {
+        transform: translateY(-12px);
+        box-shadow: 0 20px 40px rgba(0,0,0,0.1) !important;
+    }
+
+    .img-cover {
+        height: 280px;
+        object-fit: cover;
+        transition: transform 0.5s ease;
+    }
+
+    .card-book:hover .img-cover {
+        transform: scale(1.1);
+    }
+
+    /* Green Transparent Badge */
+    .bg-success-glass {
+        background: rgba(0, 78, 50, 0.7) !important;
+    }
+
+    /* Soft Success Colors */
+    .bg-success-soft {
+        background: rgba(25, 135, 84, 0.1);
+    }
+
+    .shadow-warning-sm {
+        box-shadow: 0 4px 15px rgba(255, 210, 63, 0.4);
+    }
+
+    .breadcrumb-item + .breadcrumb-item::before {
+        content: "•";
+        color: #dee2e6;
+    }
+
+    @media (max-width: 576px) {
+        .img-cover { height: 220px; }
+        .display-5 { font-size: 2rem; }
+    }
+</style>

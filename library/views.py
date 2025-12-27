@@ -4,11 +4,14 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
 from datetime import timedelta
-from .models import Book, Loan
+from .models import Book, Loan, Review
 from django.core import serializers
 from django.core.paginator import Paginator
 from django.db.models import Q
+from django.contrib import messages
  
+def welcome(request):
+    return render(request, 'pages/welcome.html')
 def book_list(request):
     """Menampilkan daftar semua buku yang tersedia."""
     books = Book.objects.order_by('title') 
@@ -22,18 +25,45 @@ def book_list(request):
     halaman_buku = paginator.get_page(page_number)
     context = {'books': halaman_buku}
     print(books)
-    return render(request, 'pages/homepage.html', context)
+    return render(request, 'pages/book_list.html', context)
 def detail_buku(request, pk):
     # Mengambil objek Buku yang memiliki pk yang cocok.
     # Jika tidak ditemukan, otomatis menampilkan halaman 404 (Not Found).
-    books = get_object_or_404(Book, pk=pk)
-    
+    book = get_object_or_404(Book, pk=pk)
+    reviews = book.reviews.all().order_by('-created_at')
     context = {
-        'book': books
+        'book': book,
+        'reviews': reviews
     }
-    print(context)
-    
+
     return render(request, 'pages/detail_book.html', context)
+
+@login_required
+def submit_review(request, book_id):
+    if request.method == 'POST':
+        book = get_object_or_404(Book, id=book_id)
+        rating = request.POST.get('rating')
+        comment = request.POST.get('comment')
+        
+        # Validasi sederhana: Cek apakah user sudah pernah review buku ini
+        existing_review = Review.objects.filter(book=book, user=request.user).exists()
+        
+        if existing_review:
+            messages.error(request, "Anda sudah memberikan review untuk buku ini.")
+        else:
+            Review.objects.create(
+                book=book,
+                user=request.user,
+                rating=rating,
+                comment=comment
+            )
+            messages.success(request, "Review berhasil dikirim!")
+            
+        return redirect('detail_book', pk=book.id)
+    
+    return redirect('detail_book', pk=book.id)
+
+
 def book_list_by_genre(request,genre):
     books = Book.objects.filter(genre__name=genre).order_by('title')
     paginator = Paginator(books, 12) 
@@ -83,7 +113,7 @@ def request_loan(request, book_id):
     ).exists()
 
     if existing_loan:
-        return render(request, 'library/error.html', {'message': 'Anda sudah memiliki pengajuan peminjaman atau sedang meminjam buku ini.'})
+        messages.error(request, 'Anda sudah memiliki pengajuan peminjaman atau sedang meminjam buku ini.')
         
     if book.stock > 0:
         # Buat entri peminjaman dengan status 'pending'
@@ -92,9 +122,11 @@ def request_loan(request, book_id):
             member=request.user,
             status='pending' 
         )
+        messages.success(request,  'Peminjaman buku berhasil diajukan')
         return redirect('my_loans') 
     else:
-        return render(request, 'library/error.html', {'message': 'Stok buku ini sedang kosong.'})
+        messages.error(request,  'Stok buku ini sedang kosong.')
+    return redirect('detail_book',pk=book_id)
 
 @login_required
 def my_loans(request):
@@ -109,6 +141,7 @@ def my_loans(request):
     # 4. Dapatkan objek Page untuk halaman yang diminta
     loans = paginator.get_page(page_number)
     context = {'loans': loans}
+    print(loans)
     return render(request, 'pages/my_loans.html', context)
 
 
@@ -118,7 +151,7 @@ def my_loans(request):
 def cancel_loan(request, loan_id):
     """Membatalkan pengajuan peminjaman oleh user."""
     # Pastikan peminjaman milik user yang login dan statusnya masih pending
-    loan = get_object_or_404(Loan, id=loan_id, member=request.user)
+    loan = get_object_or_404(Loan, pk=loan_id, member=request.user)
 
     if loan.status == 'pending':
         # Jika Anda ingin menghapus datanya sama sekali:
@@ -127,7 +160,7 @@ def cancel_loan(request, loan_id):
         # ATAU jika ingin statusnya berubah jadi 'cancelled' (lebih disarankan untuk history):
         # loan.status = 'cancelled'
         # loan.save()
-        
+        messages.success(request,"Pengajuan peminjaman berhasil dibatalkan")
         return redirect('my_loans')
     else:
         # Jika sudah disetujui (approved), user tidak boleh asal batal
