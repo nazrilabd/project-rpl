@@ -1,62 +1,151 @@
-<div class="card mt-4 shadow-sm">
-    <div class="card-header bg-warning text-white">
-        <h5 class="mb-0">Tulis Review Anda</h5>
-    </div>
-    <div class="card-body">
-        {% if user.is_authenticated %}
-           
-            <form action="{% url 'submit_review' book.id %}" method="POST">
-                {% csrf_token %}
+<div class="review-section-stacked mt-5 pt-4">
+    
+    <div class=" w-100 mb-5">
+        <div class="col-12"> <div class="write-review-container p-4 p-md-5 rounded-5 bg-white border border-light shadow-sm">
                 
-                <div class="mb-3">
-                    <label for="rating" class="form-label fw-bold">Rating</label>
-                    <select name="rating" id="rating" class="form-select w-auto">
-                        <option value="5">5 - Sangat Bagus</option>
-                        <option value="4">4 - Bagus</option>
-                        <option value="3">3 - Cukup</option>
-                        <option value="2">2 - Kurang</option>
-                        <option value="1">1 - Buruk</option>
-                    </select>
+                <div class="mb-4">
+                    <h3 class="fw-black text-dark mb-1 fs-2">Berikan Ulasan Anda</h3>
+                    <p class="text-muted">Bagikan pengalamanmu membaca <span class="text-success fw-bold">{{ book.title }}</span></p>
                 </div>
 
-                <div class="mb-3">
-                    <label for="comment" class="form-label fw-bold">Komentar</label>
-                    <textarea name="comment" id="comment" class="form-control" rows="3" placeholder="Apa pendapat Anda tentang buku ini?" required></textarea>
-                </div>
+                {% if user.is_authenticated %}
+                <form action="{% url 'submit_review' book.id %}" method="POST">
+                    {% csrf_token %}
+                    
+                    <div class="mb-5">
+                        <label class="small fw-bold text-muted d-block mb-3 text-uppercase tracking-wider">Seberapa suka Anda dengan buku ini?</label>
+                        <div class="star-rating-input d-flex gap-2 flex-row-reverse justify-content-center">
+                            {% for i in "54321"|make_list %}
+                            <input type="radio" name="rating" value="{{ i }}" id="star{{ i }}" class="d-none" {% if i == "1" %}checked{% endif %}>
+                            <label for="star{{ i }}" class="star-svg-label">
+                                <svg width="42" height="42" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                                </svg>
+                            </label>
+                            {% endfor %}
+                        </div>
+                    </div>
 
-                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                    <button type="submit" class="btn btn-warning px-4">
-                        <i class="bi bi-send"></i> Kirim Review
-                    </button>
-                </div>
-            </form>
-        {% else %}
-            <div class="alert alert-info mb-0" role="alert">
-                Silakan <a href="{% url 'login' %}" class="alert-link">Login</a> untuk memberikan review pada buku ini.
-            </div>
-        {% endif %}
-    </div>
-</div>
+                    <div class="mb-4">
+                        <label class="small fw-bold text-muted d-block mb-3 text-uppercase tracking-wider">Tuliskan Pendapatmu</label>
+                        <textarea name="comment" class="form-control-modern w-100" rows="4" placeholder="Apa yang menarik dari buku ini? Tuliskan ulasan jujurmu di sini..." required></textarea>
+                    </div>
 
-<div class="mt-5">
-    <h4 class="mb-4">Review Pembaca ({{ book.total_reviews }})</h4>
-    <hr>
-    {% for review in reviews %}
-        <div class="card mb-3 border-0 border-bottom">
-            <div class="card-body px-0">
-                <div class="d-flex justify-content-between align-items-center mb-2">
-                    <h6 class="card-title mb-0 fw-bold">{{ review.user.username }}</h6>
-                    <span class="badge bg-warning text-dark">
-                        {{ review.rating }} / 5 ★
-                    </span>
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-warning-pill px-5 py-3 py-md-3 fs-6">
+                            KIRIM ULASAN SEKARANG <i class="bi bi-send-fill ms-2"></i>
+                        </button>
+                    </div>
+                </form>
+                {% else %}
+                <div class="py-4 rounded-4 bg-light border-0">
+                    <p class="text-muted mb-0">Silakan <a href="{% url 'login' %}" class="text-success fw-bold text-decoration-none border-bottom border-success border-2 pb-1">Login</a> untuk mulai berdiskusi.</p>
                 </div>
-                <p class="card-text text-muted small mb-1 italic">
-                    <i class="bi bi-calendar3"></i> {{ review.created_at|date:"d M Y" }}
-                </p>
-                <p class="card-text">{{ review.comment }}</p>
+                {% endif %}
             </div>
         </div>
-    {% empty %}
-        <p class="text-muted italic">Belum ada review untuk buku ini</p>
-    {% endfor %}
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-12 col-lg-8">
+            <div class="d-flex align-items-center justify-content-between mb-5 border-bottom pb-3">
+                <h4 class="fw-black mb-0">Diskusi Pembaca</h4>
+                <span class="badge bg-success-soft text-success rounded-pill px-3">{{ book.total_reviews }} Ulasan</span>
+            </div>
+
+            <div class="review-stream">
+                {% for review in reviews %}
+                <div class="review-item-linear mb-5">
+                    <div class="d-flex align-items-center gap-3 mb-3">
+                        <div class="avatar-circle-modern">
+                            {{ review.user.username|slice:":1"|upper }}
+                        </div>
+                        <div>
+                            <h6 class="fw-bold text-dark mb-0 fs-5">{{ review.user.username|title }}</h6>
+                            <div class="d-flex align-items-center gap-2">
+                                <div class="static-stars-display d-flex text-warning">
+                                    {% for star in "12345"|make_list %}
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="{% if forloop.counter <= review.rating %}currentColor{% else %}#e9ecef{% endif %}">
+                                            <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                                        </svg>
+                                    {% endfor %}
+                                </div>
+                                <span class="text-muted small">• {{ review.created_at|date:"d M Y" }}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="review-body-text ps-md-5 ms-md-2">
+                        <p class="lh-lg text-secondary mb-0">{{ review.comment }}</p>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="text-center py-5">
+                    <p class="text-muted fs-5 opacity-50">Belum ada diskusi. Ayo mulai ulasan pertama!</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
 </div>
+
+<style>
+    .fw-black { font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 800; }
+    .bg-success-soft { background: rgba(25, 135, 84, 0.1); }
+
+    /* Input Styling */
+    .form-control-modern {
+        border: 2px solid #f1f3f5;
+        background-color: #f8f9fa;
+        border-radius: 20px;
+        padding: 20px;
+        transition: all 0.3s ease;
+        text-align: center; /* Teks ulasan juga center di desktop */
+    }
+    .form-control-modern:focus {
+        background-color: #ffffff;
+        border-color: #198754;
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.05);
+        outline: none;
+        text-align: left; /* Berubah jadi left saat mengetik agar nyaman */
+    }
+
+    /* Bintang Interaktif SVG */
+    .star-svg-label { cursor: pointer; color: #e9ecef; transition: all 0.2s; }
+    .star-svg-label:hover { transform: scale(1.15); }
+    .star-rating-input input:checked ~ label,
+    .star-rating-input label:hover,
+    .star-rating-input label:hover ~ label { color: #FFD23F; }
+
+    /* Button Pill */
+    .btn-warning-pill {
+        background: #FFD23F;
+        color: #004E32;
+        border: none;
+        border-radius: 100px;
+        font-weight: 800;
+        letter-spacing: 0.5px;
+        transition: all 0.3s;
+        box-shadow: 0 4px 15px rgba(255, 210, 63, 0.3);
+    }
+    .btn-warning-pill:hover {
+        background: #004E32;
+        color: #FFD23F;
+        transform: translateY(-3px);
+        box-shadow: 0 10px 25px rgba(0, 78, 50, 0.2);
+    }
+
+    /* List Item */
+    .avatar-circle-modern {
+        width: 48px; height: 48px;
+        background: #198754; color: white;
+        border-radius: 15px; /* Bergaya Rounded Square Modern */
+        display: flex; align-items: center; justify-content: center;
+        font-weight: 800; font-size: 1.2rem;
+    }
+
+    .review-body-text {
+        border-left: 3px solid #f1f3f5;
+        padding-left: 20px;
+        font-size: 1.05rem;
+    }
+</style>

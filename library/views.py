@@ -7,7 +7,7 @@ from datetime import timedelta
 from .models import Book, Loan, Review
 from django.core import serializers
 from django.core.paginator import Paginator
-from django.db.models import Q
+from django.db.models import Q,Avg
 from django.contrib import messages
  
 def welcome(request):
@@ -83,10 +83,20 @@ def book_list_by_genre(request,genre):
 def search_books(request):
     query = request.GET.get("query")
     lookup = Q(title__icontains=query) | Q(author__icontains=query)
+    
+    books = Book.objects.filter(lookup).order_by('title').annotate(rating_rata2=Avg('reviews__rating'))
+    
+    sort_param = request.GET.get('sort')
 
-    books = Book.objects.filter(lookup).order_by('title')
+    if sort_param == 'newest':
+        books = books.order_by('-id') # Pastikan ada field created_at
+    elif sort_param == 'rating':
+        # Mengurutkan berdasarkan average_rating (asumsi field sudah ada di model)
+        books = books.order_by('-rating_rata2')
+    elif sort_param == 'title':
+        books = books.order_by('title')
   
-    paginator = Paginator(books, 12) 
+    paginator = Paginator(books, 3) 
     
     # 3. Ambil nomor halaman dari parameter GET URL (contoh: ?page=2)
     # Jika tidak ada parameter 'page', default ke halaman 1
@@ -112,8 +122,7 @@ def request_loan(request, book_id):
         status__in=['pending', 'approved'] 
     ).exists()
 
-    if existing_loan:
-        messages.error(request, 'Anda sudah memiliki pengajuan peminjaman atau sedang meminjam buku ini.')
+        
         
     if book.stock > 0:
         # Buat entri peminjaman dengan status 'pending'
@@ -126,12 +135,18 @@ def request_loan(request, book_id):
         return redirect('my_loans') 
     else:
         messages.error(request,  'Stok buku ini sedang kosong.')
+    if existing_loan:
+        messages.error(request, 'Anda sudah memiliki pengajuan peminjaman atau sedang meminjam buku ini.')
+        
     return redirect('detail_book',pk=book_id)
 
 @login_required
 def my_loans(request):
     """Menampilkan daftar buku yang sedang dipinjam oleh user saat ini."""
     loans = Loan.objects.filter(member=request.user).order_by('-id')
+    status_filter = request.GET.get('status')
+    if status_filter:
+        loans = loans.filter(status=status_filter)
     paginator = Paginator(loans, 8) 
     
     # 3. Ambil nomor halaman dari parameter GET URL (contoh: ?page=2)

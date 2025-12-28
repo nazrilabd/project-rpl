@@ -1,101 +1,186 @@
 {% extends "base.html" %} 
+
+{% block title %}Masuk ke Jendela Bangsa{% endblock %}
+
 {% block content %}
-<div class="min-vh-100 d-flex align-items-center justify-content-center bg-gradient py-5">
+<div class="min-vh-100 d-flex align-items-center justify-content-center bg-soft-light py-5">
     <div class="container">
         <div class="row justify-content-center">
-            <div class="col-md-7">
-                <div class="card shadow-lg border-0 rounded-4">
-                    <div class="card-header bg-success bg-gradient text-white text-center py-4 rounded-top-4">
-                        <i class="bi bi-person-circle display-1"></i>
-                        <h2 class="fw-bold mb-1">Login</h2>
-                        <p class="mb-0">Selamat datang kembali!</p>
+            <div class="col-md-6 col-lg-5">
+                <div class="card shadow-premium border-0 rounded-5 overflow-hidden animate__animated animate__fadeIn">
+                    
+                    <div class="card-header bg-white border-0 pt-5 pb-4 text-center">
+                        <div class="login-icon-container mb-3 mx-auto">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-success"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+                        </div>
+                        <h2 class="fw-black text-dark mb-1" style="letter-spacing: -1.5px;">Selamat Datang</h2>
+                        <p class="text-muted small fw-medium">Silakan masuk untuk mengakses koleksi kami</p>
                     </div>
                     
-                    <div class="card-body p-4">
+                    <div class="card-body px-4 px-md-5 pb-5">
                         
                         {% if form.errors %}
-                           
-                                <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                                    Username Atau Password Invalid
-                                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                                </div>
-                           
+                        <div class="alert alert-danger-custom d-flex align-items-center gap-2 mb-4 animate__animated animate__shakeX" role="alert">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+                            <span class="small fw-bold">Username atau Password salah.</span>
+                        </div>
                         {% endif %}
                         
                         <form method="post" action="{% url 'login' %}">
                             {% csrf_token %}
                             
-                            <div class="mb-3">
-                                <label for="username" class="form-label fw-semibold">Username</label>
-                                <div class="input-group">
-                                    <span class="input-group-text bg-light">
-                                        <i class="bi bi-person"></i>
+                            <div class="mb-4">
+                                <label for="username" class="form-label-custom">Username</label>
+                                <div class="input-group-modern">
+                                    <span class="icon">
+                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
                                     </span>
-                                    <input type="text" class="form-control" id="username" name="username" 
-                                           placeholder="Masukkan username" value="" required >
+                                    <input type="text" class="form-control-modern" id="username" name="username" 
+                                           placeholder="Ketik username Anda" required autocomplete="off">
                                 </div>
                             </div>
                             
-                            <div class="mb-3">
-                                <label for="password" class="form-label fw-semibold" >Password</label>
-                                <div class="input-group">
-                                    <span class="input-group-text bg-light">
-                                        <i class="bi bi-lock"></i>
+                            <div class="mb-4">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <label for="password" class="form-label-custom">Password</label>
+                                </div>
+                                <div class="input-group-modern">
+                                    <span class="icon">
+                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
                                     </span>
-                                    <input type="password" class="form-control" id="password" name="password" 
-                                           placeholder="Masukkan password" value="" required>
+                                    <input type="password" class="form-control-modern" id="password" name="password" 
+                                           placeholder="Ketik password Anda" required>
                                 </div>
                             </div>
                             
-                            <div class="d-flex justify-content-between align-items-center mb-3">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" id="remember" name="remember">
-                                    <label class="form-check-label" for="remember">
-                                        Ingat saya
-                                    </label>
+                            <div class="d-flex justify-content-between align-items-center mb-4">
+                                <div class="form-check custom-check">
+                                    <input class="form-check-input shadow-none" type="checkbox" id="remember" name="remember">
+                                    <label class="form-check-label small text-muted fw-medium" for="remember">Ingat Saya</label>
                                 </div>
-                              
                             </div>
                             
-                            <button type="submit" class="btn btn-warning btn-lg w-100 fw-bold">
-                                <i class="bi bi-box-arrow-in-right me-2"></i>Login
+                            <button type="submit" class="btn btn-login-premium w-100">
+                                Masuk Sekarang
+                                <svg class="ms-2" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
                             </button>
                         </form>
                         
-                        <div class="text-center mt-4">
-                            <span class="text-muted">Jika Belum punya akun?</span>
-                            <a href="" class="text-success text-decoration-none fw-bold ms-1">Hubungi Admin</a>
+                        <div class="text-center mt-5 pt-3 border-top border-light">
+                            <p class="text-muted small mb-0">Belum memiliki akun?</p>
+                            <a href="#" class="text-success text-decoration-none fw-black small text-uppercase tracking-widest">Hubungi Petugas</a>
                         </div>
                     </div>
+                </div>
+                
+                <div class="text-center mt-4">
+                    <a href="{% url 'home' %}" class="text-muted text-decoration-none small fw-bold hover-green transition-all">
+                        <svg class="me-1" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+                        Kembali ke Beranda
+                    </a>
                 </div>
             </div>
         </div>
     </div>
 </div>
- {% endblock %}
 
+<style>
+    .fw-black { font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 800; }
+    .bg-soft-light { background-color: #f8fafc; }
+    .tracking-widest { letter-spacing: 0.1em; }
 
+    /* Card Premium */
+    .shadow-premium {
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.08) !important;
+    }
 
-                {% comment %} {% extends "base.html" %}
+    .login-icon-container {
+        width: 64px;
+        height: 64px;
+        background: #f0fdf4;
+        border-radius: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
 
-{% block title %}Login Anggota{% endblock %}
+    /* Form Styling */
+    .form-label-custom {
+        font-size: 0.85rem;
+        font-weight: 700;
+        color: #475569;
+        margin-bottom: 8px;
+        display: block;
+    }
 
-{% block content %}
-<h2>Login ke Perpustakaan</h2>
+    .input-group-modern {
+        position: relative;
+        display: flex;
+        align-items: center;
+    }
 
-{% if form.errors %}
-    <p style="color: red;">Nama pengguna atau kata sandi tidak valid. Silakan coba lagi.</p>
-{% endif %}
+    .input-group-modern .icon {
+        position: absolute;
+        left: 16px;
+        color: #94a3b8;
+        z-index: 5;
+    }
 
-<form method="post" action="{% url 'login' %}">
-    {% csrf_token %}
-    
-    {{ form.as_p }}
-    
-    <button type="submit">Login</button>
-    
-    <input type="hidden" name="next" value="{{ next }}" />
-</form>
+    .form-control-modern {
+        width: 100%;
+        padding: 12px 16px 12px 48px;
+        background: #f1f5f9;
+        border: 2px solid transparent;
+        border-radius: 12px;
+        font-size: 0.95rem;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
 
-<p>Belum punya akun? (Anda bisa membuatnya melalui Admin)</p>
-{% endblock %} {% endcomment %}
+    .form-control-modern:focus {
+        background: #ffffff;
+        border-color: #198754;
+        box-shadow: 0 0 0 4px rgba(25, 135, 84, 0.1);
+        outline: none;
+    }
+
+    /* Checkbox */
+    .custom-check .form-check-input:checked {
+        background-color: #198754;
+        border-color: #198754;
+    }
+
+    /* Button */
+    .btn-login-premium {
+        background: #198754;
+        color: white;
+        border: none;
+        padding: 14px;
+        border-radius: 12px;
+        font-weight: 800;
+        font-size: 1rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s;
+    }
+
+    .btn-login-premium:hover {
+        background: #146c43;
+        transform: translateY(-2px);
+        box-shadow: 0 10px 20px -5px rgba(25, 135, 84, 0.4);
+        color: white;
+    }
+
+    /* Alert */
+    .alert-danger-custom {
+        background: #fef2f2;
+        border: 1px solid #fee2e2;
+        color: #dc2626;
+        padding: 12px 16px;
+        border-radius: 12px;
+    }
+
+    .hover-green:hover { color: #198754 !important; }
+</style>
+{% endblock %}

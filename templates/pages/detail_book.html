@@ -107,6 +107,7 @@
                     <nav aria-label="breadcrumb" class="mb-3">
                         <ol class="breadcrumb mb-0">
                             <li class="breadcrumb-item"><a href="/" class="text-success text-decoration-none small fw-bold">Home</a></li>
+                            <li class="breadcrumb-item"><a href="{% url 'book_list'%}" class="text-success text-decoration-none small fw-bold">List Buku</a></li>
                             <li class="breadcrumb-item active small fw-bold text-muted" aria-current="page">Detail</li>
                         </ol>
                     </nav>
@@ -116,9 +117,9 @@
 
                     <div class="d-flex flex-wrap gap-2 mb-5">
                         {% for tag in book.genre.all %}
-                        <span class="badge bg-white border border-success-subtle text-success px-3 py-2 rounded-pill shadow-sm fw-bold">
+                        <a href="{% url 'book_by_genre' tag %}" class="text-decoration-none badge text-warning-hover bg-success-hover bg-white border border-success-subtle text-success px-3 py-2 rounded-pill shadow-sm fw-bold">
                             {{ tag.name|upper }}
-                        </span>
+                        </a>
                         {% endfor %}
                     </div>
 
