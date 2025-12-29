@@ -81,17 +81,24 @@
                         {% endfor %}
                     </div>
 
-                    <div class="position-absolute bottom-0 end-0 m-3">
-                        {% if book.average_rating > 0 %}
-                                <span class="badge bg-warning text-dark">
-                                    <i class="bi bi-star-fill me-1"></i> {{ book.average_rating|floatformat:1 }}
-                                </span>
-                            {% else %}
-                                <span class="badge bg-warning text-dark">
-                                    <i class="bi bi-sparkles me-1"></i> Baru
-                                </span>
-                            {% endif %}
-                    </div>
+                   <div class="position-absolute bottom-0 end-0 m-3">
+    {% if book.average_rating > 0 %}
+        <svg width="72" height="32" viewBox="0 0 72 32" fill="none" xmlns="http://www.w3.org/2000/svg" style="backdrop-filter: blur(4px);">
+            <rect width="72" height="32" rx="16" fill="rgba(0,0,0,0.5)"/>
+            <path d="M16 21.27L19.09 23L18.28 19.54L21 17.12L17.46 16.85L16 13.6L14.54 16.85L11 17.12L13.72 19.54L12.91 23L16 21.27Z" fill="#FFC107"/>
+            <text x="32" y="21" fill="white" style="font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 800; font-size: 14px;">{{ book.average_rating|floatformat:1 }}</text>
+        </svg>
+    {% else %}
+        <svg width="85" height="32" viewBox="0 0 85 32" fill="none" xmlns="http://www.w3.org/2000/svg" style="backdrop-filter: blur(4px);">
+            <rect width="85" height="32" rx="16" fill="rgba(0,0,0,0.5)"/>
+          
+            <circle cx="16" cy="16" r="4" fill="#FFC107">
+                <animate attributeName="opacity" values="1;0.5;1" dur="2s" repeatCount="indefinite" />
+            </circle>
+            <text x="28" y="20.5" fill="white" style="font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 800; font-size: 11px; letter-spacing: 1.5px;">NEW</text>
+        </svg>
+    {% endif %}
+</div>
                 </div>
 
                 <div class="card-body p-4 d-flex flex-column">
