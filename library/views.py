@@ -96,7 +96,7 @@ def search_books(request):
     elif sort_param == 'title':
         books = books.order_by('title')
   
-    paginator = Paginator(books, 3) 
+    paginator = Paginator(books, 12) 
     
     # 3. Ambil nomor halaman dari parameter GET URL (contoh: ?page=2)
     # Jika tidak ada parameter 'page', default ke halaman 1

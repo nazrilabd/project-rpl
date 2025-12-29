@@ -1,13 +1,17 @@
 <nav aria-label="Page navigation" class="mt-5">
     <ul class="pagination justify-content-center gap-2">
         
-        {% if halaman_buku.has_previous %}
         <li class="page-item">
-            <a class="page-link-custom" href="?{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}page={{ halaman_buku.previous_page_number }}" aria-label="Previous">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
-            </a>
+            {% if halaman_buku.has_previous %}
+                <a class="page-link-custom" href="?{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}page={{ halaman_buku.previous_page_number }}" aria-label="Previous">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                </a>
+            {% else %}
+                <span class="page-link-custom disabled" aria-disabled="true">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity="0.3"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                </span>
+            {% endif %}
         </li>
-        {% endif %}
 
         {% for num in halaman_buku.paginator.page_range %}
             {% if halaman_buku.number == num %}
@@ -21,19 +25,23 @@
             {% endif %}
         {% endfor %}
 
-        {% if halaman_buku.has_next %}
         <li class="page-item">
-            <a class="page-link-custom" href="?{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}page={{ halaman_buku.next_page_number }}" aria-label="Next">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
-            </a>
+            {% if halaman_buku.has_next %}
+                <a class="page-link-custom" href="?{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}page={{ halaman_buku.next_page_number }}" aria-label="Next">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                </a>
+            {% else %}
+                <span class="page-link-custom disabled" aria-disabled="true">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity="0.3"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                </span>
+            {% endif %}
         </li>
-        {% endif %}
 
     </ul>
 </nav>
 
 <style>
-    /* Styling Pagination Minimalis agar Serasi */
+    /* Styling Pagination Minimalis */
     .page-link-custom {
         display: flex;
         align-items: center;
@@ -47,9 +55,11 @@
         font-weight: 700;
         text-decoration: none;
         transition: all 0.2s ease;
+        cursor: pointer;
     }
 
-    .page-link-custom:hover {
+    /* Hover effect hanya untuk yang bukan disabled/active */
+    .page-link-custom:not(.disabled):not(.active):hover {
         background: #f7fafc;
         color: #198754;
         border-color: #198754;
@@ -61,5 +71,15 @@
         color: #fff;
         border-color: #198754;
         box-shadow: 0 4px 12px rgba(25, 135, 84, 0.25);
+        cursor: default;
+    }
+
+    /* Styling khusus tombol Disabled */
+    .page-link-custom.disabled {
+        background: #f8f9fa;
+        color: #cbd5e0;
+        border-color: #edf2f7;
+        cursor: not-allowed;
+        pointer-events: none; /* Mencegah klik */
     }
 </style>
