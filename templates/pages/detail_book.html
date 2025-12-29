@@ -117,7 +117,7 @@
 
                     <div class="d-flex flex-wrap gap-2 mb-5">
                         {% for tag in book.genre.all %}
-                        <a href="{% url 'book_by_genre' tag %}" class="text-decoration-none badge text-warning-hover bg-success-hover bg-white border border-success-subtle text-success px-3 py-2 rounded-pill shadow-sm fw-bold">
+                        <a href="{% url 'book_by_genre' tag %}" class="text-decoration-none border border-success-subtle btn btn-outline-success btn-sm px-3 py-2 rounded-pill shadow-sm fw-bold">
                             {{ tag.name|upper }}
                         </a>
                         {% endfor %}

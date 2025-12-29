@@ -24,7 +24,7 @@ class Book(models.Model):
     
     genre = models.ManyToManyField(Genre, related_name='books', verbose_name="Genre") 
     title = models.CharField(max_length=200, verbose_name="Judul Buku")
-    description = models.TextField(verbose_name="desckripsi buku")
+    description = models.TextField(verbose_name="Deskripsi Buku")
     author = models.CharField(max_length=100, verbose_name="Penulis")
     isbn = models.CharField(default='_',max_length=13, verbose_name="ISBN")
     publication_year = models.IntegerField(verbose_name="Tahun Terbit")

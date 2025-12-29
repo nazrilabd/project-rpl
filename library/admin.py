@@ -5,6 +5,7 @@ from .models import Book, Loan, Genre
 from django.utils import timezone
 from datetime import timedelta 
 from django.db.models import F
+from django.template.defaultfilters import truncatechars
 # --- Register Genre ---
 @admin.register(Genre)
 class GenreAdmin(admin.ModelAdmin):
@@ -14,7 +15,7 @@ class GenreAdmin(admin.ModelAdmin):
 # --- Register Book ---
 @admin.register(Book)
 class BookAdmin(admin.ModelAdmin):
-    list_display = ('title','description','publication_year', 'author', 'get_genres', 'isbn', 'stock') 
+    list_display = ('title','short_description','publication_year', 'author', 'get_genres', 'isbn', 'stock') 
     search_fields = ('title','description', 'author', 'isbn')
     list_filter = ('author', 'publication_year', 'genre')
     # Menyertakan ManyToManyField (tags) di form admin
@@ -22,6 +23,11 @@ class BookAdmin(admin.ModelAdmin):
     def get_genres(self, obj):
         return ", ".join([g.name for g in obj.genre.all()])
     get_genres.short_description = 'Genre'
+    def short_description(self, obj):
+        return truncatechars(obj.description, 50)
+    
+    # Memberikan nama kolom di header tabel admin
+    short_description.short_description = "Deskripsi"
 from django.contrib import admin
 from .models import Genre, Book, Loan, Review
 

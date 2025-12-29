@@ -12,9 +12,24 @@ from django.contrib import messages
  
 def welcome(request):
     return render(request, 'pages/welcome.html')
-def book_list(request):
-    """Menampilkan daftar semua buku yang tersedia."""
-    books = Book.objects.order_by('title') 
+def book_list(request): 
+    books = Book.objects.annotate(
+        rating_rata2=Coalesce(Avg('reviews__rating'), Value(0.0))
+    )
+    
+    sort_param = request.GET.get('sort')
+
+    if sort_param == 'newest':
+        books = books.order_by('-id')
+    elif sort_param == 'rating':
+        # Sekarang pasti jalan karena NULL sudah jadi 0.0
+        books = books.order_by('-rating_rata2', 'title') 
+    elif sort_param == 'title':
+        books = books.order_by('title')
+    else:
+        # Default order agar paginasi stabil
+        books = books.order_by('-id')
+
     paginator = Paginator(books, 12) 
     
     # 3. Ambil nomor halaman dari parameter GET URL (contoh: ?page=2)
@@ -63,39 +78,58 @@ def submit_review(request, book_id):
     
     return redirect('detail_book', pk=book.id)
 
+from django.db.models import Avg, Value
+from django.db.models.functions import Coalesce
 
-def book_list_by_genre(request,genre):
-    books = Book.objects.filter(genre__name=genre).order_by('title')
-    paginator = Paginator(books, 12) 
-    
-    # 3. Ambil nomor halaman dari parameter GET URL (contoh: ?page=2)
-    # Jika tidak ada parameter 'page', default ke halaman 1
-    page_number = request.GET.get('page') or 1
-    
-    # 4. Dapatkan objek Page untuk halaman yang diminta
-    halaman_buku = paginator.get_page(page_number)
-    context ={
-        "genre":genre,
-        "books":halaman_buku,
-        "title_heading":f"Daftar Buku Dengan Genre  {genre}"
-    }
-    return render(request,'pages/book_by_genre.html',context)
-def search_books(request):
-    query = request.GET.get("query")
-    lookup = Q(title__icontains=query) | Q(author__icontains=query)
-    
-    books = Book.objects.filter(lookup).order_by('title').annotate(rating_rata2=Avg('reviews__rating'))
+def book_list_by_genre(request, genre):
+    # Gunakan Coalesce agar jika Avg NULL, diganti jadi 0.0
+    books = Book.objects.filter(genre__name=genre).annotate(
+        rating_rata2=Coalesce(Avg('reviews__rating'), Value(0.0))
+    )
     
     sort_param = request.GET.get('sort')
 
     if sort_param == 'newest':
-        books = books.order_by('-id') # Pastikan ada field created_at
+        books = books.order_by('-id')
     elif sort_param == 'rating':
-        # Mengurutkan berdasarkan average_rating (asumsi field sudah ada di model)
-        books = books.order_by('-rating_rata2')
+        # Sekarang pasti jalan karena NULL sudah jadi 0.0
+        books = books.order_by('-rating_rata2', 'title') 
     elif sort_param == 'title':
         books = books.order_by('title')
-  
+    else:
+        # Default order agar paginasi stabil
+        books = books.order_by('-id')
+
+    paginator = Paginator(books, 12) 
+    page_number = request.GET.get('page') or 1
+    halaman_buku = paginator.get_page(page_number)
+    
+    context = {
+        "genre": genre,
+        "books": halaman_buku,
+        "title_heading": f"Daftar Buku Dengan Genre {genre}"
+    }
+    return render(request, 'pages/book_by_genre.html', context)
+def search_books(request):
+    query = request.GET.get("query")
+    lookup = Q(title__icontains=query) | Q(author__icontains=query)
+    books = Book.objects.filter(lookup).annotate(
+        rating_rata2=Coalesce(Avg('reviews__rating'), Value(0.0))
+    )
+    
+    sort_param = request.GET.get('sort')
+
+    if sort_param == 'newest':
+        books = books.order_by('-id')
+    elif sort_param == 'rating':
+        # Sekarang pasti jalan karena NULL sudah jadi 0.0
+        books = books.order_by('-rating_rata2', 'title') 
+    elif sort_param == 'title':
+        books = books.order_by('title')
+    else:
+        # Default order agar paginasi stabil
+        books = books.order_by('-id')
+
     paginator = Paginator(books, 12) 
     
     # 3. Ambil nomor halaman dari parameter GET URL (contoh: ?page=2)
