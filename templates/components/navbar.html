@@ -52,7 +52,7 @@
                                 <p class="mb-0 fw-bold text-dark">{{ user.username }}</p>
                             </div>
                             <li>
-                                <form action="{% url 'logout' %}" method="post">
+                                <form action="{% url 'logout' %}?next={{ request.path }}" method="post">
                                     {% csrf_token %}
                                     <button type="submit" class="dropdown-item text-danger py-2 rounded-3 fw-bold small d-flex align-items-center gap-2">
                                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
@@ -68,13 +68,13 @@
                             <div class="avatar-circle-sm">{{ user.username|first|upper }}</div>
                             <div class="fw-bold text-dark">{{ user.username }}</div>
                         </div>
-                        <form action="{% url 'logout' %}" method="post">
+                        <form action="{% url 'logout' %}?next={{ request.path }}" method="post">
                             {% csrf_token %}
                             <button type="submit" class="btn btn-light text-danger w-100 rounded-4 py-2 fw-bold small">Keluar Akun</button>
                         </form>
                     </div>
                     {% else %}
-                    <a href="{% url 'login' %}" class="btn-login-modern order-1 order-lg-2">Masuk</a>
+                    <a href="{% url 'login' %}?next={{ request.path }}" class="btn-login-modern order-1 order-lg-2">Masuk</a>
                     {% endif %}
                 </div>
             </div>

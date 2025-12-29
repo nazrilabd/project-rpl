@@ -26,9 +26,9 @@ class Book(models.Model):
     title = models.CharField(max_length=200, verbose_name="Judul Buku")
     description = models.TextField(verbose_name="desckripsi buku")
     author = models.CharField(max_length=100, verbose_name="Penulis")
-    isbn = models.CharField(max_length=13, unique=True, verbose_name="ISBN")
+    isbn = models.CharField(default='_',max_length=13, verbose_name="ISBN")
     publication_year = models.IntegerField(verbose_name="Tahun Terbit")
-    stock = models.IntegerField(default=1, verbose_name="Stok Tersedia")
+    stock = models.IntegerField(default=0, verbose_name="Stok Tersedia")
     @property
     def average_rating(self):
         # Menghitung rata-rata rating dari model Review yang terhubung
