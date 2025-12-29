@@ -8,7 +8,7 @@
                 </a>
             {% else %}
                 <span class="page-link-custom disabled" aria-disabled="true">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity="0.3"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#A0AEC0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
                 </span>
             {% endif %}
         </li>
@@ -32,7 +32,7 @@
                 </a>
             {% else %}
                 <span class="page-link-custom disabled" aria-disabled="true">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity="0.3"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#A0AEC0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
                 </span>
             {% endif %}
         </li>
@@ -41,7 +41,6 @@
 </nav>
 
 <style>
-    /* Styling Pagination Minimalis */
     .page-link-custom {
         display: flex;
         align-items: center;
@@ -51,14 +50,12 @@
         border-radius: 12px !important;
         border: 1px solid #edf2f7;
         background: #fff;
-        color: #718096;
+        color: #4A5568; /* Warna teks lebih gelap agar terbaca */
         font-weight: 700;
         text-decoration: none;
         transition: all 0.2s ease;
-        cursor: pointer;
     }
 
-    /* Hover effect hanya untuk yang bukan disabled/active */
     .page-link-custom:not(.disabled):not(.active):hover {
         background: #f7fafc;
         color: #198754;
@@ -71,15 +68,14 @@
         color: #fff;
         border-color: #198754;
         box-shadow: 0 4px 12px rgba(25, 135, 84, 0.25);
-        cursor: default;
     }
 
-    /* Styling khusus tombol Disabled */
+    /* Perbaikan Tampilan Disabled */
     .page-link-custom.disabled {
-        background: #f8f9fa;
-        color: #cbd5e0;
-        border-color: #edf2f7;
+        background: #F7FAFC; /* Latar belakang abu muda agar terlihat berbeda dari putih */
+        color: #A0AEC0; /* Warna teks/angka abu-abu medium */
+        border-color: #E2E8F0;
         cursor: not-allowed;
-        pointer-events: none; /* Mencegah klik */
+        pointer-events: none;
     }
 </style>
