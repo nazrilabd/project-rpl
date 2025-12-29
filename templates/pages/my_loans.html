@@ -86,8 +86,11 @@
                             <span class="badge-custom badge-pending">Menunggu</span>
                         {% elif pinjam.status == 'rejected' %}
                             <span class="badge-custom badge-rejected">Ditolak</span>
+                        {% elif pinjam.status == 'returned'%}
+                            <span class="badge-custom badge-active">Selesai</span>
                         {% else %}
                             <span class="badge-custom badge-active">Dipinjam</span>
+                        {% endif %}
                         {% endif %}
 
                         {% if pinjam.current_fine > 0 %}
