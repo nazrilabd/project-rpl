@@ -2,7 +2,7 @@
     {% for message in messages %}
         {% if forloop.first %}
         <div class="modal fade animate__animated animate__fadeIn" id="messageModal" tabindex="-1" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered modal-sm" style="max-width: 400px;">
+            <div class="modal-dialog modal-dialog-centered mx-auto" style="width: 90%; max-width: 400px;">
                 <div class="modal-content border-0 shadow-premium rounded-5 overflow-hidden">
                     
                     <div class="bg-{% if message.tags == 'success' %}success{% else %}danger{% endif %}" style="height: 6px;"></div>
@@ -39,7 +39,11 @@
 {% endif %}
 
 <style>
-    .fw-black { font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 800; }
+    /* Font & Tipografi */
+    .fw-black { 
+        font-family: 'Plus Jakarta Sans', sans-serif; 
+        font-weight: 800; 
+    }
     
     /* Bayangan Premium */
     .shadow-premium {
@@ -57,6 +61,7 @@
         transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
     
+    /* Efek Pop-up pada Ikon saat modal muncul */
     #messageModal.show .icon-circle {
         transform: scale(1.1) rotate(5deg);
     }
@@ -78,18 +83,33 @@
         transform: translateY(-2px);
     }
 
-    /* Warna khusus untuk sukses jika ingin tombolnya berwarna */
+    /* Warna khusus hover jika sukses */
     .modal-content .bg-success + .modal-body + .modal-footer .btn-confirm-modern:hover {
         background: #198754;
         color: white;
+    }
+
+    /* FIX UNTUK MOBILE CENTER */
+    @media (max-width: 576px) {
+        .modal-dialog-centered {
+            display: flex;
+            align-items: center;
+            /* Memastikan modal tidak menempel ke atas layar */
+            min-height: calc(100% - 1rem); 
+            margin: 0.5rem auto;
+        }
     }
 </style>
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         {% if messages %}
-            var myModal = new bootstrap.Modal(document.getElementById('messageModal'));
-            myModal.show();
+            // Pastikan ID sesuai
+            var modalElement = document.getElementById('messageModal');
+            if (modalElement) {
+                var myModal = new bootstrap.Modal(modalElement);
+                myModal.show();
+            }
         {% endif %}
     });
 </script>

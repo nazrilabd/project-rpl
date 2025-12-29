@@ -127,7 +127,7 @@
     {% else %}
     <div class="text-center py-5 border rounded-5 bg-white shadow-sm">
         <h5 class="text-muted fw-bold">Belum ada riwayat peminjaman.</h5>
-        <a href="/" class="btn btn-success rounded-pill px-4 mt-3">Jelajahi Perpustakaan</a>
+        <a href="{% url 'book_list' %}" class="btn btn-success rounded-pill px-4 mt-3">Jelajahi Perpustakaan</a>
     </div>
     {% endif %}
 </div>
