@@ -156,7 +156,10 @@ def request_loan(request, book_id):
         status__in=['pending', 'approved'] 
     ).exists()
 
-        
+    if existing_loan:
+        messages.error(request, 'Anda sudah memiliki pengajuan peminjaman atau sedang meminjam buku ini.')
+        return redirect('detail_book',pk=book_id)
+         
         
     if book.stock > 0:
         # Buat entri peminjaman dengan status 'pending'
@@ -169,9 +172,7 @@ def request_loan(request, book_id):
         return redirect('my_loans') 
     else:
         messages.error(request,  'Stok buku ini sedang kosong.')
-    if existing_loan:
-        messages.error(request, 'Anda sudah memiliki pengajuan peminjaman atau sedang meminjam buku ini.')
-        
+
     return redirect('detail_book',pk=book_id)
 
 @login_required
