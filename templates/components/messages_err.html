@@ -1,34 +1,41 @@
 {% if messages %}
     {% for message in messages %}
         {% if forloop.first %}
-        <div class="modal fade animate__animated animate__fadeIn" id="messageModal" tabindex="-1" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered mx-auto" style="width: 90%; max-width: 400px;">
-                <div class="modal-content border-0 shadow-premium rounded-5 overflow-hidden">
-                    
-                    <div class="bg-{% if message.tags == 'success' %}success{% else %}danger{% endif %}" style="height: 6px;"></div>
-                    
-                    <div class="modal-body text-center py-5 px-4">
-                        <div class="mb-4 d-flex justify-content-center">
+        <div id="messageModal" class="fixed inset-0 z-[2000] flex items-center justify-center p-4 sm:p-6 animate-fade-in">
+            <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-md" onclick="closeModal()"></div>
+            
+            <div class="relative w-full max-w-sm bg-white rounded-[2.5rem] shadow-[0_32px_64px_-12px_rgba(0,0,0,0.3)] overflow-hidden animate-pop-in">
+                
+                <div class="h-2 w-full {% if message.tags == 'success' %}bg-green-500{% else %}bg-red-500{% endif %}"></div>
+                
+                <div class="px-8 pt-12 pb-10 text-center">
+                    <div class="mb-8 flex justify-center">
+                        <div class="w-24 h-24 rounded-[2rem] flex items-center justify-center {% if message.tags == 'success' %}bg-green-50 text-green-600 shadow-xl shadow-green-500/10{% else %}bg-red-50 text-red-600 shadow-xl shadow-red-500/10{% endif %} rotate-3">
                             {% if message.tags == 'success' %}
-                                <div class="icon-circle bg-success bg-opacity-10 text-success">
-                                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                                </div>
+                                <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
                             {% else %}
-                                <div class="icon-circle bg-danger bg-opacity-10 text-danger">
-                                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>
-                                </div>
+                                <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>
                             {% endif %}
                         </div>
-
-                        <h4 class="fw-black text-dark mb-2" style="letter-spacing: -1px;">
-                            {% if message.tags == 'success' %}Berhasil!{% else %}Opps!{% endif %}
-                        </h4>
-                        <p class="text-muted mb-0 fw-medium">{{ message }}</p>
                     </div>
 
-                    <div class="modal-footer border-0 p-4 pt-0 justify-content-center">
-                        <button type="button" class="btn btn-confirm-modern w-100 py-3" data-bs-dismiss="modal">
-                            Mengerti
+                    <h3 class="text-2xl font-black text-slate-900 tracking-tighter uppercase italic mb-3">
+                        {% if message.tags == 'success' %}Berhasil<span class="text-green-600">.</span>{% else %}Oops<span class="text-red-600">!</span>{% endif %}
+                    </h3>
+                    <p class="text-slate-500 text-sm font-bold leading-relaxed px-2 italic">
+                        "{{ message }}"
+                    </p>
+
+                    <div class="mt-10">
+                        <button onclick="closeModal()" 
+                            class="w-full py-4 rounded-2xl font-black text-[11px] tracking-[0.2em] uppercase transition-all 
+                            {% if message.tags == 'success' %}
+                                bg-green-950 text-white shadow-lg shadow-green-900/30 hover:bg-green-800
+                            {% else %}
+                                bg-slate-900 text-white shadow-lg shadow-slate-900/30 hover:bg-slate-800
+                            {% endif %}
+                            active:scale-95 cursor-pointer">
+                            Lanjutkan
                         </button>
                     </div>
                 </div>
@@ -39,77 +46,35 @@
 {% endif %}
 
 <style>
-    /* Font & Tipografi */
-    .fw-black { 
-        font-family: 'Plus Jakarta Sans', sans-serif; 
-        font-weight: 800; 
+    @keyframes popIn {
+        0% { opacity: 0; transform: scale(0.9) translateY(20px); }
+        100% { opacity: 1; transform: scale(1) translateY(0); }
     }
-    
-    /* Bayangan Premium */
-    .shadow-premium {
-        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15) !important;
+    .animate-pop-in { 
+        animation: popIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; 
     }
-
-    /* Lingkaran Ikon */
-    .icon-circle {
-        width: 80px;
-        height: 80px;
-        border-radius: 30px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    .animate-fade-in {
+        animation: fadeIn 0.4s ease-out forwards;
     }
-    
-    /* Efek Pop-up pada Ikon saat modal muncul */
-    #messageModal.show .icon-circle {
-        transform: scale(1.1) rotate(5deg);
-    }
-
-    /* Tombol Modern */
-    .btn-confirm-modern {
-        background: #f1f5f9;
-        color: #475569;
-        border: none;
-        border-radius: 16px;
-        font-weight: 700;
-        font-size: 0.9rem;
-        transition: all 0.3s;
-    }
-
-    .btn-confirm-modern:hover {
-        background: #e2e8f0;
-        color: #1e293b;
-        transform: translateY(-2px);
-    }
-
-    /* Warna khusus hover jika sukses */
-    .modal-content .bg-success + .modal-body + .modal-footer .btn-confirm-modern:hover {
-        background: #198754;
-        color: white;
-    }
-
-    /* FIX UNTUK MOBILE CENTER */
-    @media (max-width: 576px) {
-        .modal-dialog-centered {
-            display: flex;
-            align-items: center;
-            /* Memastikan modal tidak menempel ke atas layar */
-            min-height: calc(100% - 1rem); 
-            margin: 0.5rem auto;
-        }
-    }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 </style>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        {% if messages %}
-            // Pastikan ID sesuai
-            var modalElement = document.getElementById('messageModal');
-            if (modalElement) {
-                var myModal = new bootstrap.Modal(modalElement);
-                myModal.show();
-            }
-        {% endif %}
-    });
+    function closeModal() {
+        const modal = document.getElementById('messageModal');
+        if (modal) {
+            modal.style.opacity = '0';
+            modal.style.transition = 'opacity 0.3s ease';
+            setTimeout(() => {
+                modal.remove();
+            }, 300);
+        }
+    }
+
+    // Auto close after 5 seconds (Optional)
+    /*
+    setTimeout(() => {
+        closeModal();
+    }, 5000);
+    */
 </script>

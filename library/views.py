@@ -9,7 +9,17 @@ from django.core import serializers
 from django.core.paginator import Paginator
 from django.db.models import Q,Avg
 from django.contrib import messages
- 
+from django.contrib.auth.views import LoginView
+from django.contrib.messages.views import SuccessMessageMixin
+from django.contrib.auth.views import LogoutView
+
+class MyLogoutView(LogoutView):
+    def dispatch(self, request, *args, **kwargs):
+        messages.success(request, "Anda telah berhasil keluar. Sampai jumpa lagi!")
+        return super().dispatch(request, *args, **kwargs)
+class MyLoginView(SuccessMessageMixin, LoginView):
+    template_name = 'registration/login.html'
+    success_message = "Selamat datang kembali! Anda telah berhasil masuk."
 def welcome(request):
     return render(request, 'pages/welcome.html')
 def book_list(request): 
@@ -155,13 +165,21 @@ def request_loan(request, book_id):
         member=request.user, 
         status__in=['pending', 'approved'] 
     ).exists()
+    
+    active_loans_count = Loan.objects.filter(
+        member=request.user, 
+        status__in=['pending', 'approved']
+    ).count()
 
-    if existing_loan:
-        messages.error(request, 'Anda sudah memiliki pengajuan peminjaman atau sedang meminjam buku ini.')
-        return redirect('detail_book',pk=book_id)
-         
+    # 2. Validasi Maksimal 5 Buku
+    if not Loan.can_user_borrow(request.user):
         
-    if book.stock > 0:
+        messages.error(request, 'Anda memiliki denda yang belum dibayar tolong bayar terlebih dahulu.')
+    elif (active_loans_count >= 5):
+        messages.error(request, "Batas maksimal pengajuan dan peminjaman adalah 5 buku. Silakan kembalikan atau batalkan pengajuan buku sebelumnya terlebih dahulu.")
+    elif existing_loan:
+        messages.error(request, 'Anda sudah memiliki pengajuan peminjaman atau sedang meminjam buku ini.')
+    elif book.stock > 0:
         # Buat entri peminjaman dengan status 'pending'
         Loan.objects.create(
             book=book,
@@ -190,8 +208,16 @@ def my_loans(request):
     
     # 4. Dapatkan objek Page untuk halaman yang diminta
     loans = paginator.get_page(page_number)
-    context = {'loans': loans}
-    print(loans)
+    active_loans_count = Loan.objects.filter(
+        member=request.user, 
+        status__in=['pending', 'approved']
+    ).count()
+    
+    # ... logika filter dan pagination Anda yang sudah ada ...
+    
+
+    context = {'loans': loans,"active_loans_count":active_loans_count}
+  
     return render(request, 'pages/my_loans.html', context)
 
 

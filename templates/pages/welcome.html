@@ -1,26 +1,26 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<main class="welcome-wrapper overflow-hidden position-relative min-vh-100 d-flex align-items-center">
-    <div class="d-none d-lg-block position-absolute top-0 end-0 bg-warning opacity-10 rounded-circle" style="width: 40vw; height: 40vw; margin-top: -10vw; margin-right: -10vw;"></div>
+<main class="relative flex items-center min-h-screen overflow-hidden bg-[#FDFFF5] font-inter">
+    <div class="absolute top-0 right-0 hidden mt-[-10vw] mr-[-10vw] rounded-full bg-yellow-400 opacity-10 lg:block" style="width: 40vw; height: 40vw;"></div>
 
-    <div class="container position-relative z-1">
-        <div class="row align-items-center justify-content-center">
+    <div class="container relative z-10 px-4 mx-auto">
+        <div class="flex flex-wrap items-center justify-center">
             
-            <div class="col-11 col-sm-9 col-md-7 col-lg-6 mb-5 mb-lg-0">
-                <div class="position-relative">
-                    <div class="card border-0 shadow-2xl p-2 bg-white rounded-5 shadow-lg animate-float">
+            <div class="w-11/12 mb-12 sm:w-9/12 md:w-7/12 lg:w-1/2 lg:mb-0">
+                <div class="relative">
+                    <div class="p-2 transition-all duration-500 bg-white shadow-2xl rounded-[2.5rem] animate-float">
                         <img src="https://images.unsplash.com/photo-1544640808-32ca72ac7f37?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" 
-                             alt="Library" class="img-fluid rounded-5">
+                             alt="Library" class="w-full h-auto rounded-[2rem]">
                     </div>
                     
-                    <div class="position-absolute bottom-0 start-0 ms-n3 mb-n3 d-none d-sm-block">
-                        <div class="card border-0 shadow-lg p-3 rounded-4 bg-success text-white">
-                            <div class="d-flex align-items-center gap-2">
-                                <i class="bi bi-patch-check-fill fs-4 text-warning"></i>
-                                <div class="lh-1">
-                                    <div class="fw-bold small">Terverifikasi</div>
-                                    <small class="opacity-75" style="font-size: 10px;">Koleksi Resmi</small>
+                    <div class="absolute bottom-0 left-0 hidden -mb-3 -ml-3 sm:block">
+                        <div class="p-3 text-white bg-green-900 border-0 shadow-lg rounded-2xl">
+                            <div class="flex items-center gap-2">
+                                <i class="text-xl text-yellow-400 bi bi-patch-check-fill"></i>
+                                <div class="leading-none">
+                                    <div class="text-sm font-bold">Terverifikasi</div>
+                                    <small class="text-[10px] opacity-75">Koleksi Resmi</small>
                                 </div>
                             </div>
                         </div>
@@ -28,101 +28,193 @@
                 </div>
             </div>
 
-            <div class="col-12 col-lg-6 text-center text-lg-start ps-lg-5">
-                <div class="d-inline-flex align-items-center bg-white border border-warning border-opacity-50 rounded-pill px-3 py-1 mb-4 shadow-sm">
-                    <span class="badge bg-warning rounded-circle p-1 me-2"><i class="bi bi-stars text-success"></i></span>
-                    <small class="text-success fw-bold uppercase tracking-wider" style="font-size: 11px;">PERPUSTAKAAN JENDELA BANGSA</small>
+            <div class="w-full text-center lg:w-1/2 lg:text-left lg:pl-12">
+                <div class="inline-flex items-center px-3 py-1 mb-6 bg-white border border-yellow-400 border-opacity-50 shadow-sm rounded-full">
+                    <span class="flex items-center justify-center p-1 mr-2 bg-yellow-400 rounded-full">
+                        <i class="text-green-900 bi bi-stars"></i>
+                    </span>
+                    <small class="text-[11px] font-extrabold tracking-wider text-green-900 uppercase">PERPUSTAKAAN JENDELA BANGSA</small>
                 </div>
 
-            <h1 class="fw-black text-dark mb-3 ls-tight">
-                    <span class="d-block fs-1 display-lg-3">Buka Jendela,</span>
-                    <span class="display-3 display-lg-1 text-success-gradient d-block">Cerdaskan Bangsa.</span>
+                <h1 class="mb-3 text-4xl font-extrabold leading-tight text-gray-900 sm:text-5xl lg:text-7xl font-plus-jakarta">
+                    <span class="block">Buka Jendela,</span>
+                    <span class=" text-transparent bg-gradient-to-r from-green-900 to-green-600 bg-clip-text mb-4">Cerdaskan Bangsa.</span>
                 </h1>
-                <p class="text-muted mb-5 mx-auto mx-lg-0 px-2 px-lg-0 fs-6 fs-lg-5">
-                    Selamat datang di <strong>Perpustakaan Jendela Bangsa</strong>. Platform digital untuk menjelajahi ribuan ilmu pengetahuan dalam genggamanmu.
+                
+                <p class="max-w-md px-2 mx-auto mb-10 text-base text-gray-500 lg:mx-0 lg:px-0 lg:text-lg">
+                    Selamat datang di <strong class="text-gray-800">Perpustakaan Jendela Bangsa</strong>. Platform digital untuk menjelajahi ribuan ilmu pengetahuan dalam genggamanmu.
                 </p>
                 
-                <div class="px-3 px-lg-0">
-                    <div class="d-grid d-sm-flex gap-3 justify-content-lg-start">
-                        <a href="{% url 'book_list' %}" class="btn btn-warning btn-lg rounded-pill px-5 py-3 shadow-warning fw-bold text-success border-0">
-                            MULAI JELAJAH <i class="bi bi-chevron-right ms-2"></i>
+                <div class="px-3 lg:px-0">
+                    <div class="grid gap-4 sm:flex sm:justify-center lg:justify-start">
+                        <a href="{% url 'book_list' %}" class="px-10 py-4 font-bold text-green-900 transition-transform bg-yellow-400 border-0 shadow-xl rounded-full hover:scale-105 active:scale-95 shadow-yellow-400/30">
+                            MULAI JELAJAH <i class="ml-2 bi bi-chevron-right"></i>
                         </a>
-                        <a href="#cara-kerja" class="btn btn-outline-success btn-lg rounded-pill px-5 py-3 fw-bold border-2">
+                        <a href="#cara-kerja" class="px-10 py-4 font-bold text-green-900 transition-all border-2 border-green-900 rounded-full hover:bg-green-50">
                             CARA KERJA
                         </a>
                     </div>
                 </div>
 
-                <div class="mt-5 pt-4 border-top border-light d-flex flex-column flex-sm-row align-items-center justify-content-center justify-content-lg-start gap-3">
-                    <div class="avatar-group d-flex me-lg-2">
-                        <div class="avatar bg-success shadow-sm rounded-circle d-flex align-items-center justify-content-center border border-2 border-white" style="width:35px; height:35px;">⭐</div>
-                        <div class="avatar bg-warning shadow-sm rounded-circle d-flex align-items-center justify-content-center border border-2 border-white ms-n2" style="width:35px; height:35px;">⭐</div>
-                        <div class="avatar bg-success shadow-sm rounded-circle d-flex align-items-center justify-content-center border border-2 border-white ms-n2" style="width:35px; height:35px;">⭐</div>
+                <div class="flex flex-col items-center justify-center mt-12 gap-3 pt-8 border-t border-gray-100 sm:flex-row lg:justify-start">
+                    <div class="flex -space-x-2">
+                        <div class="flex items-center justify-center w-8 h-8 bg-green-800 border-2 border-white rounded-full shadow-sm">⭐</div>
+                        <div class="flex items-center justify-center w-8 h-8 bg-yellow-400 border-2 border-white rounded-full shadow-sm">⭐</div>
+                        <div class="flex items-center justify-center w-8 h-8 bg-green-800 border-2 border-white rounded-full shadow-sm">⭐</div>
                     </div>
-                    <span class="text-muted small fw-medium">Dipercaya oleh 2000+ Pembaca</span>
+                    <span class="text-sm font-medium text-gray-500">Dipercaya oleh 2000+ Pembaca</span>
                 </div>
             </div>
-
         </div>
     </div>
-</main> 
-<section id="fitur" class="py-5 bg-white">
-    <div class="container py-lg-5">
-        <div class="text-center mb-5">
-            <h2 class="fw-black display-5">Kenapa Memilih <span class="text-success">Perpustakaan Jendela Bangsa?</span></h2>
-            <p class="text-muted mx-auto" style="max-width: 600px;">Kami menyediakan fitur terbaik untuk menunjang hobi membacamu menjadi lebih interaktif.</p>
+</main>
+
+<section id="fitur" class="py-20 bg-white">
+    <div class="container px-4 mx-auto">
+        <div class="mb-16 text-center">
+            <h2 class="text-3xl font-extrabold sm:text-5xl font-plus-jakarta">Kenapa Memilih <span class="text-green-900">Perpustakaan Jendela Bangsa?</span></h2>
+            <p class="max-w-xl mx-auto mt-4 text-gray-500">Kami menyediakan fitur terbaik untuk menunjang hobi membacamu menjadi lebih interaktif.</p>
         </div>
         
-        <div class="row g-4">
-            <div class="col-md-4">
-                <div class="card h-100 border-0 shadow-sm p-4 rounded-4 bg-light hover-up">
-                    <div class="bg-warning bg-opacity-20 rounded-4 d-inline-flex align-items-center justify-content-center mb-4" style="width: 60px; height: 60px;">
-                        <i class="bi bi-bookmarks-fill fs-3 text-success"></i>
-                    </div>
-                    <h4 class="fw-bold">Koleksi Terorganisir</h4>
-                    <p class="text-muted">Simpan dan klasifikasikan buku favoritmu ke dalam kategori yang rapi dan mudah dicari.</p>
+        <div class="grid gap-8 md:grid-cols-3">
+            <div class="p-8 transition-all duration-300 bg-gray-50 rounded-[2rem] hover:-translate-y-2 hover:shadow-xl hover:bg-white border border-transparent hover:border-yellow-400">
+                <div class="flex items-center justify-center w-16 h-16 mb-6 bg-yellow-400 rounded-2xl bg-opacity-20">
+                    <i class="text-3xl text-green-900 bi bi-bookmarks-fill"></i>
                 </div>
+                <h4 class="mb-3 text-xl font-bold">Koleksi Terorganisir</h4>
+                <p class="text-gray-500">Simpan dan klasifikasikan buku favoritmu ke dalam kategori yang rapi dan mudah dicari.</p>
             </div>
-            <div class="col-md-4">
-                <div class="card h-100 border-0 shadow-sm p-4 rounded-4 bg-light hover-up">
-                    <div class="bg-success bg-opacity-10 rounded-4 d-inline-flex align-items-center justify-content-center mb-4" style="width: 60px; height: 60px;">
-                        <i class="bi bi-chat-left-heart-fill fs-3 text-warning"></i>
-                    </div>
-                    <h4 class="fw-bold">Ulasan Komunitas</h4>
-                    <p class="text-muted">Baca ulasan jujur dari pembaca lain sebelum kamu memutuskan untuk membaca sebuah buku.</p>
+            <div class="p-8 transition-all duration-300 bg-gray-50 rounded-[2rem] hover:-translate-y-2 hover:shadow-xl hover:bg-white border border-transparent hover:border-yellow-400">
+                <div class="flex items-center justify-center w-16 h-16 mb-6 bg-green-900 rounded-2xl bg-opacity-10">
+                    <i class="text-3xl text-yellow-400 bi bi-chat-left-heart-fill"></i>
                 </div>
+                <h4 class="mb-3 text-xl font-bold">Ulasan Komunitas</h4>
+                <p class="text-gray-500">Baca ulasan jujur dari pembaca lain sebelum kamu memutuskan untuk membaca sebuah buku.</p>
             </div>
-            <div class="col-md-4">
-                <div class="card h-100 border-0 shadow-sm p-4 rounded-4 bg-light hover-up">
-                    <div class="bg-warning bg-opacity-20 rounded-4 d-inline-flex align-items-center justify-content-center mb-4" style="width: 60px; height: 60px;">
-                        <i class="bi bi-shield-check fs-3 text-success"></i>
-                    </div>
-                    <h4 class="fw-bold">Akses Aman</h4>
-                    <p class="text-muted">Sistem peminjaman dan pengelolaan data yang aman dan terenkripsi untuk privasimu.</p>
+            <div class="p-8 transition-all duration-300 bg-gray-50 rounded-[2rem] hover:-translate-y-2 hover:shadow-xl hover:bg-white border border-transparent hover:border-yellow-400">
+                <div class="flex items-center justify-center w-16 h-16 mb-6 bg-yellow-400 rounded-2xl bg-opacity-20">
+                    <i class="text-3xl text-green-900 bi bi-shield-check"></i>
                 </div>
+                <h4 class="mb-3 text-xl font-bold">Akses Aman</h4>
+                <p class="text-gray-500">Sistem peminjaman dan pengelolaan data yang aman dan terenkripsi untuk privasimu.</p>
             </div>
         </div>
     </div>
-</section> 
+</section>
+<section id="aturan" class="py-24 bg-white overflow-hidden font-inter">
+    <div class="container mx-auto px-4">
+        <div class="text-center max-w-3xl mx-auto mb-20">
+            <div class="inline-flex items-center px-4 py-1.5 mb-6 text-green-900 bg-yellow-400 bg-opacity-20 rounded-full shadow-sm border border-yellow-400/20">
+                <i class="mr-2 bi bi-journal-check"></i>
+                <small class="text-[10px] font-extrabold tracking-[0.2em] uppercase">GUIDELINES</small>
+            </div>
+            <h2 class="text-4xl lg:text-5xl font-extrabold text-gray-900 mb-6 tracking-tight font-plus-jakarta">
+                Mekanisme & <span class="text-green-900 underline decoration-yellow-400 decoration-4 underline-offset-8">Aturan Main</span>
+            </h2>
+            <p class="text-gray-500 text-lg leading-relaxed">
+                Kami merancang sistem yang sederhana agar Anda bisa fokus menikmati bacaan. Pastikan Anda memahami langkah-langkah di bawah ini.
+            </p>
+        </div>
 
-<section class="py-5 overflow-hidden">
-    <div class="container">
-        <div class="bg-success rounded-5 p-4 p-lg-5 text-center position-relative overflow-hidden shadow-lg border-0">
-            <div class="position-absolute top-0 start-0 w-100 h-100 opacity-10" 
-                 style="background-image: radial-gradient(#fff 1px, transparent 1px); background-size: 20px 20px;"></div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-24">
+            <div class="flex items-center gap-6 p-8 bg-green-900 bg-opacity-5 rounded-[2.5rem] border border-green-900 border-opacity-10 transition-all hover:shadow-lg">
+                <div class="w-16 h-16 bg-green-900 rounded-2xl flex items-center justify-center text-yellow-400 shrink-0 shadow-xl shadow-green-900/20">
+                    <i class="bi bi-alarm text-2xl"></i>
+                </div>
+                <div>
+                    <h4 class="text-green-900 font-bold text-xl font-plus-jakarta">Batas Waktu & Limit</h4>
+                    <p class="text-gray-600">Maksimal  <strong class="text-green-900">Peminjaman Dan Pengajuan 5 Buku</strong></p>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-6 p-8 bg-yellow-400 bg-opacity-10 rounded-[2.5rem] border border-yellow-400 border-opacity-20 transition-all hover:shadow-lg">
+                <div class="w-16 h-16 bg-yellow-400 rounded-2xl flex items-center justify-center text-green-900 shrink-0 shadow-xl shadow-yellow-400/20">
+                    <i class="bi bi-cash-stack text-2xl"></i>
+                </div>
+                <div>
+                    <h4 class="text-green-900 font-bold text-xl font-plus-jakarta">Aturan Denda</h4>
+                    <p class="text-gray-600">Keterlambatan pengembalian buku setelah 7 hari dikenakan denda <strong class="text-green-900">Rp 2.000 / hari</strong> per buku.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="relative max-w-5xl mx-auto">
+            <div class="hidden lg:block absolute left-1/2 top-0 bottom-0 w-px bg-gray-200 -translate-x-1/2"></div>
+            <div class="space-y-16 lg:space-y-24 relative">
+                
+                <div class="relative flex flex-col lg:flex-row items-center group">
+                    <div class="w-full lg:w-1/2 lg:pr-16 text-center lg:text-right mb-6 lg:mb-0">
+                        <h4 class="text-2xl font-bold text-gray-900 mb-3 font-plus-jakarta">Pendaftaran Akun</h4>
+                        <p class="text-gray-500">Kunjungi Perpustakaan kami atau hubungi Admin via WhatsApp dengan melampirkan identitas resmi (KTP/KTM) untuk proses aktivasi akun.</p>
+                    </div>
+                    <div class="absolute left-1/2 -translate-x-1/2 hidden lg:flex w-10 h-10 rounded-full bg-white border-2 border-green-900 items-center justify-center z-10 group-hover:bg-yellow-400 transition-colors duration-300 shadow-sm">
+                        <span class="text-xs font-bold text-green-900">01</span>
+                    </div>
+                    <div class="w-full lg:w-1/2 lg:pl-16">
+                        <span class="inline-block px-4 py-1.5 rounded-full bg-gray-100 text-green-900 text-xs font-extrabold uppercase tracking-widest border border-gray-200">Verifikasi Cepat</span>
+                    </div>
+                </div>
+
+                <div class="relative flex flex-col lg:flex-row-reverse items-center group">
+                    <div class="w-full lg:w-1/2 lg:pl-16 text-center lg:text-left mb-6 lg:mb-0">
+                        <h4 class="text-2xl font-bold text-gray-900 mb-3 font-plus-jakarta">Pilih & Pinjam</h4>
+                        <p class="text-gray-500">Cari buku favoritmu di katalog digital dan klik tombol pinjam. Sistem akan mencatat jatuh tempo secara otomatis.</p>
+                    </div>
+                    <div class="absolute left-1/2 -translate-x-1/2 hidden lg:flex w-10 h-10 rounded-full bg-white border-2 border-green-900 items-center justify-center z-10 group-hover:bg-yellow-400 transition-colors duration-300 shadow-sm">
+                        <span class="text-xs font-bold text-green-900">02</span>
+                    </div>
+                    <div class="w-full lg:w-1/2 lg:pr-16 lg:text-right">
+                        <span class="inline-block px-4 py-1.5 rounded-full bg-yellow-400/20 text-yellow-700 text-xs font-extrabold uppercase tracking-widest border border-yellow-400/20">Proses Instan</span>
+                    </div>
+                </div>
+
+                <div class="relative flex flex-col lg:flex-row items-center group">
+                    <div class="w-full lg:w-1/2 lg:pr-16 text-center lg:text-right mb-6 lg:mb-0">
+                        <h4 class="text-2xl font-bold text-gray-900 mb-3 font-plus-jakarta">Pengembalian</h4>
+                        <p class="text-gray-500">Lakukan pengembalian melalui dashboard sebelum masa pinjam habis untuk menghindari pembekuan akun.</p>
+                    </div>
+                    <div class="absolute left-1/2 -translate-x-1/2 hidden lg:flex w-10 h-10 rounded-full bg-white border-2 border-green-900 items-center justify-center z-10 group-hover:bg-yellow-400 transition-colors duration-300 shadow-sm">
+                        <span class="text-xs font-bold text-green-900">03</span>
+                    </div>
+                    <div class="w-full lg:w-1/2 lg:pl-16">
+                        <span class="inline-block px-4 py-1.5 rounded-full bg-blue-50 text-blue-700 text-xs font-extrabold uppercase tracking-widest border border-blue-100">Update Stok</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-24 p-8 md:p-12 bg-gray-50 border-2 border-dashed border-gray-200 rounded-[3rem] text-center relative overflow-hidden">
+            <div class="relative z-10">
+                <div class="inline-flex items-center justify-center w-12 h-12 bg-white shadow-sm rounded-full mb-4">
+                    <i class="bi bi-info-circle text-green-900"></i>
+                </div>
+                <h5 class="text-green-900 font-extrabold mb-2 uppercase tracking-widest text-xs">Informasi Tambahan</h5>
+                <p class="text-gray-600 text-lg max-w-2xl mx-auto leading-relaxed">
+                    Akun dengan tunggakan denda atau buku lewat jatuh tempo <span class="text-red-600 font-bold">ditangguhkan sementara</span> hingga seluruh kewajiban diselesaikan.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-12 bg-white overflow-hidden">
+    <div class="container px-4 mx-auto">
+        <div class="relative p-8 md:p-16 text-center bg-green-900 shadow-2xl rounded-[3rem] overflow-hidden">
+            <div class="absolute top-0 right-0 w-64 h-64 bg-yellow-400 opacity-5 rounded-full -mr-32 -mt-32"></div>
+            <div class="absolute bottom-0 left-0 w-48 h-48 bg-white opacity-5 rounded-full -ml-24 -mb-24"></div>
             
-            <div class="position-relative z-1">
-                <h2 class="display-5 fw-black text-warning mb-3">Siap Untuk Membaca?</h2>
-                <p class="text-white-50 fs-5 mb-4 mx-auto px-2" style="max-width: 600px;">
-                    Dapatkan akses akun resmi Anda sekarang dan jelajahi ribuan koleksi buku kami.
+            <div class="absolute inset-0 opacity-10" style="background-image: radial-gradient(#fff 1px, transparent 1px); background-size: 20px 20px;"></div>
+            
+            <div class="relative z-10">
+                <h2 class="text-3xl md:text-5xl font-extrabold text-yellow-400 mb-6 font-plus-jakarta tracking-tight">Siap Untuk Membaca?</h2>
+                <p class="max-w-xl mx-auto mb-10 text-lg text-white/70 leading-relaxed">
+                    Dapatkan akses akun resmi Anda sekarang dan jelajahi ribuan koleksi buku kami di seluruh platform digital.
                 </p>
                 
-                <div class="d-grid d-sm-inline-block">
+                <div class="flex flex-col sm:flex-row justify-center items-center gap-4">
                     <a href="https://wa.me/6281234567890" target="_blank" 
-                       class="btn btn-warning btn-lg px-4 px-md-5 py-3 rounded-pill fw-bold text-success border-0 shadow d-inline-flex align-items-center justify-content-center gap-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="#007248ff" viewBox="0 0 16 16">
-                            <path d="M13.601 2.326A7.854 7.854 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.933 7.933 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.898 7.898 0 0 0 13.6 2.326zM7.994 14.521a6.573 6.573 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.557 6.557 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592zm3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.729.729 0 0 0-.529.247c-.182.198-.691.677-.691 1.654 0 .977.71 1.916.81 2.049.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232z"/>
-                        </svg>
+                       class="w-full sm:w-auto inline-flex items-center justify-center gap-3 px-10 py-4 font-bold text-green-900 bg-yellow-400 border-0 rounded-full shadow-xl transition-all hover:scale-105 active:scale-95 shadow-yellow-400/20">
+                        <i class="bi bi-whatsapp text-xl"></i>
                         Hubungi Admin - Buat Akun
                     </a>
                 </div>
@@ -130,163 +222,127 @@
         </div>
     </div>
 </section>
-
-<section class="py-5 bg-white overflow-hidden" id="cara-kerja">
-    <div class="container py-lg-4">
-        <div class="row align-items-center g-4 g-lg-5">
-            <div class="col-lg-6 mb-4 mb-lg-0">
-                <img src="https://img.freepik.com/free-vector/reading-concept-illustration_114360-1013.jpg" 
-                     alt="Reading" class="img-fluid rounded-5 d-block mx-auto">
-            </div>
+<section id="tentang" class="py-20 bg-white overflow-hidden">
+    <div class="container px-4 mx-auto">
+        <div class="flex flex-wrap items-center gap-12 lg:flex-nowrap">
             
-            <div class="col-lg-6">
-                <div class="px-2 px-lg-0">
-                    <h2 class="fw-black mb-4">Cara Bergabung & <span class="text-success">Mulai Membaca</span></h2>
+            <div class="relative w-full lg:w-1/2 order-2 lg:order-1">
+                <div class="relative p-2 md:p-4">
+                    <div class="absolute bottom-0 left-0 hidden w-3/4 h-3/4 bg-yellow-400 opacity-20 rounded-[3rem] sm:block -z-10 translate-x-[-15px] translate-y-[15px]"></div>
                     
-                    <div class="d-flex gap-3 gap-md-4 mb-4">
-                        <div class="fw-black h1 text-warning opacity-50 mb-0" style="min-width: 55px;">01</div>
-                        <div>
-                            <h5 class="fw-bold">Hubungi Admin</h5>
-                            <p class="text-muted small mb-0">
-                                Klik tombol WhatsApp di bawah. Admin kami akan melakukan verifikasi dan <strong>membuatkan akun</strong> resmi untuk Anda.
-                            </p>
-                        </div>
+                    <div class="relative overflow-hidden shadow-2xl rounded-[3rem] z-10">
+                        <img src="https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80" 
+                             alt="Visi Kami" class="w-full h-auto transition-transform duration-700 hover:scale-110">
                     </div>
                     
-                    <div class="d-flex gap-3 gap-md-4 mb-4">
-                        <div class="fw-black h1 text-warning opacity-50 mb-0" style="min-width: 55px;">02</div>
-                        <div>
-                            <h5 class="fw-bold">Login & Eksplorasi</h5>
-                            <p class="text-muted small mb-0">
-                                Masuk ke platform menggunakan kredensial dari Admin. Cari judul buku atau kategori yang ingin Anda pelajari.
-                            </p>
+                    <div class="absolute top-0 right-0 z-20 hidden p-6 mt-[-10px] mr-[-10px] text-white bg-green-900 shadow-xl rounded-3xl md:block">
+                        <div class="text-center">
+                            <h3 class="text-3xl font-extrabold text-yellow-400 font-plus-jakarta">10+</h3>
+                            <p class="text-xs font-bold leading-tight uppercase tracking-widest">Tahun<br>Pengalaman</p>
                         </div>
-                    </div>
-                    
-                    <div class="d-flex gap-3 gap-md-4 mb-4">
-                        <div class="fw-black h1 text-warning opacity-50 mb-0" style="min-width: 55px;">03</div>
-                        <div>
-                            <h5 class="fw-bold">Mulai Membaca</h5>
-                            <p class="text-muted small mb-0">
-                                Pinjam buku secara digital dan berikan ulasan atau rating untuk berbagi pengalaman dengan pembaca lainnya.
-                            </p>
-                        </div>
-                    </div>
-
-                    <div class="mt-4 pt-2">
-                        <a href="https://wa.me/6281234567890" target="_blank" class="btn btn-whatsapp-svg rounded-pill px-4 py-3 fw-bold shadow-sm d-inline-flex align-items-center gap-2">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
-                                <path d="M13.601 2.326A7.854 7.854 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.933 7.933 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.898 7.898 0 0 0 13.6 2.326zM7.994 14.521a6.573 6.573 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.557 6.557 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592zm3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.729.729 0 0 0-.529.247c-.182.198-.691.677-.691 1.654 0 .977.71 1.916.81 2.049.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232z"/>
-                            </svg>
-                            HUBUNGI ADMIN (WA)
-                        </a>
                     </div>
                 </div>
             </div>
+
+            <div class="w-full lg:w-1/2 lg:pl-8 order-1 lg:order-2 text-center lg:text-left">
+                <div class="inline-flex items-center px-4 py-1.5 mb-6 text-green-900 bg-green-900 bg-opacity-10 rounded-full shadow-sm">
+                    <i class="mr-2 bi bi-info-circle-fill"></i>
+                    <small class="text-[10px] font-extrabold tracking-[0.2em] uppercase">TENTANG JENDELA BANGSA</small>
+                </div>
+                
+                <h2 class="mb-6 text-4xl font-extrabold text-gray-900 sm:text-5xl font-plus-jakarta tracking-tight">
+                    Membangun Jembatan <span class="text-green-900 underline decoration-yellow-400 decoration-4 underline-offset-8">Pengetahuan</span>
+                </h2>
+                
+                <p class="mb-6 text-lg font-medium text-gray-600">
+                    Perpustakaan Jendela Bangsa lahir dari semangat untuk mendemokratisasi akses literasi di seluruh Indonesia.
+                </p>
+                
+                <p class="mb-10 text-gray-500 leading-relaxed">
+                    Kami percaya bahwa setiap buku memiliki pembacanya, dan setiap pembaca berhak mendapatkan pengalaman terbaik. Melalui teknologi, kami mempermudah ribuan orang untuk menemukan inspirasi baru setiap harinya tanpa batasan jarak.
+                </p>
+
+                <div class="grid grid-cols-2 gap-4 mb-10 text-left max-w-sm mx-auto lg:mx-0">
+                    <div class="flex items-center gap-3">
+                        <div class="flex items-center justify-center flex-shrink-0 w-8 h-8 bg-yellow-400 rounded-full">
+                            <i class="text-green-900 font-bold bi bi-check2"></i>
+                        </div>
+                        <span class="text-sm font-bold text-gray-800">Akses 24/7</span>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <div class="flex items-center justify-center flex-shrink-0 w-8 h-8 bg-yellow-400 rounded-full">
+                            <i class="text-green-900 font-bold bi bi-check2"></i>
+                        </div>
+                        <span class="text-sm font-bold text-gray-800">Komunitas Aktif</span>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <div class="flex items-center justify-center flex-shrink-0 w-8 h-8 bg-yellow-400 rounded-full">
+                            <i class="text-green-900 font-bold bi bi-check2"></i>
+                        </div>
+                        <span class="text-sm font-bold text-gray-800">Ribuan Koleksi</span>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <div class="flex items-center justify-center flex-shrink-0 w-8 h-8 bg-yellow-400 rounded-full">
+                            <i class="text-green-900 font-bold bi bi-check2"></i>
+                        </div>
+                        <span class="text-sm font-bold text-gray-800">Keamanan Data</span>
+                    </div>
+                </div>
+
+                <div class="flex flex-col sm:flex-row justify-center lg:justify-start gap-4">
+                    <a href="#fitur" class="px-8 py-3 text-sm font-bold text-white bg-green-900 rounded-full shadow-lg hover:bg-green-800 transition-colors">
+                        Pelajari Layanan
+                    </a>
+                </div>
+            </div>
+
         </div>
     </div>
 </section>
-<section id="tentang" class="py-5 bg-white overflow-hidden">
-    <div class="container py-lg-5">
-        <div class="row align-items-center g-5">
-            <div class="col-lg-6 order-2 order-lg-1">
-                <div class="position-relative p-1 p-md-4">
-                    <div class="position-absolute bottom-0 start-0 bg-warning opacity-20 w-75 h-75 rounded-5 shadow-sm d-none d-sm-block" style="z-index: 0; transform: translate(-10px, 10px);"></div>
+<section id="lokasi" class="py-20 bg-gray-50">
+    <div class="container px-4 mx-auto">
+        <div class="flex flex-wrap lg:flex-nowrap gap-8">
+            <div class="w-full lg:w-5/12">
+                <div class="h-full p-8 bg-white shadow-sm md:p-12 rounded-[2.5rem]">
+                    <h2 class="mb-8 text-4xl font-extrabold font-plus-jakarta tracking-tight">Kunjungi <span class="text-green-900">Kami</span></h2>
                     
-                    <div class="position-relative shadow-lg overflow-hidden rounded-5" style="z-index: 1;">
-                        <img src="https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80" 
-                             alt="Visi Kami" class="img-fluid hover-zoom">
+                    <div class="flex items-start gap-4 mb-8">
+                        <div class="flex-shrink-0 p-4 bg-yellow-400 rounded-2xl bg-opacity-20">
+                            <i class="text-2xl text-green-900 bi bi-geo-alt-fill"></i>
+                        </div>
+                        <div>
+                            <h6 class="mb-1 font-bold">Alamat Utama</h6>
+                            <p class="text-sm text-gray-500">Jl. Perpustakaan Digital No. 123, <br>Kota Bandar Lampung.</p>
+                        </div>
                     </div>
-                    
-                    <div class="position-absolute top-0 end-0 bg-success text-white p-3 rounded-4 shadow-lg d-none d-md-block" style="z-index: 2; margin-top: -10px; margin-right: -10px;">
-                        <div class="text-center">
-                            <h3 class="fw-black mb-0 text-warning">10+</h3>
-                            <small class="fw-bold">Tahun Pengalaman</small>
+
+                    <div class="flex items-start gap-4 mb-8">
+                        <div class="flex-shrink-0 p-4 bg-green-900 rounded-2xl bg-opacity-10">
+                            <i class="text-2xl text-yellow-500 bi bi-clock-fill"></i>
+                        </div>
+                        <div>
+                            <h6 class="mb-1 font-bold">Jam Operasional</h6>
+                            <p class="text-sm text-gray-500">Senin - Jumat: 08.00 - 20.00</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start gap-4">
+                        <div class="flex-shrink-0 p-4 bg-yellow-400 rounded-2xl bg-opacity-20">
+                            <i class="text-2xl text-green-900 bi bi-envelope-check-fill"></i>
+                        </div>
+                        <div>
+                            <h6 class="mb-1 font-bold">Hubungi Kami</h6>
+                            <p class="text-sm text-gray-500">support@bookverse.com</p>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="col-lg-6 ps-lg-5 text-center text-lg-start order-1 order-lg-2">
-                <div class="d-inline-flex align-items-center bg-success bg-opacity-10 text-success px-3 py-1 rounded-pill mb-4 shadow-sm">
-                    <i class="bi bi-info-circle-fill me-2"></i>
-                    <small class="fw-bold tracking-wider" style="font-size: 10px;">ABOUT PERPUSTAKAAN JENDELA BANGSA</small>
-                </div>
-                
-                <h2 class="display-5 fw-black text-dark mb-4">Membangun Jembatan <span class="text-success">Pengetahuan</span></h2>
-                <p class="lead text-secondary mb-4 fs-6">Perpustakaan Jendela Bangsa lahir dari semangat untuk mendemokratisasi akses literasi di seluruh Indonesia.</p>
-                <p class="text-muted mb-4 small">Kami percaya bahwa setiap buku memiliki pembacanya, dan setiap pembaca berhak mendapatkan pengalaman terbaik.</p>
-
-                <div class="row g-3 text-start">
-                    <div class="col-6">
-                        <div class="d-flex align-items-center gap-2">
-                            <div class="rounded-circle bg-warning p-1 d-flex align-items-center justify-content-center" style="width: 30px; height: 30px;">
-                                <i class="bi bi-check2 text-success fw-bold"></i>
-                            </div>
-                            <span class="fw-bold text-dark small">Akses 24/7</span>
-                        </div>
-                    </div>
-                    <div class="col-6">
-                        <div class="d-flex align-items-center gap-2">
-                            <div class="rounded-circle bg-warning p-1 d-flex align-items-center justify-content-center" style="width: 30px; height: 30px;">
-                                <i class="bi bi-check2 text-success fw-bold"></i>
-                            </div>
-                            <span class="fw-bold text-dark small">Komunitas</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section> 
-
-
-<section id="lokasi" class="py-5 bg-light overflow-hidden">
-    <div class="container py-lg-4">
-        <div class="row g-4">
-            <div class="col-lg-5">
-                <div class="card border-0 shadow-sm h-100 p-4 p-md-5 rounded-5 bg-white">
-                    <h2 class="fw-black mb-4">Kunjungi <span class="text-success">Kami</span></h2>
-                    
-                    <div class="d-flex align-items-start gap-3 mb-4">
-                        <div class="bg-warning bg-opacity-20 p-3 rounded-4 flex-shrink-0">
-                            <i class="bi bi-geo-alt-fill text-success fs-4"></i>
-                        </div>
-                        <div>
-                            <h6 class="fw-bold mb-1">Alamat Utama</h6>
-                            <p class="text-muted small mb-0">Jl. Perpustakaan Digital No. 123, <br>Kota Bandar Lampung.</p>
-                        </div>
-                    </div>
-
-                    <div class="d-flex align-items-start gap-3 mb-4">
-                        <div class="bg-success bg-opacity-10 p-3 rounded-4 flex-shrink-0">
-                            <i class="bi bi-clock-fill text-warning fs-4"></i>
-                        </div>
-                        <div>
-                            <h6 class="fw-bold mb-1">Jam Operasional</h6>
-                            <p class="text-muted small mb-0">Senin - Jumat: 08.00 - 20.00</p>
-                        </div>
-                    </div>
-
-                    <div class="d-flex align-items-start gap-3">
-                        <div class="bg-warning bg-opacity-20 p-3 rounded-4 flex-shrink-0">
-                            <i class="bi bi-envelope-check-fill text-success fs-4"></i>
-                        </div>
-                        <div>
-                            <h6 class="fw-bold mb-1">Hubungi Kami</h6>
-                            <p class="text-muted small mb-0">support@bookverse.com</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-lg-7">
-                <div class="card border-0 shadow-sm overflow-hidden rounded-5 w-100" style="height: 400px;">
+            <div class="w-full lg:w-7/12">
+                <div class="w-full h-[400px] overflow-hidden shadow-sm rounded-[2.5rem]">
                     <iframe 
-                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d127106.31342686045!2d105.1953945!3d-5.412132!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e40d0469b666a77%3A0x3039d80b220cc30!2sBandar%20Lampung%2C%20Lampung!5e0!3m2!1sid!2sid!4v1700000000000!5m2!1sid!2sid" 
-                        width="100%" 
-                        height="100%" 
-                        style="border:0;" 
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d127103.96541671988!2d105.19702209700318!3d-5.417316390198083!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e40dadddfc30ad9%3A0xac951e9c267ad3f0!2sBandar%20Lampung%2C%20Lampung!5e0!3m2!1sid!2sid!4v1700000000000!5m2!1sid!2sid" 
+                        class="w-full h-full border-0"
                         allowfullscreen="" 
                         loading="lazy">
                     </iframe>
@@ -294,143 +350,16 @@
             </div>
         </div>
     </div>
-</section> 
+</section>
 
 <style>
-    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700;800&family=Inter:wght@400;500;600&display=swap');
-    
-    :root {
-        --bs-warning: #FFD23F;
-        --bs-success: #004E32; /* Hijau Tua agar lebih terbaca di kuning */
-    }
-    
-    body { 
-        font-family: 'Inter', sans-serif; 
-        background-color: #FDFFF5;
-        overflow-x: hidden;
-    }
-    iframe {
-        min-height: 400px;
-    }
-    .hover-up {
-        transition: all 0.3s ease;
-    }
-    .hover-up:hover {
-        transform: translateY(-10px);
-        box-shadow: 0 15px 30px rgba(0,0,0,0.1) !important;
-        background-color: #fff !important;
-        border: 1px solid #FFD23F !important;
-    }
-
- 
-
-    .fw-black { 
-        font-family: 'Plus Jakarta Sans', sans-serif;
-        font-weight: 800; 
-        letter-spacing: -2px;
-    }
-
-    .text-success-gradient {
-        background: linear-gradient(135deg, #004E32 0%, #198754 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-    }
-
-    .ms-n2 { margin-left: -0.5rem !important; }
-    .ms-n3 { margin-left: -1rem !important; }
-    .mb-n3 { margin-bottom: -1rem !important; }
-
-    /* Custom Buttons */
-    .btn-lg {
-        font-size: 0.95rem;
-        letter-spacing: 0.5px;
-        transition: all 0.3s ease;
-    }
-
-    .shadow-warning {
-        box-shadow: 0 10px 25px -5px rgba(255, 210, 63, 0.5);
-    }
-    /* Styling Tombol WhatsApp dengan SVG */
-.btn-whatsapp-svg {
-    background-color: #25D366;
-    color: white !important;
-    border: none;
-    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-
-.btn-whatsapp-svg:hover {
-    background-color: #128C7E;
-    transform: translateY(-5px);
-    box-shadow: 0 10px 20px rgba(37, 211, 102, 0.3) !important;
-}
-
-.btn-whatsapp-svg svg {
-    transition: transform 0.3s ease;
-}
-
-.btn-whatsapp-svg:hover svg {
-    transform: rotate(10deg) scale(1.1);
-}
-
-/* Memperbaiki masalah horizontal scroll di mobile */
-#cara-kerja, #tentang, #lokasi {
-    overflow: hidden; /* Menghapus potensi scroll ke samping */
-    width: 100%;
-}
-
-.row {
-    margin-right: 0;
-    margin-left: 0;
-}
-    .btn-warning:active {
-        transform: scale(0.95);
-    }
-
-    /* Animasi Gambar */
-    .animate-float {
-        animation: float 5s ease-in-out infinite;
-    }
 
     @keyframes float {
         0%, 100% { transform: translateY(0) rotate(0); }
         50% { transform: translateY(-15px) rotate(1deg); }
     }
-
-    .welcome-wrapper {
-        padding-top: 2rem;
-        padding-bottom: 2rem;
+    .animate-float {
+        animation: float 5s ease-in-out infinite;
     }
-    @media (max-width: 991px) {
-        .card.rounded-5 {
-            border-radius: 2rem !important; /* Di HP lekukannya sedikit diperhalus */
-        }
-    }
-      .hover-zoom {
-        transition: transform 0.5s ease;
-    }
-    .hover-zoom:hover {
-        transform: scale(1.05);
-    }
-
-    /* Penyesuaian Tipografi */
-    @media (max-width: 991px) {
-        .display-5 {
-            font-size: 2.5rem;
-        }
-        #tentang {
-            padding-top: 4rem;
-        }
-    }
-    /* Penyesuaian khusus layar HP sangat kecil */
-    @media (max-width: 576px) {
-        .display-3 { font-size: 3rem; }
-        .btn-lg { width: 100%; } /* Tombol lebar penuh di HP */
-    }
-    .display-5 {
-            font-size: 2.2rem;
-        }
-        .rounded-5 {
-            border-radius: 2rem !important;
-        }
 </style>
 {% endblock %}

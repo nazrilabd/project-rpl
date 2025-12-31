@@ -1,213 +1,128 @@
-{% extends "base.html" %} 
+{% extends "base.html" %}
 
 {% block title %}Masuk ke Jendela Bangsa{% endblock %}
 
 {% block content %}
-<div class="min-vh-100 d-flex align-items-center justify-content-center bg-soft-light py-5">
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-6 col-lg-5">
-                <div class="card shadow-premium border-0 rounded-5 overflow-hidden animate__animated animate__fadeIn">
-                    
-                    <div class="card-header bg-white border-0 pt-5 pb-4 text-center">
-                        <div class="login-icon-container mb-3 mx-auto">
-                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-success"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
-                        </div>
-                        <h2 class="fw-black text-dark mb-1" style="letter-spacing: -1.5px;">Selamat Datang</h2>
-                        <p class="text-muted small fw-medium">Silakan masuk untuk mengakses koleksi kami</p>
-                    </div>
-                    
-                    <div class="card-body px-4 px-md-5 pb-5">
-                        
-                        {% if form.errors %}
-                        <div class="alert alert-danger-custom d-flex align-items-center gap-2 mb-4 animate__animated animate__shakeX" role="alert">
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
-                            <span class="small fw-bold">Username atau Password salah.</span>
-                        </div>
-                        {% endif %}
-                        
-                        <form method="post" action="{% url 'login' %}">
-                            {% csrf_token %}
-                            
-                            <div class="mb-4">
-                                <label for="username" class="form-label-custom">Username</label>
-                                <div class="input-group-modern">
-                                    <span class="icon">
-                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-                                    </span>
-                                    <input type="text" class="form-control-modern" id="username" name="username" 
-                                           placeholder="Ketik username Anda" required autocomplete="off">
-                                </div>
-                            </div>
-                            
-                            <div class="mb-4">
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <label for="password" class="form-label-custom">Password</label>
-                                </div>
-                                <div class="input-group-modern">
-                                    <span class="icon">
-                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
-                                    </span>
-                                    <input type="password" class="form-control-modern" id="password" name="password" 
-                                           placeholder="Ketik password Anda" required>
-                                </div>
-                            </div>
-                            
-                            <div class="d-flex justify-content-between align-items-center mb-4">
-                                <div class="form-check custom-check">
-                                    <input class="form-check-input shadow-none" type="checkbox" id="remember" name="remember">
-                                    <label class="form-check-label small text-muted fw-medium" for="remember">Ingat Saya</label>
-                                </div>
-                            </div>
-                            <input type="hidden" name="next" value="{{ request.GET.next }}">
-                            <button type="submit" class="btn btn-login-premium w-100">
-                                Masuk Sekarang
-                                <svg class="ms-2" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-                            </button>
-                        </form>
-                        
-                            <div class="text-center mt-5 pt-3 border-top border-light">
-                                <p class="text-muted small mb-3">Belum memiliki akun atau lupa password?</p>
-                                <a href="https://wa.me/6281234567890" target="_blank" 
-                                class="d-inline-flex align-items-center justify-content-center gap-2 text-success text-decoration-none fw-black small text-uppercase tracking-widest hover-wa-link">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
-                                        <path d="M13.601 2.326A7.854 7.854 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.933 7.933 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.898 7.898 0 0 0 13.6 2.326zM7.994 14.521a6.573 6.573 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.557 6.557 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592zm3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.729.729 0 0 0-.529.247c-.182.198-.691.677-.691 1.654 0 .977.71 1.916.81 2.049.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232z"/>
-                                    </svg>
-                                    Hubungi Admin (WA)
-                                </a>
-                            </div>
-                    </div>
+<div class="min-h-screen flex items-center justify-center bg-slate-50 py-12 px-4 sm:px-6 lg:px-8 font-plus-jakarta">
+    <div class="max-w-md w-full">
+        <div class="bg-white rounded-[3rem] shadow-[0_25px_50px_-12px_rgba(0,0,0,0.08)] overflow-hidden border border-slate-100 animate-fade-in">
+            
+            <div class="pt-12 pb-8 text-center px-8">
+                <div class="w-16 h-16 bg-green-50 rounded-[1.5rem] flex items-center justify-center mx-auto mb-6">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#064e3b" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                        <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                    </svg>
                 </div>
-                
-                <div class="text-center mt-4">
-                    <a href="{% url 'home' %}" class="text-muted text-decoration-none small fw-bold hover-green transition-all">
-                        <svg class="me-1" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
-                        Kembali ke Beranda
+                <h2 class="text-3xl font-black text-slate-900 tracking-tighter mb-2 uppercase">Selamat Datang</h2>
+                <p class="text-slate-500 text-sm font-medium">Silakan masuk untuk mengakses koleksi kami</p>
+            </div>
+
+            <div class="px-8 pb-12">
+                {% if form.errors %}
+                <div class="mb-6 p-4 bg-red-50 border border-red-100 rounded-2xl flex items-center gap-3 animate-shake">
+                    <svg class="text-red-500" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+                    <span class="text-red-700 text-xs font-bold uppercase tracking-tight">Username atau Password salah.</span>
+                </div>
+                {% endif %}
+
+                <form method="post" action="{% url 'login' %}" class="space-y-5">
+                    {% csrf_token %}
+                    <input type="hidden" name="next" value="{{ request.GET.next }}">
+
+                    <div class="space-y-2">
+                        <label for="username" class="text-[10px] font-black text-slate-400 tracking-widest uppercase ml-1">Username</label>
+                        <div class="relative flex items-center group">
+                            <span class="absolute left-4 text-slate-400 group-focus-within:text-green-600 transition-colors">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                            </span>
+                            <input type="text" id="username" name="username" required
+                                class="w-full bg-slate-50 border-2 border-transparent rounded-2xl py-4 pl-12 pr-4 text-sm font-bold text-slate-900 outline-none transition-all focus:bg-white focus:border-green-600 focus:ring-4 focus:ring-green-600/5 placeholder:text-slate-400"
+                                placeholder="Ketik username Anda">
+                        </div>
+                    </div>
+
+                    <div class="space-y-2">
+                        <label for="password" class="text-[10px] font-black text-slate-400 tracking-widest uppercase ml-1">Password</label>
+                        <div class="relative flex items-center group">
+                            <span class="absolute left-4 text-slate-400 group-focus-within:text-green-600 transition-colors">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                            </span>
+                            <input type="password" id="password" name="password" required
+                                class="w-full bg-slate-50 border-2 border-transparent rounded-2xl py-4 pl-12 pr-12 text-sm font-bold text-slate-900 outline-none transition-all focus:bg-white focus:border-green-600 focus:ring-4 focus:ring-green-600/5 placeholder:text-slate-400"
+                                placeholder="Ketik password Anda">
+                            
+                            <button type="button" id="togglePassword" class="absolute right-4 text-slate-400 hover:text-green-600 transition-colors cursor-pointer bg-transparent border-none">
+                                <svg id="eyeIcon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                    <circle cx="12" cy="12" r="3"></circle>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center px-1">
+                        <label class="flex items-center gap-3 cursor-pointer group">
+                            <input type="checkbox" id="remember" name="remember" class="w-5 h-5 rounded-lg border-slate-200 text-green-600 focus:ring-green-600 transition-all">
+                            <span class="text-sm font-bold text-slate-500 group-hover:text-slate-900 transition-colors">Ingat Saya</span>
+                        </label>
+                    </div>
+
+                    <button type="submit" class="w-full bg-green-900 hover:bg-green-800 text-white py-4 rounded-2xl font-black text-sm tracking-widest uppercase shadow-xl shadow-green-900/20 transition-all transform hover:-translate-y-1 active:scale-[0.98] flex items-center justify-center gap-2">
+                        Masuk Sekarang
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                    </button>
+                </form>
+
+                <div class="mt-10 pt-8 border-t border-slate-50 text-center">
+                    <p class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4">Butuh Bantuan?</p>
+                    <a href="https://wa.me/6281234567890" target="_blank" 
+                       class="inline-flex items-center gap-2 px-6 py-3 bg-green-50 text-green-700 rounded-full text-[10px] font-black tracking-widest uppercase no-underline hover:bg-green-100 transition-all">
+                        <svg width="14" height="14" fill="currentColor" viewBox="0 0 16 16"><path d="M13.601 2.326A7.854 7.854 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.933 7.933 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.898 7.898 0 0 0 13.6 2.326z"/></svg>
+                        Hubungi Admin (WA)
                     </a>
                 </div>
             </div>
+        </div>
+
+        <div class="text-center mt-8">
+            <a href="{% url 'home' %}" class="inline-flex items-center gap-2 text-slate-400 hover:text-green-900 text-[10px] font-black tracking-widest uppercase no-underline transition-all">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+                Kembali ke Beranda
+            </a>
         </div>
     </div>
 </div>
 
 <style>
-    .fw-black { font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 800; }
-    .bg-soft-light { background-color: #f8fafc; }
-    .tracking-widest { letter-spacing: 0.1em; }
-
-    /* Card Premium */
-    .shadow-premium {
-        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.08) !important;
-    }
-/* Hover link WA */
-    .hover-wa-link {
-        transition: all 0.3s ease;
-        padding: 8px 16px;
-        border-radius: 50px;
-    }
-
-    .hover-wa-link:hover {
-        background-color: #f0fdf4; /* Background hijau sangat muda */
-        color: #128C7E !important;
-        transform: scale(1.05);
-        letter-spacing: 0.15em; /* Efek merenggang saat dihover */
-    }
-
-    /* Memperbaiki alignment icon kembali ke beranda */
-    .hover-green svg {
-        transition: transform 0.3s ease;
-    }
-
-    .hover-green:hover svg {
-        transform: translateX(-3px);
-    }
-    .login-icon-container {
-        width: 64px;
-        height: 64px;
-        background: #f0fdf4;
-        border-radius: 20px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    /* Form Styling */
-    .form-label-custom {
-        font-size: 0.85rem;
-        font-weight: 700;
-        color: #475569;
-        margin-bottom: 8px;
-        display: block;
-    }
-
-    .input-group-modern {
-        position: relative;
-        display: flex;
-        align-items: center;
-    }
-
-    .input-group-modern .icon {
-        position: absolute;
-        left: 16px;
-        color: #94a3b8;
-        z-index: 5;
-    }
-
-    .form-control-modern {
-        width: 100%;
-        padding: 12px 16px 12px 48px;
-        background: #f1f5f9;
-        border: 2px solid transparent;
-        border-radius: 12px;
-        font-size: 0.95rem;
-        font-weight: 500;
-        transition: all 0.3s ease;
-    }
-
-    .form-control-modern:focus {
-        background: #ffffff;
-        border-color: #198754;
-        box-shadow: 0 0 0 4px rgba(25, 135, 84, 0.1);
-        outline: none;
-    }
-
-    /* Checkbox */
-    .custom-check .form-check-input:checked {
-        background-color: #198754;
-        border-color: #198754;
-    }
-
-    /* Button */
-    .btn-login-premium {
-        background: #198754;
-        color: white;
-        border: none;
-        padding: 14px;
-        border-radius: 12px;
-        font-weight: 800;
-        font-size: 1rem;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: all 0.3s;
-    }
-
-    .btn-login-premium:hover {
-        background: #146c43;
-        transform: translateY(-2px);
-        box-shadow: 0 10px 20px -5px rgba(25, 135, 84, 0.4);
-        color: white;
-    }
-
-    /* Alert */
-    .alert-danger-custom {
-        background: #fef2f2;
-        border: 1px solid #fee2e2;
-        color: #dc2626;
-        padding: 12px 16px;
-        border-radius: 12px;
-    }
-
-    .hover-green:hover { color: #198754 !important; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes shake { 0%, 100% { transform: translateX(0); } 10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); } 20%, 40%, 60%, 80% { transform: translateX(5px); } }
+    .animate-fade-in { animation: fadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+    .animate-shake { animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both; }
 </style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const togglePassword = document.querySelector('#togglePassword');
+        const passwordInput = document.querySelector('#password');
+        const eyeIcon = document.querySelector('#eyeIcon');
+
+        togglePassword.addEventListener('click', function() {
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+            
+            if (type === 'text') {
+                eyeIcon.innerHTML = `
+                    <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+                    <line x1="1" y1="1" x2="23" y2="23"></line>
+                `;
+            } else {
+                eyeIcon.innerHTML = `
+                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                    <circle cx="12" cy="12" r="3"></circle>
+                `;
+            }
+        });
+    });
+</script>
 {% endblock %}

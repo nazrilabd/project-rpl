@@ -1,170 +1,145 @@
-<nav class="navbar navbar-expand-lg bg-white sticky-top shadow-sm py-2 py-lg-3">
-    <div class="container">
-        <a class="navbar-brand d-flex align-items-center gap-2" href="{% url 'home' %}">
-            <div class="bg-success rounded-pill d-flex align-items-center justify-content-center" style="width: 35px; height: 35px;">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
-            </div>
-            <span class="fw-black text-success fs-4" style="letter-spacing: -1.5px;">Jendela<span class="text-warning">Bangsa</span></span>
-        </a>
+<nav class="sticky top-0 z-40 bg-white shadow-sm font-plus-jakarta">
+    <div class="container mx-auto px-4">
+        <div class="flex items-center justify-between h-20 lg:h-24">
+            
+            <a href="{% url 'home' %}" class="flex items-center gap-3 group no-underline">
+                <div class="w-10 h-10 bg-green-900 rounded-full flex items-center justify-center transition-transform group-hover:rotate-12">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                        <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                    </svg>
+                </div>
+                <span class="text-2xl font-extrabold text-green-900 tracking-tighter">
+                    Jendela<span class="text-yellow-500">Bangsa</span>
+                </span>
+            </a>
 
-        <button class="navbar-toggler border-0 shadow-none p-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#navbarOffcanvas" aria-controls="navbarOffcanvas">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#198754" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
-        </button>
-
-        <div class="offcanvas offcanvas-end border-0" tabindex="-1" id="navbarOffcanvas">
-            <div class="offcanvas-header border-bottom px-4">
-                <h5 class="offcanvas-title fw-black text-success">MENU</h5>
-                <button type="button" class="btn-close shadow-none" data-bs-dismiss="offcanvas"></button>
-            </div>
-
-            <div class="offcanvas-body">
-                <ul class="navbar-nav mx-auto mb-2 mb-lg-0 gap-1 gap-lg-2">
-                    <li class="nav-item">
-                        <a class="nav-link-modern {% if request.resolver_match.url_name == 'home' %}active{% endif %}" href="{% url 'home' %}">Beranda</a>
+            <div class="hidden lg:flex items-center gap-2">
+                <ul class="flex items-center gap-1 mr-6 list-none mb-0">
+                    <li>
+                        <a href="{% url 'home' %}" class="px-5 py-2.5 rounded-xl text-sm font-bold no-underline transition-all {% if request.resolver_match.url_name == 'home' %}text-green-900 bg-green-900/5{% else %}text-slate-500 hover:text-green-900 hover:bg-green-900/5{% endif %}">Beranda</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link-modern {% if request.resolver_match.url_name == 'book_list' %}active{% endif %}" href="{% url 'book_list' %}">List Buku</a>
+                    <li>
+                        <a href="{% url 'book_list' %}" class="px-5 py-2.5 rounded-xl text-sm font-bold no-underline transition-all {% if request.resolver_match.url_name == 'book_list' %}text-green-900 bg-green-900/5{% else %}text-slate-500 hover:text-green-900 hover:bg-green-900/5{% endif %}">List Buku</a>
                     </li>
                     {% if user.is_authenticated %}
-                    <li class="nav-item">
-                        <a class="nav-link-modern {% if request.resolver_match.url_name == 'my_loans' %}active{% endif %}" href="{% url 'my_loans' %}">Peminjaman Saya</a>
+                    <li>
+                        <a href="{% url 'my_loans' %}" class="px-5 py-2.5 rounded-xl text-sm font-bold no-underline transition-all {% if request.resolver_match.url_name == 'my_loans' %}text-green-900 bg-green-900/5{% else %}text-slate-500 hover:text-green-900 hover:bg-green-900/5{% endif %}">Peminjaman Saya</a>
                     </li>
                     {% endif %}
                 </ul>
 
-                <div class="nav-right-container d-flex flex-column flex-lg-row align-items-stretch align-items-lg-center gap-3">
-                    
-                    <form role="search" method="GET" action="{% url 'search' %}" class="order-2 order-lg-1">
-                        <div class="search-box-modern">
-                            <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-                            <input type="search" name="query" placeholder="Cari buku..." required>
-                        </div>
+                <div class="flex items-center gap-4 border-l pl-6 border-slate-200">
+                    <form action="{% url 'search' %}" method="GET" class="relative group mb-0">
+                        <span class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                        </span>
+                        <input type="search" name="query" placeholder="Cari buku..." required 
+                            class="w-40 focus:w-60 bg-slate-100 border-none rounded-full py-2.5 pl-11 pr-4 text-sm font-medium transition-all focus:ring-2 focus:ring-green-900/20 focus:bg-white outline-none">
                     </form>
 
                     {% if user.is_authenticated %}
-                    <div class="dropdown d-none d-lg-block order-lg-2">
-                        <a class="user-avatar-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <div class="avatar-circle">{{ user.username|first|upper }}</div>
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-end border-0 shadow-lg p-2 mt-3 animate__animated animate__fadeInUp animate__faster">
-                            <div class="px-3 py-2 border-bottom mb-2">
-                                <p class="mb-0 small text-muted">Halo,</p>
-                                <p class="mb-0 fw-bold text-dark">{{ user.username }}</p>
+                    <div class="relative group">
+                        <button class="w-10 h-10 rounded-full bg-green-900 flex items-center justify-center text-white font-bold text-sm border-2 border-white shadow-md cursor-pointer">
+                            {{ user.username|first|upper }}
+                        </button>
+                        <div class="absolute right-0 mt-3 w-48 bg-white rounded-2xl shadow-xl border border-slate-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 p-2 text-left">
+                            <div class="px-4 py-3 border-b border-slate-50 mb-1">
+                                <p class="text-[10px] text-slate-400 font-bold uppercase tracking-wider mb-0">Halo,</p>
+                                <p class="text-sm font-bold text-slate-900 truncate mb-0">{{ user.username }}</p>
                             </div>
-                            <li>
-                                <form action="{% url 'logout' %}?next={{ request.path }}" method="post">
-                                    {% csrf_token %}
-                                    <button type="submit" class="dropdown-item text-danger py-2 rounded-3 fw-bold small d-flex align-items-center gap-2">
-                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
-                                        Logout
-                                    </button>
-                                </form>
-                            </li>
-                        </ul>
-                    </div>
-
-                    <div class="d-lg-none order-1 border-bottom pb-3 mb-2">
-                        <div class="d-flex align-items-center gap-3 mb-3">
-                            <div class="avatar-circle-sm">{{ user.username|first|upper }}</div>
-                            <div class="fw-bold text-dark">{{ user.username }}</div>
+                            <form action="{% url 'logout' %}?next={{ request.path }}" method="post" class="mb-0">
+                                {% csrf_token %}
+                                <button type="submit" class="w-full flex items-center gap-3 px-4 py-2.5 text-sm font-bold text-red-600 hover:bg-red-50 rounded-xl transition-colors border-none bg-transparent cursor-pointer text-left">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                                    Logout
+                                </button>
+                            </form>
                         </div>
-                        <form action="{% url 'logout' %}?next={{ request.path }}" method="post">
-                            {% csrf_token %}
-                            <button type="submit" class="btn btn-light text-danger w-100 rounded-4 py-2 fw-bold small">Keluar Akun</button>
-                        </form>
                     </div>
                     {% else %}
-                    <a href="{% url 'login' %}?next={{ request.path }}" class="btn-login-modern order-1 order-lg-2">Masuk</a>
+                    <a href="{% url 'login' %}?next={{ request.path }}" class="px-8 py-2.5 bg-green-900 text-white rounded-full text-sm font-bold no-underline hover:bg-green-800 shadow-lg">Masuk</a>
                     {% endif %}
                 </div>
+            </div>
+
+            <button class="lg:hidden p-3 text-green-900 bg-green-900/5 rounded-2xl border-none cursor-pointer" id="btn-open-sidebar">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="3" y1="12" x2="21" y2="12"></line>
+                    <line x1="3" y1="6" x2="21" y2="6"></line>
+                    <line x1="3" y1="18" x2="21" y2="18"></line>
+                </svg>
+            </button>
+        </div>
+    </div>
+
+    <div class="fixed inset-0 z-[100] hidden" id="mobile-sidebar">
+        <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm shadow-none" id="sidebar-overlay"></div>
+        
+        <div class="absolute right-0 top-0 bottom-0 w-[300px] bg-white flex flex-col shadow-2xl transition-all duration-300 translate-x-0">
+            <div class="flex items-center justify-between p-6 border-b border-slate-50">
+                <span class="text-xs font-black text-green-900 tracking-widest uppercase">Navigation Menu</span>
+                <button class="w-10 h-10 flex items-center justify-center rounded-xl bg-red-50 text-red-600 border-none cursor-pointer" id="btn-close-sidebar">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                </button>
+            </div>
+
+            <div class="p-6 flex flex-col gap-6 overflow-y-auto">
+                <form action="{% url 'search' %}" method="GET" class="relative mb-0">
+                    <span class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                    </span>
+                    <input type="search" name="query" placeholder="Cari buku..." required class="w-full bg-slate-50 border border-slate-200 rounded-2xl py-3.5 pl-12 pr-4 text-sm font-medium focus:ring-2 focus:ring-green-900/20 focus:bg-white outline-none">
+                </form>
+
+                <nav class="flex flex-col gap-2">
+                    <a href="{% url 'home' %}" class="px-5 py-4 rounded-2xl font-bold no-underline transition-all {% if request.resolver_match.url_name == 'home' %}bg-green-900 text-white shadow-lg shadow-green-900/20{% else %}text-slate-600 hover:bg-slate-50{% endif %}">Beranda</a>
+                    <a href="{% url 'book_list' %}" class="px-5 py-4 rounded-2xl font-bold no-underline transition-all {% if request.resolver_match.url_name == 'book_list' %}bg-green-900 text-white shadow-lg shadow-green-900/20{% else %}text-slate-600 hover:bg-slate-50{% endif %}">List Buku</a>
+                    {% if user.is_authenticated %}
+                    <a href="{% url 'my_loans' %}" class="px-5 py-4 rounded-2xl font-bold no-underline transition-all {% if request.resolver_match.url_name == 'my_loans' %}bg-green-900 text-white shadow-lg shadow-green-900/20{% else %}text-slate-600 hover:bg-slate-50{% endif %}">Peminjaman Saya</a>
+                    {% endif %}
+                </nav>
+            </div>
+
+            <div class="mt-auto p-6 border-t border-slate-100 bg-slate-50/50">
+                {% if user.is_authenticated %}
+                <div class="flex items-center gap-4 mb-5 px-1">
+                    <div class="w-12 h-12 bg-green-900 rounded-2xl flex items-center justify-center text-white font-bold text-lg">
+                        {{ user.username|first|upper }}
+                    </div>
+                    <div class="truncate">
+                        <p class="text-[10px] text-slate-400 font-bold uppercase tracking-tight mb-0">Akun Saya</p>
+                        <p class="text-sm font-bold text-slate-900 truncate mb-0">{{ user.username }}</p>
+                    </div>
+                </div>
+                <form action="{% url 'logout' %}?next={{ request.path }}" method="post" class="mb-0">
+                    {% csrf_token %}
+                    <button type="submit" class="w-full py-4 bg-white border border-red-100 text-red-600 rounded-2xl font-bold text-sm shadow-sm hover:bg-red-50 cursor-pointer transition-colors">
+                        Logout
+                    </button>
+                </form>
+                {% else %}
+                <a href="{% url 'login' %}?next={{ request.path }}" class="w-full py-4 bg-green-900 text-white rounded-2xl font-bold text-center no-underline shadow-xl shadow-green-900/20 block">
+                    Masuk Sekarang
+                </a>
+                {% endif %}
             </div>
         </div>
     </div>
 </nav>
 
-<style>
-    .fw-black { font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 800; }
-    
-    /* Navigation Link Premium Style */
-    .nav-link-modern {
-        color: #64748b;
-        font-weight: 700;
-        font-size: 0.95rem;
-        padding: 8px 16px;
-        border-radius: 12px;
-        text-decoration: none;
-        transition: all 0.2s;
-        display: block;
+<script>
+    const btnOpen = document.getElementById('btn-open-sidebar');
+    const btnClose = document.getElementById('btn-close-sidebar');
+    const overlay = document.getElementById('sidebar-overlay');
+    const sidebar = document.getElementById('mobile-sidebar');
+
+    function toggleMenu() {
+        sidebar.classList.toggle('hidden');
+        document.body.style.overflow = sidebar.classList.contains('hidden') ? 'auto' : 'hidden';
     }
 
-    .nav-link-modern:hover, .nav-link-modern.active {
-        color: #198754;
-        background: rgba(25, 135, 84, 0.08);
-    }
-
-    /* Search Box styling */
-    .search-box-modern {
-        position: relative;
-        display: flex;
-        align-items: center;
-    }
-
-    .search-box-modern input {
-        width: 100%;
-        border: 1px solid #e2e8f0;
-        background: #f8fafc;
-        padding: 10px 16px 10px 42px;
-        border-radius: 14px;
-        font-size: 0.9rem;
-        transition: all 0.3s;
-    }
-
-    .search-box-modern input:focus {
-        background: white;
-        border-color: #198754;
-        outline: none;
-        box-shadow: 0 4px 12px rgba(25, 135, 84, 0.1);
-    }
-
-    .search-icon { position: absolute; left: 16px; color: #94a3b8; }
-
-    /* Desktop Styles */
-    @media (min-width: 992px) {
-        .offcanvas {
-            visibility: visible !important;
-            transform: none !important;
-            position: static !important;
-            display: flex !important;
-            flex-basis: auto !important;
-            height: auto !important;
-            width: 100% !important;
-            background: transparent !important;
-        }
-        .offcanvas-body {
-            display: flex !important;
-            align-items: center !important;
-            padding: 0 !important;
-        }
-        .search-box-modern input { width: 180px; border-radius: 100px; }
-        .search-box-modern input:focus { width: 260px; }
-        .nav-link-modern { padding: 8px 18px; }
-        .btn-login-modern { border-radius: 100px; padding: 8px 24px; }
-    }
-
-    /* Avatar Circles */
-    .avatar-circle, .avatar-circle-sm {
-        background: #198754; color: white; border-radius: 50%;
-        display: flex; align-items: center; justify-content: center; font-weight: 800;
-    }
-    .avatar-circle { width: 40px; height: 40px; border: 2px solid white; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-    .avatar-circle-sm { width: 38px; height: 38px; }
-
-    .btn-login-modern {
-        background: #198754; color: white; padding: 12px;
-        border-radius: 14px; font-weight: 700; text-decoration: none; text-align: center;
-        transition: all 0.3s;
-    }
-    .btn-login-modern:hover { background: #146c43; color: white; transform: translateY(-1px); }
-    
-    .dropdown-toggle::after { display: none; }
-</style>
+    btnOpen.onclick = toggleMenu;
+    btnClose.onclick = toggleMenu;
+    overlay.onclick = toggleMenu;
+</script>

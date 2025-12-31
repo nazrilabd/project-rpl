@@ -1,85 +1,97 @@
-<div class="modal fade animate__animated animate__fadeIn" id="deleteConfirmModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-sm" style="max-width: 380px;">
-        <div class="modal-content border-0 shadow-premium rounded-5 overflow-hidden">
-            
-            <div class="bg-danger" style="height: 6px;"></div>
-            
-            <div class="modal-body text-center py-5 px-4">
-                <div class="mb-4 d-flex justify-content-center">
-                    <div class="icon-circle-warning bg-danger bg-opacity-10 text-danger animate__animated animate__pulse animate__infinite">
-                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
-                    </div>
+<div id="deleteConfirmModal" 
+     class="fixed inset-0 z-[100] hidden items-center justify-center p-4 transition-all duration-300">
+    
+    <div id="modalOverlay" class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm transition-opacity duration-300 opacity-0"></div>
+    
+    <div id="modalContent" 
+         class="relative w-full max-w-[380px] bg-white rounded-[2.5rem] shadow-2xl overflow-hidden transform transition-all duration-300 scale-95 opacity-0">
+        
+        <div class="h-1.5 w-full bg-red-500"></div>
+        
+        <div class="text-center py-10 px-8">
+            <div class="mb-6 flex justify-center">
+                <div class="w-20 h-20 bg-red-50 rounded-3xl flex items-center justify-center text-red-500 animate-pulse">
+                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                        <line x1="12" y1="9" x2="12" y2="13"></line>
+                        <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                    </svg>
                 </div>
-
-                <h4 class="fw-black text-dark mb-2" style="letter-spacing: -1px;">Konfirmasi Aksi</h4>
-                <p class="text-muted small fw-medium mb-0">Apakah Anda yakin ingin melanjutkan tindakan ini? Data yang dihapus mungkin tidak dapat dikembalikan.</p>
             </div>
 
-            <div class="modal-footer border-0 p-4 pt-0 d-flex gap-2">
-                <button type="button" class="btn btn-cancel-modern flex-grow-1 py-2 fw-bold" data-bs-dismiss="modal">Batal</button>
-                
-                <form id="deleteForm" method="POST" action="" class="flex-grow-1">
-                    {% csrf_token %}
-                    <button type="submit" class="btn btn-danger-modern w-100 py-2 fw-bold">Ya, Hapus</button>
-                </form>
-            </div>
+            <h4 class="text-2xl font-extrabold text-slate-900 tracking-tight mb-2 font-plus-jakarta">
+                Konfirmasi Aksi
+            </h4>
+            <p class="text-slate-500 text-sm font-medium leading-relaxed">
+                Apakah Anda yakin ingin melanjutkan tindakan ini? Data yang dihapus mungkin tidak dapat dikembalikan.
+            </p>
+        </div>
+
+        <div class="flex gap-3 px-8 pb-10">
+            <button type="button" 
+                    onclick="closeDeleteModal()"
+                    class="flex-1 py-3.5 bg-slate-100 text-slate-600 rounded-2xl font-bold text-sm hover:bg-slate-200 transition-all border-none cursor-pointer">
+                Batal
+            </button>
+            
+            <form id="deleteForm" method="POST" action="" class="flex-1 m-0">
+                {% csrf_token %}
+                <button type="submit" 
+                        class="w-full py-3.5 bg-red-500 text-white rounded-2xl font-bold text-sm hover:bg-red-600 hover:-translate-y-1 hover:shadow-lg hover:shadow-red-500/20 transition-all border-none cursor-pointer">
+                    Ya, Hapus
+                </button>
+            </form>
         </div>
     </div>
 </div>
 
-<style>
-    .fw-black { font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 800; }
-    
-    .shadow-premium {
-        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15) !important;
-    }
-
-    .icon-circle-warning {
-        width: 70px;
-        height: 70px;
-        border-radius: 24px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    /* Tombol Batal (Gaya Jendela Bangsa) */
-    .btn-cancel-modern {
-        background: #f1f5f9;
-        color: #475569;
-        border: none;
-        border-radius: 12px;
-        font-size: 0.85rem;
-        transition: all 0.2s;
-    }
-    .btn-cancel-modern:hover {
-        background: #e2e8f0;
-        color: #1e293b;
-    }
-
-    /* Tombol Danger Modern */
-    .btn-danger-modern {
-        background: #dc3545;
-        color: white;
-        border: none;
-        border-radius: 12px;
-        font-size: 0.85rem;
-        transition: all 0.3s;
-    }
-    .btn-danger-modern:hover {
-        background: #bb2d3b;
-        box-shadow: 0 8px 15px rgba(220, 53, 69, 0.25);
-        transform: translateY(-1px);
-    }
-</style>
-
 <script>
-function openDeleteModal(deleteUrl) {
+    const modal = document.getElementById('deleteConfirmModal');
+    const overlay1 = document.getElementById('modalOverlay');
+    const content = document.getElementById('modalContent');
+    const deleteForm = document.getElementById('deleteForm');
+
+   const  openDeleteModal = function(url) {
+    const modal = document.getElementById('deleteConfirmModal');
+    const overlay1 = document.getElementById('modalOverlay');
+    const content = document.getElementById('modalContent');
     const form = document.getElementById('deleteForm');
-    form.setAttribute('action', deleteUrl);
-    
-    const modalElement = document.getElementById('deleteConfirmModal');
-    const myModal = new bootstrap.Modal(modalElement);
-    myModal.show();
-}
+
+    if (form) form.action = url;
+
+    // Tambahkan class modal-open ke body
+    document.body.classList.add('modal-open');
+    // Alternatif jika tidak pakai CSS class:
+    document.body.style.overflow = 'hidden';
+    document.body.style.paddingRight = 'var(--scrollbar-width, 0px)'; 
+
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+
+    setTimeout(() => {
+        overlay1.classList.replace('opacity-0', 'opacity-100');
+        content.classList.replace('opacity-0', 'opacity-100');
+        content.classList.replace('scale-95', 'scale-100');
+    }, 10);
+};
+
+const closeDeleteModal = function() {
+    const modal = document.getElementById('deleteConfirmModal');
+    const overlay2 = document.getElementById('modalOverlay');
+    const content = document.getElementById('modalContent');
+
+    overlay2.classList.replace('opacity-100', 'opacity-0');
+    content.classList.replace('opacity-100', 'opacity-0');
+    content.classList.replace('scale-100', 'scale-95');
+
+    setTimeout(() => {
+        modal.classList.replace('flex', 'hidden');
+        // Kembalikan scroll
+        document.body.classList.remove('modal-open');
+        document.body.style.overflow = 'auto';
+        document.body.style.paddingRight = '0px';
+    }, 300);
+};
+    // Close modal if clicking on overlay
+    overlay1.onclick = closeDeleteModal;
 </script>

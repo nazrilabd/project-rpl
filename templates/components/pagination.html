@@ -1,81 +1,48 @@
-<nav aria-label="Page navigation" class="mt-5">
-    <ul class="pagination justify-content-center gap-2">
+<nav aria-label="Page navigation" class="mt-12">
+    <ul class="flex items-center justify-center gap-2 list-none p-0">
         
-        <li class="page-item">
+        <li>
             {% if halaman_buku.has_previous %}
-                <a class="page-link-custom" href="?{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}page={{ halaman_buku.previous_page_number }}" aria-label="Previous">
+                <a href="?{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}page={{ halaman_buku.previous_page_number }}" 
+                   class="flex items-center justify-center w-11 h-11 rounded-xl border border-slate-100 bg-white text-slate-600 transition-all hover:bg-slate-50 hover:text-green-600 hover:border-green-600 hover:-translate-y-0.5 no-underline shadow-sm">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
                 </a>
             {% else %}
-                <span class="page-link-custom disabled" aria-disabled="true">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#A0AEC0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                <span class="flex items-center justify-center w-11 h-11 rounded-xl border border-slate-100 bg-slate-50 text-slate-300 cursor-not-allowed">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
                 </span>
             {% endif %}
         </li>
 
         {% for num in halaman_buku.paginator.page_range %}
             {% if halaman_buku.number == num %}
-                <li class="page-item"><span class="page-link-custom active">{{ num }}</span></li>
+                <li>
+                    <span class="flex items-center justify-center w-11 h-11 rounded-xl bg-green-600 text-white font-bold shadow-lg shadow-green-600/20">
+                        {{ num }}
+                    </span>
+                </li>
             {% elif num > halaman_buku.number|add:'-3' and num < halaman_buku.number|add:'3' %}
-                <li class="page-item">
-                    <a class="page-link-custom" href="?{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}page={{ num }}">
+                <li>
+                    <a href="?{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}page={{ num }}" 
+                       class="flex items-center justify-center w-11 h-11 rounded-xl border border-slate-100 bg-white text-slate-600 font-bold transition-all hover:bg-slate-50 hover:text-green-600 hover:border-green-600 hover:-translate-y-0.5 no-underline shadow-sm">
                         {{ num }}
                     </a>
                 </li>
             {% endif %}
         {% endfor %}
 
-        <li class="page-item">
+        <li>
             {% if halaman_buku.has_next %}
-                <a class="page-link-custom" href="?{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}page={{ halaman_buku.next_page_number }}" aria-label="Next">
+                <a href="?{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}page={{ halaman_buku.next_page_number }}" 
+                   class="flex items-center justify-center w-11 h-11 rounded-xl border border-slate-100 bg-white text-slate-600 transition-all hover:bg-slate-50 hover:text-green-600 hover:border-green-600 hover:-translate-y-0.5 no-underline shadow-sm">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
                 </a>
             {% else %}
-                <span class="page-link-custom disabled" aria-disabled="true">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#A0AEC0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                <span class="flex items-center justify-center w-11 h-11 rounded-xl border border-slate-100 bg-slate-50 text-slate-300 cursor-not-allowed">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
                 </span>
             {% endif %}
         </li>
 
     </ul>
 </nav>
-
-<style>
-    .page-link-custom {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 45px;
-        height: 45px;
-        border-radius: 12px !important;
-        border: 1px solid #edf2f7;
-        background: #fff;
-        color: #4A5568; /* Warna teks lebih gelap agar terbaca */
-        font-weight: 700;
-        text-decoration: none;
-        transition: all 0.2s ease;
-    }
-
-    .page-link-custom:not(.disabled):not(.active):hover {
-        background: #f7fafc;
-        color: #198754;
-        border-color: #198754;
-        transform: translateY(-2px);
-    }
-
-    .page-link-custom.active {
-        background: #198754;
-        color: #fff;
-        border-color: #198754;
-        box-shadow: 0 4px 12px rgba(25, 135, 84, 0.25);
-    }
-
-    /* Perbaikan Tampilan Disabled */
-    .page-link-custom.disabled {
-        background: #F7FAFC; /* Latar belakang abu muda agar terlihat berbeda dari putih */
-        color: #A0AEC0; /* Warna teks/angka abu-abu medium */
-        border-color: #E2E8F0;
-        cursor: not-allowed;
-        pointer-events: none;
-    }
-</style>

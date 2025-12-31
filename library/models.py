@@ -90,7 +90,7 @@ class Loan(models.Model):
         default='pending',
         verbose_name="Status Peminjaman"
     )
-
+  
     borrow_date = models.DateField(null=True, blank=True, verbose_name="Tanggal Peminjaman")
     due_date = models.DateField(null=True, blank=True, verbose_name="Tanggal Jatuh Tempo")
     return_date = models.DateField(null=True, blank=True, verbose_name="Tanggal Pengembalian")
@@ -101,14 +101,37 @@ class Loan(models.Model):
         default=0.00, 
         verbose_name="Jumlah Denda (Rp)"
     )
-
+    created_at = models.DateTimeField(null=True, blank=True)
     class Meta:
         verbose_name = "Peminjaman"
         verbose_name_plural = "Daftar Peminjaman"
         
     def __str__(self):
         return f"{self.member.username} ({self.status}) meminjam {self.book.title}"
+    @staticmethod
+    def can_user_borrow(user):
+        """
+        Mengecek apakah user boleh meminjam buku.
+        Syarat: Tidak ada denda yang belum dibayar (is_paid=False)
+        dan denda tersebut > 0.
+        """
+        # Cek denda dari buku yang sudah dikembalikan tapi belum dibayar
+        unpaid_fines = Loan.objects.filter(
+            member=user, 
+            is_paid=False, 
+            fine_amount__gt=0
+        ).exists()
+        
+        # Cek juga apakah ada buku yang sedang dipinjam (approved) tapi sudah telat (due_date < today)
+        overdue_books = Loan.objects.filter(
+            member=user,
+            status='approved',
+            due_date__lt=date.today()
+        ).exists()
 
+        if unpaid_fines or overdue_books:
+            return False
+        return True
     def calculate_fine(self):
         # Rp 1.000 per hari
         FINE_PER_DAY = 1000  

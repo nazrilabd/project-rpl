@@ -1,151 +1,84 @@
-<div class="review-section-stacked mt-5 pt-4">
+<div class="review-section-stacked mt-12 pt-8">
     
-    <div class=" w-100 mb-5">
-        <div class="col-12"> <div class="write-review-container p-4 p-md-5 rounded-5 bg-white border border-light shadow-sm">
-                
-                <div class="mb-4">
-                    <h3 class="fw-black text-dark mb-1 fs-2">Berikan Ulasan Anda</h3>
-                    <p class="text-muted">Bagikan pengalamanmu membaca <span class="text-success fw-bold">{{ book.title }}</span></p>
-                </div>
-
-                {% if user.is_authenticated %}
-                <form action="{% url 'submit_review' book.id %}" method="POST">
-                    {% csrf_token %}
-                    
-                    <div class="mb-5">
-                        <label class="small fw-bold text-muted d-block mb-3 text-uppercase tracking-wider">Seberapa suka Anda dengan buku ini?</label>
-                        <div class="star-rating-input d-flex gap-2 flex-row-reverse justify-content-center">
-                            {% for i in "54321"|make_list %}
-                            <input type="radio" name="rating" value="{{ i }}" id="star{{ i }}" class="d-none" {% if i == "1" %}checked{% endif %}>
-                            <label for="star{{ i }}" class="star-svg-label">
-                                <svg width="42" height="42" viewBox="0 0 24 24" fill="currentColor">
-                                    <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
-                                </svg>
-                            </label>
-                            {% endfor %}
-                        </div>
-                    </div>
-
-                    <div class="mb-4">
-                        <label class="small fw-bold text-muted d-block mb-3 text-uppercase tracking-wider">Tuliskan Pendapatmu</label>
-                        <textarea name="comment" class="form-control-modern w-100" rows="4" placeholder="Apa yang menarik dari buku ini? Tuliskan ulasan jujurmu di sini..." required></textarea>
-                    </div>
-
-                    <div class="text-center">
-                        <button type="submit" class="btn btn-warning-pill px-5 py-3 py-md-3 fs-6">
-                            KIRIM ULASAN SEKARANG <i class="bi bi-send-fill ms-2"></i>
-                        </button>
-                    </div>
-                </form>
-                {% else %}
-                <div class="py-4 rounded-4 bg-light border-0">
-                    <p class="text-muted mb-0">Silakan <a href="{% url 'login' %}" class="text-success fw-bold text-decoration-none border-bottom border-success border-2 pb-1">Login</a> untuk mulai berdiskusi.</p>
-                </div>
-                {% endif %}
+    <div class="w-full mb-16">
+        <div class="write-review-container p-8 lg:p-12 rounded-[3rem] bg-white border border-slate-100 shadow-[0_20px_50px_rgba(0,0,0,0.03)]">
+            
+            <div class="text-center mb-10">
+                <h3 class="text-3xl font-black text-slate-900 mb-2 tracking-tighter uppercase italic">Bagikan Aspirasi<span class="text-green-700">.</span></h3>
+                <p class="text-slate-400 font-medium italic">Bagikan pengalamanmu membaca <span class="text-green-800 font-bold">"{{ book.title }}"</span></p>
             </div>
+
+            {% if user.is_authenticated %}
+            <form action="{% url 'submit_review' book.id %}" method="POST" class="max-w-2xl mx-auto">
+                {% csrf_token %}
+                
+                <div class="mb-12 text-center">
+                    <label class="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em] block mb-6">Rating Penilaian</label>
+                    
+                    <div class="star-rating-group flex flex-row-reverse justify-center gap-2">
+                        {% for i in "54321"|make_list %}
+                        <input type="radio" name="rating" value="{{ i }}" id="star{{ i }}" class="hidden peer" {% if i == "5" %}checked{% endif %}>
+                        <label for="star{{ i }}" class="cursor-pointer text-slate-200 transition-all duration-200 peer-checked:text-yellow-400 peer-hover:text-yellow-300 hover:scale-110">
+                            <svg width="48" height="48" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                            </svg>
+                        </label>
+                        {% endfor %}
+                    </div>
+                    <p class="text-[9px] font-black text-slate-300 uppercase tracking-[0.2em] mt-4">Pilih 1 sampai 5 Bintang</p>
+                </div>
+
+                <div class="mb-8 group">
+                    <label class="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em] block mb-4 ml-2 group-focus-within:text-green-700 transition-colors">Ulasan Tertulis</label>
+                    <textarea name="comment" 
+                        class="w-full bg-slate-50 border-2 border-slate-50 rounded-[2rem] p-6 text-slate-800 font-medium outline-none transition-all focus:bg-white focus:border-green-900 focus:ring-8 focus:ring-green-900/5 placeholder:text-slate-300"
+                        rows="4" placeholder="Apa yang menarik dari buku ini?" required></textarea>
+                </div>
+
+                <div class="text-center">
+                    <button type="submit" class="group bg-green-950 text-white px-12 py-5 rounded-2xl font-black text-xs tracking-[0.2em] uppercase shadow-2xl shadow-green-900/20 transition-all hover:bg-green-800 hover:-translate-y-1 active:scale-95 flex items-center justify-center gap-3 mx-auto border-none">
+                        KIRIM ULASAN
+                    </button>
+                </div>
+            </form>
+            {% else %}
+            <div class="py-8 rounded-[2.5rem] bg-slate-50 text-center border-2 border-dashed border-slate-200">
+                <p class="text-slate-500 font-bold mb-0">Silakan <a href="{% url 'login' %}?next={{ request.path }}" class="text-green-800 font-black">Login</a> untuk ulasan.</p>
+            </div>
+            {% endif %}
         </div>
     </div>
 
-    <div class="row justify-content-center">
-        <div class="col-12 col-lg-8">
-            <div class="d-flex align-items-center justify-content-between mb-5 border-bottom pb-3">
-                <h4 class="fw-black mb-0">Diskusi Pembaca</h4>
-                <span class="badge bg-success-soft text-success rounded-pill px-3">{{ book.total_reviews }} Ulasan</span>
+    <div class="max-w-4xl mx-auto space-y-8">
+        {% for review in reviews %}
+        <div class="bg-white p-6 rounded-[2rem] border border-slate-100 shadow-sm flex gap-5 items-start">
+            <div class="w-12 h-12 bg-green-900 text-white rounded-xl flex items-center justify-center font-black flex-shrink-0">
+                {{ review.user.username|slice:":1"|upper }}
             </div>
-
-            <div class="review-stream">
-                {% for review in reviews %}
-                <div class="review-item-linear mb-5">
-                    <div class="d-flex align-items-center gap-3 mb-3">
-                        <div class="avatar-circle-modern">
-                            {{ review.user.username|slice:":1"|upper }}
-                        </div>
-                        <div>
-                            <h6 class="fw-bold text-dark mb-0 fs-5">{{ review.user.username|title }}</h6>
-                            <div class="d-flex align-items-center gap-2">
-                                <div class="static-stars-display d-flex text-warning">
-                                    {% for star in "12345"|make_list %}
-                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="{% if forloop.counter <= review.rating %}currentColor{% else %}#e9ecef{% endif %}">
-                                            <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
-                                        </svg>
-                                    {% endfor %}
-                                </div>
-                                <span class="text-muted small">• {{ review.created_at|date:"d M Y" }}</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="review-body-text ps-md-5 ms-md-2">
-                        <p class="lh-lg text-secondary mb-0">{{ review.comment }}</p>
-                    </div>
+            <div class="flex-grow">
+                <div class="flex justify-between items-center mb-1">
+                    <h6 class="font-black text-slate-900 uppercase text-sm">{{ review.user.username }}</h6>
+                    <span class="text-[10px] text-slate-400 font-bold">{{ review.created_at|date:"d M Y" }}</span>
                 </div>
-                {% empty %}
-                <div class="text-center py-5">
-                    <p class="text-muted fs-5 opacity-50">Belum ada diskusi. Ayo mulai ulasan pertama!</p>
+                <div class="flex text-yellow-400 mb-3">
+                    {% for star in "12345"|make_list %}
+                        <svg width="12" height="12" fill="{% if forloop.counter <= review.rating %}currentColor{% else %}#E2E8F0{% endif %}" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                    {% endfor %}
                 </div>
-                {% endfor %}
+                <p class="text-slate-600 text-sm italic">"{{ review.comment }}"</p>
             </div>
         </div>
+        {% empty %}
+        <p class="text-center text-slate-400 italic">Belum ada diskusi.</p>
+        {% endfor %}
     </div>
 </div>
 
 <style>
-    .fw-black { font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 800; }
-    .bg-success-soft { background: rgba(25, 135, 84, 0.1); }
-
-    /* Input Styling */
-    .form-control-modern {
-        border: 2px solid #f1f3f5;
-        background-color: #f8f9fa;
-        border-radius: 20px;
-        padding: 20px;
-        transition: all 0.3s ease;
-        text-align: center; /* Teks ulasan juga center di desktop */
-    }
-    .form-control-modern:focus {
-        background-color: #ffffff;
-        border-color: #198754;
-        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.05);
-        outline: none;
-        text-align: left; /* Berubah jadi left saat mengetik agar nyaman */
-    }
-
-    /* Bintang Interaktif SVG */
-    .star-svg-label { cursor: pointer; color: #e9ecef; transition: all 0.2s; }
-    .star-svg-label:hover { transform: scale(1.15); }
-    .star-rating-input input:checked ~ label,
-    .star-rating-input label:hover,
-    .star-rating-input label:hover ~ label { color: #FFD23F; }
-
-    /* Button Pill */
-    .btn-warning-pill {
-        background: #FFD23F;
-        color: #004E32;
-        border: none;
-        border-radius: 100px;
-        font-weight: 800;
-        letter-spacing: 0.5px;
-        transition: all 0.3s;
-        box-shadow: 0 4px 15px rgba(255, 210, 63, 0.3);
-    }
-    .btn-warning-pill:hover {
-        background: #004E32;
-        color: #FFD23F;
-        transform: translateY(-3px);
-        box-shadow: 0 10px 25px rgba(0, 78, 50, 0.2);
-    }
-
-    /* List Item */
-    .avatar-circle-modern {
-        width: 48px; height: 48px;
-        background: #198754; color: white;
-        border-radius: 15px; /* Bergaya Rounded Square Modern */
-        display: flex; align-items: center; justify-content: center;
-        font-weight: 800; font-size: 1.2rem;
-    }
-
-    .review-body-text {
-        border-left: 3px solid #f1f3f5;
-        padding-left: 20px;
-        font-size: 1.05rem;
+    /* TRICK: CSS agar bintang di sebelah kiri ikut menyala saat kanan dihover/diklik */
+    .star-rating-group input:checked ~ label,
+    .star-rating-group label:hover,
+    .star-rating-group label:hover ~ label {
+        color: #fbbf24 !important; /* Warna kuning (yellow-400) */
     }
 </style>
