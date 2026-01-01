@@ -14,14 +14,17 @@ from django.contrib import messages
 from django.contrib.auth.views import LoginView
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth.views import LogoutView
+from django.contrib.auth.signals import user_logged_in, user_logged_out
+from django.dispatch import receiver
+from django.contrib import messages
 
-class MyLogoutView(LogoutView):
-    def dispatch(self, request, *args, **kwargs):
-        messages.success(request, "Anda telah berhasil keluar. Sampai jumpa lagi!")
-        return super().dispatch(request, *args, **kwargs)
-class MyLoginView(SuccessMessageMixin, LoginView):
-    template_name = 'registration/login.html'
-    success_message = "Selamat datang kembali! Anda telah berhasil masuk."
+@receiver(user_logged_in)
+def on_user_login(sender, request, user, **kwargs):
+    messages.success(request, f"Selamat datang kembali, {user.username}! Anda berhasil masuk.")
+
+@receiver(user_logged_out)
+def on_user_logout(sender, request, user, **kwargs):
+    messages.success(request, "Anda telah berhasil keluar. Sampai jumpa lagi!")
 def welcome(request):
     return render(request, 'pages/welcome.html')
 def about(request):

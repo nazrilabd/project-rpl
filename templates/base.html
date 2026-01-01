@@ -6,48 +6,52 @@
     <title>{% block title %}Perpustakaan Jendela Bangsa{% endblock %}</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
 
     <style>
-        body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            background-color: #f8fafc; /* Slate 50 */
+        /* Gabungkan semua style kustom di sini agar rapi */
+        :root {
+            --font-main: 'Plus Jakarta Sans', sans-serif;
+            --font-alt: 'Inter', sans-serif;
         }
+
+        body {
+            font-family: var(--font-main);
+            background-color: #f8fafc; /* Slate 50 */
+            color: #1e293b; /* Slate 800 */
+        }
+
+        .font-inter { font-family: var(--font-alt); }
         
-        /* Custom scrollbar agar lebih cantik */
+        /* Custom scrollbar */
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: #f1f5f9; }
-        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb { 
+            background: #cbd5e1; 
+            border-radius: 10px; 
+            transition: background 0.3s ease;
+        }
         ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
 
-        /* Utas transisi halus untuk hover */
-        .transition-all { transition: all 0.3s ease; }
+        /* Modal Helpers */
+        html { scrollbar-gutter: stable; }
+        body.modal-open { overflow: hidden; }
+
+        /* Smooth transition utility */
+        .transition-soft { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
     </style>
 
     {% block extra_head %}{% endblock %}
 </head>
-<body class="flex flex-col min-h-screen">
-    <style>
-            @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700;800&family=Inter:wght@400;500;600&display=swap');
-
-    .font-plus-jakarta { font-family: 'Plus Jakarta Sans', sans-serif; }
-    .font-inter { font-family: 'Inter', sans-serif; }
-
-        html {
-    /* Menyiapkan ruang untuk scrollbar agar layout tidak bergeser saat scroll dikunci */
-    scrollbar-gutter: stable;
-}
-
-body.modal-open {
-    overflow: hidden;
-}
-    </style>
-    <header class="sticky top-0 z-50">
+<body class="flex flex-col min-h-screen antialiased">
+    
+    <header class="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-200">
         {% include 'components/navbar.html' %}
     </header>
 
@@ -56,17 +60,15 @@ body.modal-open {
         {% endblock %}
     </main>
 
-    <footer class="mt-auto">
+    <footer class="mt-auto bg-white border-t border-slate-200">
         {% include 'components/footer.html' %}
     </footer>
 
-    <div id="notifications" class="fixed bottom-5 right-5 z-[100]">
+    <div id="notifications" class="fixed bottom-5 right-5 z-[100] flex flex-col gap-3">
         {% include "components/messages_err.html" %}
     </div>
     
-    
     {% include "components/confirm_popup.html" %}
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-</body>
 
+</body>
 </html>
