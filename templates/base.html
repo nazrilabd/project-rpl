@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html lang="id" class="scroll-smooth h-full">
-<head>
+<html lang="id" class="scroll-smooth h-full overflow-x-hidden"> <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Perpustakaan Jendela Bangsa{% endblock %}</title>
@@ -14,62 +13,67 @@
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
 
-    <style>
-        :root {
-            --font-main: 'Plus Jakarta Sans', sans-serif;
-            --font-alt: 'Inter', sans-serif;
-        }
 
-        body {
-            font-family: var(--font-main);
-            background-color: #f8fafc;
-            color: #1e293b;
-            /* Memastikan body selalu setinggi layar agar footer di bawah */
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
-
-        .font-inter { font-family: var(--font-alt); }
-        
-        /* Custom scrollbar */
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #f1f5f9; }
-        ::-webkit-scrollbar-thumb { 
-            background: #cbd5e1; 
-            border-radius: 10px; 
-        }
-        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
-
-        /* Mencegah layout shift saat modal muncul */
-        body.modal-open { 
-            overflow: hidden;
-            padding-right: 8px; /* Menyesuaikan lebar scrollbar */
-        }
-    </style>
 
     {% block extra_head %}{% endblock %}
 </head>
 <body class="antialiased">
     
     <header class="sticky top-0 z-50 w-full bg-white/80 backdrop-blur-md border-b border-slate-200">
-        {% include 'components/navbar.html' %}
+        <div class="max-w-full">
+            {% include 'components/navbar.html' %}
+        </div>
     </header>
 
-    <main class="flex-1 w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-10 max-w-7xl">
+    <main class="flex-grow w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 max-w-7xl overflow-hidden">
         {% block content %}
         {% endblock %}
     </main>
 
-    <footer class="w-full bg-white border-t border-slate-200 py-6">
+    <footer class="w-full bg-white border-t border-slate-200">
         {% include 'components/footer.html' %}
     </footer>
 
-    <div id="notifications" class="fixed bottom-5 right-5 z-[100] flex flex-col gap-3 max-w-sm w-full">
+    <div id="notifications" class="fixed bottom-5 right-5 z-[100] flex flex-col gap-3 max-w-[calc(100vw-40px)]">
         {% include "components/messages_err.html" %}
     </div>
     
     {% include "components/confirm_popup.html" %}
+    <style>
+        :root {
+            --font-main: 'Plus Jakarta Sans', sans-serif;
+            --font-alt: 'Inter', sans-serif;
+        }
 
+        /* Perbaikan overflow sistemik */
+        html, body {
+            max-width: 100%;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        body {
+            font-family: var(--font-main);
+            background-color: #f8fafc;
+            color: #1e293b;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* Mencegah elemen Flex melampaui container */
+        * {
+            min-width: 0;
+        }
+
+        .font-inter { font-family: var(--font-alt); }
+        
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f5f9; }
+        ::-webkit-scrollbar-thumb { 
+            background: #cbd5e1; 
+            border-radius: 10px; 
+        }
+    </style>
 </body>
 </html>
