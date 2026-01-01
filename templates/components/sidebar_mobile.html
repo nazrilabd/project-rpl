@@ -1,5 +1,5 @@
 <div id="mobile-sidebar" class="fixed inset-0 z-[100] hidden">
-    <div id="sidebar-overlay" class="absolute inset-0 bg-slate-900/0 backdrop-blur-none transition-all duration-300 ease-out"></div>
+    <div id="sidebar-overlay" class="absolute inset-0 bg-slate-900/0 backdrop-blur-none transition-all duration-50 ease-out"></div>
     
     <div id="sidebar-panel" class="absolute right-0 top-0 bottom-0 w-[280px] bg-white flex flex-col shadow-2xl translate-x-full transition-transform duration-300 ease-[cubic-bezier(0.4,0,0.2,1)]">
         
@@ -87,7 +87,7 @@
             // Mengembalikan scroll
             document.body.style.overflow = '';
             document.documentElement.style.overflow = '';
-        }, 300); // Harus sama dengan durasi CSS (duration-300)
+        }, 50); // Harus sama dengan durasi CSS (duration-300)
     }
 
     if(btnOpen) btnOpen.onclick = openSidebar;
