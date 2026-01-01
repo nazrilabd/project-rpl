@@ -34,10 +34,9 @@
         {% block content %}{% endblock %}
     </main>
 
-    <footer class="bg-white border-t border-slate-200 py-6 text-center text-sm text-slate-500">
-        &copy; 2024 Perpustakaan Jendela Bangsa
-    </footer>
 
+    {% include 'components/footer.html' %}
+    
     {% include 'components/sidebar_mobile.html' %}
 
     <div id="notifications" class="fixed bottom-5 right-5 z-[100]">
