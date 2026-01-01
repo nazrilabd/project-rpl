@@ -1,33 +1,31 @@
-<nav class="sticky top-0 z-40 bg-white shadow-sm font-plus-jakarta w-full">
+<nav class="sticky top-0 z-40 bg-white shadow-sm w-full">
     <div class="container mx-auto px-4">
-        <div class="flex items-center justify-between h-20 lg:h-24">
-            <a href="{% url 'home' %}" class="flex items-center gap-3 group no-underline">
-                <div class="w-10 h-10 bg-green-900 rounded-full flex items-center justify-center transition-transform duration-300 ease-out group-hover:rotate-12">
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
-                        <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
-                    </svg>
+        <div class="flex items-center justify-between h-20">
+            <a href="{% url 'home' %}" class="flex items-center gap-2 no-underline">
+                <div class="w-10 h-10 bg-green-900 rounded-lg flex items-center justify-center">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
                 </div>
-                <span class="text-2xl font-extrabold text-green-900 tracking-tighter uppercase">
-                    Jendela<span class="text-yellow-500">Bangsa</span>
-                </span>
+                <span class="text-xl font-extrabold text-green-900 tracking-tight">Jendela<span class="text-yellow-500">Bangsa</span></span>
             </a>
 
-            <button class="lg:hidden p-3 text-green-900 bg-green-900/5 rounded-2xl border-none cursor-pointer" id="btn-open-sidebar">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                    <line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line>
-                </svg>
-            </button>
-            
-            <div class="hidden lg:flex items-center gap-6">
+            <div class="hidden lg:flex items-center gap-8">
+                <div class="flex gap-4">
+                    <a href="{% url 'home' %}" class="text-sm font-bold text-slate-600 hover:text-green-900 no-underline">Beranda</a>
+                    <a href="{% url 'book_list' %}" class="text-sm font-bold text-slate-600 hover:text-green-900 no-underline">Buku</a>
                 </div>
+                
+                {% if user.is_authenticated %}
+                    <div class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center text-green-900 font-bold border border-green-200">
+                        {{ user.username|first|upper }}
+                    </div>
+                {% else %}
+                    <a href="{% url 'login' %}" class="bg-green-900 text-white px-6 py-2 rounded-full text-sm font-bold no-underline">Masuk</a>
+                {% endif %}
+            </div>
+
+            <button class="lg:hidden p-2 text-green-900" id="btn-open-sidebar">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+            </button>
         </div>
     </div>
 </nav>
-
-<div class="fixed inset-0 z-[100] invisible pointer-events-none transition-all duration-300 overflow-hidden" id="mobile-sidebar">
-    <div class="absolute inset-0 bg-slate-900/0 backdrop-blur-none transition-all duration-500 ease-in-out" id="sidebar-overlay"></div>
-    
-    <div class="absolute right-0 top-0 bottom-0 w-[280px] sm:w-[350px] bg-white flex flex-col shadow-2xl translate-x-full transition-transform duration-500 ease-in-out" id="sidebar-panel">
-        </div>
-</div>
