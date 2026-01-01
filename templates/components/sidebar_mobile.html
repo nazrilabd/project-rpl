@@ -1,0 +1,57 @@
+<div id="mobile-sidebar" class="fixed inset-0 z-[100] hidden">
+    <div id="sidebar-overlay" class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm opacity-0 transition-opacity duration-300"></div>
+    
+    <div id="sidebar-panel" class="absolute right-0 top-0 bottom-0 w-[280px] bg-white shadow-2xl translate-x-full transition-transform duration-300 ease-in-out flex flex-col">
+        <div class="p-6 border-b flex justify-between items-center">
+            <span class="font-bold text-green-900">MENU</span>
+            <button id="btn-close-sidebar" class="text-slate-400 hover:text-red-500">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            </button>
+        </div>
+        
+        <div class="p-6 flex flex-col gap-4">
+            <a href="{% url 'home' %}" class="text-lg font-bold text-slate-700 no-underline">Beranda</a>
+            <a href="{% url 'book_list' %}" class="text-lg font-bold text-slate-700 no-underline">List Buku</a>
+            <hr class="border-slate-100">
+            {% if user.is_authenticated %}
+                <p class="text-sm text-slate-400">Login sebagai: <b>{{ user.username }}</b></p>
+                <a href="{% url 'logout' %}" class="text-red-500 font-bold no-underline">Logout</a>
+            {% else %}
+                <a href="{% url 'login' %}" class="bg-green-900 text-white text-center py-3 rounded-xl font-bold no-underline">Masuk</a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<script>
+    const wrapper = document.getElementById('mobile-sidebar');
+    const panel = document.getElementById('sidebar-panel');
+    const overlay = document.getElementById('sidebar-overlay');
+    const btnOpen = document.getElementById('btn-open-sidebar');
+    const btnClose = document.getElementById('btn-close-sidebar');
+
+    function openNav() {
+        wrapper.classList.remove('hidden'); // Munculkan di DOM
+        document.body.classList.add('no-scroll'); // Kunci scroll body
+        
+        setTimeout(() => {
+            overlay.classList.add('opacity-100');
+            panel.classList.remove('translate-x-full');
+        }, 10);
+    }
+
+    function closeNav() {
+        overlay.classList.remove('opacity-100');
+        panel.classList.add('translate-x-full');
+        document.body.classList.remove('no-scroll');
+
+        setTimeout(() => {
+            wrapper.classList.add('hidden'); // Hilangkan dari DOM agar tidak bisa di-scroll
+        }, 300); // Samakan dengan durasi transisi Tailwind (duration-300)
+    }
+
+    btnOpen.addEventListener('click', openNav);
+    btnClose.addEventListener('click', closeNav);
+    overlay.addEventListener('click', closeNav);
+                  </script>
+                  
