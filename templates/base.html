@@ -1,76 +1,48 @@
 <!DOCTYPE html>
-<html lang="id" class="scroll-smooth h-full overflow-x-hidden"> <head>
+<html lang="id" class="h-full overflow-x-hidden">
+<head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>{% block title %}Perpustakaan Jendela Bangsa{% endblock %}</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-    
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Plus+Jakarta+Sans:wght@700;800&display=swap" rel="stylesheet">
 
-
-
+    <style>
+        :root { --font-main: 'Plus Jakarta Sans', sans-serif; }
+        body { 
+            font-family: var(--font-main); 
+            display: flex; 
+            flex-direction: column; 
+            min-height: 100vh;
+            overflow-x: hidden; /* Kunci utama scroll kanan */
+            width: 100%;
+        }
+        main { flex: 1; width: 100%; }
+        
+        /* Mencegah pergeseran saat modal/sidebar terbuka */
+        .no-scroll { overflow: hidden !important; }
+    </style>
     {% block extra_head %}{% endblock %}
 </head>
-<body class="antialiased">
-    
+<body class="bg-slate-50 antialiased">
 
-            {% include 'components/navbar.html' %}
-        
+    {% include 'components/navbar.html' %}
 
-    <main>
-        {% block content %}
-        {% endblock %}
+    <main class="container mx-auto px-4 py-8 max-w-7xl">
+        {% block content %}{% endblock %}
     </main>
 
-       {% include 'components/footer.html' %}
+    <footer class="bg-white border-t border-slate-200 py-6 text-center text-sm text-slate-500">
+        &copy; 2024 Perpustakaan Jendela Bangsa
+    </footer>
 
+    {% include 'components/sidebar_mobile.html' %}
 
-    <div id="notifications" class="fixed bottom-5 right-5 z-[100] flex flex-col gap-3 max-w-[calc(100vw-40px)]">
+    <div id="notifications" class="fixed bottom-5 right-5 z-[100]">
         {% include "components/messages_err.html" %}
     </div>
-    
-    {% include "components/confirm_popup.html" %}
-    <style>
-        :root {
-            --font-main: 'Plus Jakarta Sans', sans-serif;
-            --font-alt: 'Inter', sans-serif;
-        }
 
-        /* Perbaikan overflow sistemik */
-        html, body {
-            max-width: 100%;
-            overflow-x: hidden;
-            position: relative;
-        }
-
-        body {
-            font-family: var(--font-main);
-            background-color: #f8fafc;
-            color: #1e293b;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
-
-        /* Mencegah elemen Flex melampaui container */
-        * {
-            min-width: 0;
-        }
-
-        .font-inter { font-family: var(--font-alt); }
-        
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #f1f5f9; }
-        ::-webkit-scrollbar-thumb { 
-            background: #cbd5e1; 
-            border-radius: 10px; 
-        }
-    </style>
 </body>
 </html>
