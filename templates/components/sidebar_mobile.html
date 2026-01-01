@@ -2,23 +2,40 @@
     <div id="sidebar-overlay" class="absolute inset-0 bg-slate-900/0 backdrop-blur-none transition-all duration-500 ease-in-out"></div>
     
     <div id="sidebar-panel" class="absolute right-0 top-0 bottom-0 w-[300px] bg-white flex flex-col shadow-2xl translate-x-full transition-transform duration-500 ease-in-out">
+        
         <div class="flex items-center justify-between p-6 border-b border-slate-50">
             <span class="text-xs font-black text-green-900 tracking-widest uppercase">Navigation Menu</span>
-            <button class="w-10 h-10 flex items-center justify-center rounded-xl bg-red-50 text-red-600 border-none cursor-pointer" id="btn-close-sidebar">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            <button class="w-10 h-10 flex items-center justify-center rounded-xl bg-red-50 text-red-600 border-none cursor-pointer hover:bg-red-100 transition-colors" id="btn-close-sidebar">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
             </button>
         </div>
 
         <div class="p-6 flex flex-col gap-6 overflow-y-auto">
+            
             <form action="{% url 'book_list' %}" method="GET" class="relative mb-0">
-                <input type="search" name="query" placeholder="Cari buku..." class="w-full bg-slate-50 border border-slate-200 rounded-2xl py-3.5 pl-12 pr-4 text-sm font-medium outline-none">
+                <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                    <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                    </svg>
+                </div>
+                <input type="search" name="query" placeholder="Cari buku..." 
+                    class="w-full bg-slate-50 border border-slate-200 rounded-2xl py-3.5 pl-12 pr-4 text-sm font-medium outline-none focus:border-green-900 focus:ring-1 focus:ring-green-900 transition-all">
             </form>
 
             <nav class="flex flex-col gap-2">
-                <a href="{% url 'home' %}" class="px-5 py-4 rounded-2xl font-bold no-underline {% if request.resolver_match.url_name == 'home' %}bg-green-900 text-white shadow-lg shadow-green-900/20{% else %}text-slate-600{% endif %}">Beranda</a>
-                <a href="{% url 'book_list' %}" class="px-5 py-4 rounded-2xl font-bold no-underline {% if request.resolver_match.url_name == 'book_list' %}bg-green-900 text-white shadow-lg shadow-green-900/20{% else %}text-slate-600{% endif %}">List Buku</a>
+                <a href="{% url 'home' %}" class="px-5 py-4 rounded-2xl font-bold no-underline transition-all {% if request.resolver_match.url_name == 'home' %}bg-green-900 text-white shadow-lg shadow-green-900/20{% else %}text-slate-600 hover:bg-slate-50{% endif %}">
+                    Beranda
+                </a>
+                <a href="{% url 'book_list' %}" class="px-5 py-4 rounded-2xl font-bold no-underline transition-all {% if request.resolver_match.url_name == 'book_list' %}bg-green-900 text-white shadow-lg shadow-green-900/20{% else %}text-slate-600 hover:bg-slate-50{% endif %}">
+                    List Buku
+                </a>
                 {% if user.is_authenticated %}
-                <a href="{% url 'my_loans' %}" class="px-5 py-4 rounded-2xl font-bold no-underline {% if request.resolver_match.url_name == 'my_loans' %}bg-green-900 text-white{% else %}text-slate-600{% endif %}">Peminjaman</a>
+                <a href="{% url 'my_loans' %}" class="px-5 py-4 rounded-2xl font-bold no-underline transition-all {% if request.resolver_match.url_name == 'my_loans' %}bg-green-900 text-white{% else %}text-slate-600 hover:bg-slate-50{% endif %}">
+                    Peminjaman
+                </a>
                 {% endif %}
             </nav>
         </div>
@@ -26,18 +43,32 @@
         <div class="mt-auto p-6 border-t border-slate-100 bg-slate-50/50">
             {% if user.is_authenticated %}
             <div class="flex items-center gap-4 mb-4">
-                <div class="w-12 h-12 bg-green-900 rounded-2xl flex items-center justify-center text-white font-bold">{{ user.username|first|upper }}</div>
+                <div class="w-12 h-12 bg-green-900 rounded-2xl flex items-center justify-center text-white font-bold shadow-inner">
+                    {{ user.username|first|upper }}
+                </div>
                 <div class="truncate">
-                    <p class="text-[10px] text-slate-400 font-bold uppercase mb-0">Akun Saya</p>
+                    <p class="text-[10px] text-slate-400 font-bold uppercase mb-0 leading-tight">Akun Saya</p>
                     <p class="text-sm font-bold text-slate-900 truncate mb-0">{{ user.username }}</p>
                 </div>
             </div>
-            <a href="{% url 'profile' %}" class="w-full flex items-center justify-center gap-3 py-3.5 mb-3 bg-white border border-emerald-100 text-emerald-700 rounded-2xl font-bold text-sm no-underline shadow-sm">Profil Saya</a>
+            
+            <a href="{% url 'profile' %}" class="w-full flex items-center justify-center gap-3 py-3.5 mb-3 bg-white border border-emerald-100 text-emerald-700 rounded-2xl font-bold text-sm no-underline shadow-sm hover:bg-emerald-50 transition-colors">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                </svg>
+                Profil Saya
+            </a>
+
             <form action="{% url 'logout' %}?next={{ request.path }}" method="post" class="mb-0">
-                {% csrf_token %}<button type="submit" class="w-full py-3.5 bg-red-50 text-red-600 border border-red-100 rounded-2xl font-bold text-sm cursor-pointer">Logout</button>
+                {% csrf_token %}
+                <button type="submit" class="w-full py-3.5 bg-red-50 text-red-600 border border-red-100 rounded-2xl font-bold text-sm cursor-pointer hover:bg-red-100 transition-colors">
+                    Logout
+                </button>
             </form>
             {% else %}
-            <a href="{% url 'login' %}" class="w-full py-4 bg-green-900 text-white rounded-2xl font-bold text-center no-underline block">Masuk Sekarang</a>
+            <a href="{% url 'login' %}" class="w-full py-4 bg-green-900 text-white rounded-2xl font-bold text-center no-underline block hover:bg-green-800 transition-colors shadow-lg shadow-green-900/20">
+                Masuk Sekarang
+            </a>
             {% endif %}
         </div>
     </div>
@@ -47,32 +78,46 @@
     const sidebarWrapper = document.getElementById('mobile-sidebar');
     const sidebarPanel = document.getElementById('sidebar-panel');
     const sidebarOverlay = document.getElementById('sidebar-overlay');
-    const btnOpen = document.getElementById('btn-open-sidebar');
+    const btnOpen = document.getElementById('btn-open-sidebar'); // Pastikan ID ini ada di trigger button luar
     const btnClose = document.getElementById('btn-close-sidebar');
 
     function openSidebar() {
-        sidebarWrapper.classList.remove('hidden'); // Memungkinkan elemen terlihat
+        // Tampilkan wrapper dulu
+        sidebarWrapper.classList.remove('hidden'); 
         
+        // Gunakan requestAnimationFrame agar browser sempat merender 'hidden' yang hilang sebelum animasi mulai
+        requestAnimationFrame(() => {
             sidebarOverlay.classList.replace('bg-slate-900/0', 'bg-slate-900/60');
             sidebarOverlay.classList.add('backdrop-blur-sm');
             sidebarPanel.classList.replace('translate-x-full', 'translate-x-0');
+        });
         
         document.body.style.overflow = 'hidden';
     }
 
     function closeSidebar() {
+        // Mulai animasi keluar
         sidebarOverlay.classList.replace('bg-slate-900/60', 'bg-slate-900/0');
         sidebarOverlay.classList.remove('backdrop-blur-sm');
         sidebarPanel.classList.replace('translate-x-0', 'translate-x-full');
         
-        
-            sidebarWrapper.classList.add('hidden'); // Benar-benar menghilangkan elemen dari kalkulasi layar
+        // Tunggu transisi (500ms) selesai baru pasang 'hidden'
+        setTimeout(() => {
+            sidebarWrapper.classList.add('hidden');
+        }, 500);
         
         document.body.style.overflow = '';
     }
 
-    btnOpen.onclick = openSidebar;
-    btnClose.onclick = closeSidebar;
+    // Event Listeners
+    if (btnOpen) btnOpen.onclick = openSidebar;
+    if (btnClose) btnClose.onclick = closeSidebar;
     sidebarOverlay.onclick = closeSidebar;
-                </script>
-                
+
+    // Tutup dengan tombol ESC
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && !sidebarWrapper.classList.contains('hidden')) {
+            closeSidebar();
+        }
+    });
+                    </script>
