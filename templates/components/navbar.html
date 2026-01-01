@@ -1,9 +1,9 @@
-<nav class="sticky top-0 z-40 bg-white shadow-sm font-plus-jakarta w-full">
+<nav class="sticky top-0 z-40 bg-white/90 backdrop-blur-md shadow-sm font-plus-jakarta w-full border-b border-slate-100">
     <div class="container mx-auto px-4">
         <div class="flex items-center justify-between h-20 lg:h-24">
             
             <a href="{% url 'home' %}" class="flex items-center gap-3 group no-underline">
-                <div class="w-10 h-10 bg-green-900 rounded-full flex items-center justify-center transition-transform duration-300 group-hover:rotate-12">
+                <div class="w-10 h-10 bg-green-900 rounded-xl flex items-center justify-center transition-all duration-300 group-hover:rotate-12 shadow-lg shadow-green-900/20">
                     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
                         <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
@@ -21,6 +21,7 @@
                     {% if user.is_authenticated %}
                     <li><a href="{% url 'my_loans' %}" class="px-5 py-2.5 rounded-xl text-sm font-bold no-underline transition-all {% if request.resolver_match.url_name == 'my_loans' %}text-green-900 bg-green-900/5{% else %}text-slate-500 hover:text-green-900 hover:bg-green-900/5{% endif %}">Peminjaman</a></li>
                     {% endif %}
+                    <li><a href="{% url 'about' %}" class="px-5 py-2.5 rounded-xl text-sm font-bold no-underline transition-all {% if request.resolver_match.url_name == 'about' %}text-green-900 bg-green-900/5{% else %}text-slate-500 hover:text-green-900 hover:bg-green-900/5{% endif %}">Tentang Kami</a></li>
                 </ul>
 
                 <div class="flex items-center gap-4 border-l pl-6 border-slate-200">
@@ -33,20 +34,41 @@
 
                     {% if user.is_authenticated %}
                     <div class="relative group">
-                        <button class="w-10 h-10 rounded-full bg-green-900 flex items-center justify-center text-white font-bold text-sm border-2 border-white shadow-md cursor-pointer">
-                            {{ user.username|first|upper }}
+                        <button class="flex items-center gap-3 bg-transparent border-none cursor-pointer py-2 outline-none">
+                            <div class="flex flex-col items-end hidden xl:flex">
+                                <span class="text-[10px] font-bold text-slate-400 uppercase leading-none mb-1">Halo,</span>
+                                <span class="text-xs font-bold text-green-900">{{ user.username }}</span>
+                            </div>
+                            <div class="w-10 h-10 rounded-full bg-green-900 flex items-center justify-center text-white font-bold text-sm border-2 border-white shadow-md transition-transform group-hover:scale-105">
+                                {{ user.username|first|upper }}
+                            </div>
                         </button>
+                        <div class="absolute right-0 top-full pt-2 w-48 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                            <div class="bg-white rounded-2xl shadow-xl border border-slate-100 overflow-hidden">
+                                <a href="{% url 'profile' %}" class="flex items-center gap-3 px-5 py-3.5 text-sm font-bold text-slate-600 no-underline hover:bg-slate-50 hover:text-green-900 transition-colors">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                                    Profil Saya
+                                </a>
+                                <hr class="border-slate-50 my-0">
+                                <form action="{% url 'logout' %}?next={{ request.path }}" method="post" class="mb-0">
+                                    {% csrf_token %}
+                                    <button type="submit" class="w-full flex items-center gap-3 px-5 py-3.5 text-sm font-bold text-red-600 bg-transparent border-none cursor-pointer hover:bg-red-50 transition-colors text-left">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                                        Logout
+                                    </button>
+                                </form>
+                            </div>
                         </div>
+                    </div>
                     {% else %}
-                    <a href="{% url 'login' %}" class="px-8 py-2.5 bg-green-900 text-white rounded-full text-sm font-bold no-underline">Masuk</a>
+                    <a href="{% url 'login' %}" class="px-8 py-2.5 bg-green-900 text-white rounded-full text-sm font-bold no-underline hover:bg-green-800 transition-all shadow-lg shadow-green-900/20">Masuk</a>
                     {% endif %}
                 </div>
             </div>
 
-            <button class="lg:hidden p-3 text-green-900 bg-green-900/5 rounded-2xl border-none cursor-pointer" id="btn-open-sidebar">
+            <button class="lg:hidden p-3 text-green-900 bg-green-900/5 rounded-2xl border-none cursor-pointer active:scale-95 transition-transform" id="btn-open-sidebar">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
             </button>
         </div>
     </div>
-    </nav>
-                            
+                            </nav>
