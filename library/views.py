@@ -1,5 +1,7 @@
 # library/views.py
 
+from datetime import date
+from django.db.models import Sum
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
@@ -22,14 +24,62 @@ class MyLoginView(SuccessMessageMixin, LoginView):
     success_message = "Selamat datang kembali! Anda telah berhasil masuk."
 def welcome(request):
     return render(request, 'pages/welcome.html')
-def book_list(request): 
-    books = Book.objects.annotate(
-        rating_rata2=Coalesce(Avg('reviews__rating'), Value(0.0))
-    )
-    
-    sort_param = request.GET.get('sort')
+def about(request):
+    return render(request, 'pages/about.html')
 
-    if sort_param == 'newest':
+
+@login_required
+def profile(request):
+    # 1. Ambil buku yang sedang dipinjam (Status: approved)
+    current_loans = Loan.objects.filter(member=request.user, status='approved').order_by('due_date')
+    
+    # 2. Hitung jumlah buku yang sedang dibawa
+    current_loans_count = current_loans.count()
+    
+    # 3. Tentukan Limit Peminjaman (Contoh: 5 buku)
+    loan_limit = 5
+    
+    # 4. Hitung Total Denda (Denda yang sudah fix + denda berjalan)
+    # Denda fix dari buku yang sudah dikembalikan tapi belum dibayar
+    fixed_fine = Loan.objects.filter(
+        member=request.user, 
+        is_paid=False
+    ).aggregate(Sum('fine_amount'))['fine_amount__sum'] or 0
+    
+    # Denda berjalan dari buku yang belum dikembalikan tapi sudah telat
+    running_fine = sum(loan.current_fine for loan in current_loans)
+    
+    total_fine = fixed_fine + running_fine
+    
+    # 5. Cek Status Akun menggunakan static method dari Model Loan
+    is_active = Loan.can_user_borrow(request.user)
+    
+    context = {
+        'current_loans': current_loans,
+        'current_loans_count': current_loans_count,
+        'loan_limit': loan_limit,
+        'total_fine': total_fine,
+        'has_fine': not is_active, # Akun dibatasi jika can_user_borrow = False
+        'today': date.today(),
+    }
+    
+    return render(request, 'pages/profile.html', context)
+def book_list(request):
+    heading_title ="Daftar Buku"
+    genre = request.GET.get('tag')
+    search = request.GET.get('query')
+    sort_param = request.GET.get('sort')
+    books = Book.objects.annotate(
+    rating_rata2=Coalesce(Avg('reviews__rating'), Value(0.0))
+    )
+    if genre :
+        heading_title=f"Daftar Buku Dengan Genre {genre}"
+        books = books.filter(genre__name=genre)
+    elif search :
+        heading_title=f"Daftar Buku Dengan Hasil Pencarian {search}"
+        lookup = Q(title__icontains=search) | Q(author__icontains=search)
+        books = books.filter(lookup)
+    elif sort_param == 'newest':
         books = books.order_by('-id')
     elif sort_param == 'rating':
         # Sekarang pasti jalan karena NULL sudah jadi 0.0
@@ -48,8 +98,7 @@ def book_list(request):
     
     # 4. Dapatkan objek Page untuk halaman yang diminta
     halaman_buku = paginator.get_page(page_number)
-    context = {'books': halaman_buku}
-    print(books)
+    context = {'books': halaman_buku,'title':heading_title}
     return render(request, 'pages/book_list.html', context)
 def detail_buku(request, pk):
     # Mengambil objek Buku yang memiliki pk yang cocok.

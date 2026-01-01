@@ -1,0 +1,126 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<main class="bg-[#FDFFF5] font-inter overflow-hidden">
+    <section class="relative py-20 lg:py-32">
+        <div class="container px-4 mx-auto relative z-10">
+            <div class="max-w-4xl mx-auto text-center">
+                <div class="inline-flex items-center px-4 py-1.5 mb-6 text-green-900 bg-emerald-100 rounded-full shadow-sm">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <small class="text-[10px] font-black tracking-widest uppercase">Mengenal Lebih Dekat</small>
+                </div>
+                <h1 class="text-5xl lg:text-7xl font-extrabold text-slate-900 mb-8 font-plus-jakarta leading-tight">
+                    Membuka Jendela Dunia Melalui <span class="text-emerald-700">Literasi Digital.</span>
+                </h1>
+                <p class="text-lg text-slate-600 leading-relaxed max-w-2xl mx-auto">
+                    Perpustakaan Jendela Bangsa adalah gerakan untuk memastikan setiap anak bangsa memiliki akses ke ilmu pengetahuan tanpa batas melalui teknologi.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-20 bg-white">
+        <div class="container px-4 mx-auto">
+            <div class="grid lg:grid-cols-2 gap-16 items-center">
+                <div class="relative">
+                    <div class="relative z-10 overflow-hidden rounded-[3rem] shadow-2xl aspect-[4/3] bg-gray-100">
+                        <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1000&q=80" 
+                             alt="Tim Jendela Bangsa" 
+                             class="w-full h-full object-cover transform hover:scale-105 transition duration-700">
+                    </div>
+                    <div class="absolute -bottom-8 -right-8 w-64 h-64 bg-yellow-400 rounded-[3rem] -z-0 opacity-20"></div>
+                </div>
+                
+                <div class="space-y-10">
+                    <div>
+                        <h2 class="text-3xl font-extrabold text-slate-900 mb-4 font-plus-jakarta">Visi Kami</h2>
+                        <p class="text-slate-600 text-lg">Menjadi pusat literasi digital terdepan di Indonesia yang menginspirasi inovasi dan kemandirian berpikir.</p>
+                    </div>
+                    <div class="space-y-6">
+                        <h2 class="text-3xl font-extrabold text-slate-900 mb-4 font-plus-jakarta">Misi Kami</h2>
+                        <div class="flex gap-4">
+                            <div class="flex-shrink-0 w-12 h-12 bg-emerald-100 rounded-2xl flex items-center justify-center text-emerald-700 font-bold">1</div>
+                            <p class="text-slate-600 font-medium">Menyediakan akses mudah ke ribuan koleksi buku berkualitas.</p>
+                        </div>
+                        <div class="flex gap-4">
+                            <div class="flex-shrink-0 w-12 h-12 bg-emerald-100 rounded-2xl flex items-center justify-center text-emerald-700 font-bold">2</div>
+                            <p class="text-slate-600 font-medium">Membangun komunitas pembaca yang aktif dan kritis.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-24 bg-gray-50">
+        <div class="container px-4 mx-auto text-center">
+            <h2 class="text-4xl font-extrabold text-slate-900 mb-16 font-plus-jakarta">Orang di Balik <span class="text-emerald-700">Jendela Bangsa</span></h2>
+            
+            <div class="flex flex-wrap justify-center gap-12 max-w-6xl mx-auto">
+                
+                <div class="group w-full md:w-[30%]">
+                    <div class="relative mb-6 inline-block">
+                        <div class="w-48 h-48 rounded-[2.5rem] overflow-hidden bg-slate-200 shadow-xl group-hover:-translate-y-2 transition duration-500">
+                            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Luis&skinColor=ffdbb4" alt="CEO" class="w-full h-full">
+                        </div>
+                    </div>
+                    <h4 class="text-xl font-bold text-slate-900">Nazril Abdillah</h4>
+                    <p class="text-emerald-700 font-black text-[10px] uppercase tracking-[0.2em]">Programmer</p>
+                </div>
+
+                <div class="group w-full md:w-[30%]">
+                    <div class="relative mb-6 inline-block">
+                        <div class="w-48 h-48 rounded-[2.5rem] overflow-hidden bg-pink-100 shadow-xl group-hover:-translate-y-2 transition duration-500">
+                            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Aneka&skinColor=ffdbb4" alt="Librarian" class="w-full h-full">
+                        </div>
+                    </div>
+                    <h4 class="text-xl font-bold text-slate-900">I Kadek Febri</h4>
+                    <p class="text-emerald-700 font-black text-[10px] uppercase tracking-[0.2em]">Ui & Ux Designer</p>
+                </div>
+
+                <div class="group w-full md:w-[30%]">
+                    <div class="relative mb-6 inline-block">
+                        <div class="w-48 h-48 rounded-[2.5rem] overflow-hidden bg-slate-200 shadow-xl group-hover:-translate-y-2 transition duration-500">
+                            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Jameson&skinColor=ffdbb4" alt="CTO" class="w-full h-full">
+                        </div>
+                    </div>
+                    <h4 class="text-xl font-bold text-slate-900">Safaat</h4>
+                    <p class="text-emerald-700 font-black text-[10px] uppercase tracking-[0.2em]">System Analis</p>
+                </div>
+
+                <div class="group w-full md:w-[30%]">
+                    <div class="relative mb-6 inline-block">
+                        <div class="w-48 h-48 rounded-[2.5rem] overflow-hidden bg-pink-100 shadow-xl group-hover:-translate-y-2 transition duration-500">
+                            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Lily&skinColor=ffdbb4" alt="Creative" class="w-full h-full">
+                        </div>
+                    </div>
+                    <h4 class="text-xl font-bold text-slate-900">Laila Rohmah</h4>
+                    <p class="text-emerald-700 font-black text-[10px] uppercase tracking-[0.2em]">Jurnal Writing</p>
+                </div>
+
+                <div class="group w-full md:w-[30%]">
+                    <div class="relative mb-6 inline-block">
+                        <div class="w-48 h-48 rounded-[2.5rem] overflow-hidden bg-slate-200 shadow-xl group-hover:-translate-y-2 transition duration-500">
+                            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Jack&skinColor=ffdbb4" alt="Community" class="w-full h-full">
+                        </div>
+                    </div>
+                    <h4 class="text-xl font-bold text-slate-900">Agdina Firma</h4>
+                    <p class="text-emerald-700 font-black text-[10px] uppercase tracking-[0.2em]">Jurnal Writing</p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section class="py-20 bg-white">
+        <div class="container px-4 mx-auto text-center">
+            <div class="p-12 lg:p-20 bg-emerald-50 rounded-[4rem] border border-emerald-100">
+                <h2 class="text-4xl font-extrabold text-slate-900 mb-6 font-plus-jakarta">Jadilah Bagian dari Sejarah Kami</h2>
+                <a href="{% url 'book_list' %}" class="px-10 py-4 bg-emerald-700 text-white font-bold rounded-full no-underline shadow-lg hover:bg-emerald-800 transition inline-block">Jelajahi Buku</a>
+            </div>
+        </div>
+    </section>
+</main>
+{% endblock %}

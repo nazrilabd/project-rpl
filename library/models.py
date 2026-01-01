@@ -101,7 +101,7 @@ class Loan(models.Model):
         default=0.00, 
         verbose_name="Jumlah Denda (Rp)"
     )
-    created_at = models.DateTimeField(null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
     class Meta:
         verbose_name = "Peminjaman"
         verbose_name_plural = "Daftar Peminjaman"

@@ -70,9 +70,9 @@
 
                 <div class="flex flex-wrap gap-2 mb-10">
                     {% for tag in book.genre.all %}
-                    <span class="px-4 py-2 bg-white border border-green-100 rounded-full text-[10px] font-black text-green-800 uppercase tracking-widest shadow-sm">
-                        {{ tag.name }}
-                    </span>
+                      <a href="{% url 'book_list' %}?tag={{ tag.name }}" class="bg-green-950/70 backdrop-blur-md text-white py-1.5 px-3 rounded-full font-bold text-[10px] tracking-wider uppercase no-underline hover:bg-green-600 transition-colors">
+                            {{ tag.name }}
+                        </a>
                     {% endfor %}
                 </div>
 
