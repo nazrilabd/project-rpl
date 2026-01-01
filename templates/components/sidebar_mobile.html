@@ -1,27 +1,43 @@
 <div id="mobile-sidebar" class="fixed inset-0 z-[100] hidden">
-    <div id="sidebar-overlay" class="absolute inset-0 bg-slate-900/40 transition-opacity duration-300 ease-out opacity-0"></div>
+    <div id="sidebar-overlay" class="absolute inset-0 bg-slate-900/0 backdrop-blur-none transition-all duration-500 ease-in-out"></div>
     
-    <div id="sidebar-panel" class="absolute right-0 top-0 bottom-0 w-[280px] bg-white flex flex-col shadow-xl translate-x-full transition-transform duration-300 ease-out">
-        
+    <div id="sidebar-panel" class="absolute right-0 top-0 bottom-0 w-[300px] bg-white flex flex-col shadow-2xl translate-x-full transition-transform duration-500 ease-in-out">
         <div class="flex items-center justify-between p-6 border-b border-slate-50">
-            <span class="text-xs font-bold text-green-900 uppercase tracking-widest">Menu</span>
-            <button class="p-2 -mr-2 text-slate-400" id="btn-close-sidebar">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            <span class="text-xs font-black text-green-900 tracking-widest uppercase">Navigation Menu</span>
+            <button class="w-10 h-10 flex items-center justify-center rounded-xl bg-red-50 text-red-600 border-none cursor-pointer" id="btn-close-sidebar">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
             </button>
         </div>
 
-        <div class="flex-1 overflow-y-auto p-6 flex flex-col gap-4">
-             <nav class="flex flex-col gap-2">
-                <a href="{% url 'home' %}" class="px-5 py-4 rounded-xl font-bold no-underline {% if request.resolver_match.url_name == 'home' %}bg-green-900 text-white{% else %}text-slate-600 hover:bg-slate-50{% endif %}">Beranda</a>
-                <a href="{% url 'book_list' %}" class="px-5 py-4 rounded-xl font-bold no-underline {% if request.resolver_match.url_name == 'book_list' %}bg-green-900 text-white{% else %}text-slate-600 hover:bg-slate-50{% endif %}">List Buku</a>
+        <div class="p-6 flex flex-col gap-6 overflow-y-auto">
+            <form action="{% url 'book_list' %}" method="GET" class="relative mb-0">
+                <input type="search" name="query" placeholder="Cari buku..." class="w-full bg-slate-50 border border-slate-200 rounded-2xl py-3.5 pl-12 pr-4 text-sm font-medium outline-none">
+            </form>
+
+            <nav class="flex flex-col gap-2">
+                <a href="{% url 'home' %}" class="px-5 py-4 rounded-2xl font-bold no-underline {% if request.resolver_match.url_name == 'home' %}bg-green-900 text-white shadow-lg shadow-green-900/20{% else %}text-slate-600{% endif %}">Beranda</a>
+                <a href="{% url 'book_list' %}" class="px-5 py-4 rounded-2xl font-bold no-underline {% if request.resolver_match.url_name == 'book_list' %}bg-green-900 text-white shadow-lg shadow-green-900/20{% else %}text-slate-600{% endif %}">List Buku</a>
+                {% if user.is_authenticated %}
+                <a href="{% url 'my_loans' %}" class="px-5 py-4 rounded-2xl font-bold no-underline {% if request.resolver_match.url_name == 'my_loans' %}bg-green-900 text-white{% else %}text-slate-600{% endif %}">Peminjaman</a>
+                {% endif %}
             </nav>
         </div>
-        
-        <div class="p-6 border-t bg-slate-50">
+
+        <div class="mt-auto p-6 border-t border-slate-100 bg-slate-50/50">
             {% if user.is_authenticated %}
-                <button class="w-full py-3 bg-red-50 text-red-600 rounded-xl font-bold text-sm">Logout</button>
+            <div class="flex items-center gap-4 mb-4">
+                <div class="w-12 h-12 bg-green-900 rounded-2xl flex items-center justify-center text-white font-bold">{{ user.username|first|upper }}</div>
+                <div class="truncate">
+                    <p class="text-[10px] text-slate-400 font-bold uppercase mb-0">Akun Saya</p>
+                    <p class="text-sm font-bold text-slate-900 truncate mb-0">{{ user.username }}</p>
+                </div>
+            </div>
+            <a href="{% url 'profile' %}" class="w-full flex items-center justify-center gap-3 py-3.5 mb-3 bg-white border border-emerald-100 text-emerald-700 rounded-2xl font-bold text-sm no-underline shadow-sm">Profil Saya</a>
+            <form action="{% url 'logout' %}?next={{ request.path }}" method="post" class="mb-0">
+                {% csrf_token %}<button type="submit" class="w-full py-3.5 bg-red-50 text-red-600 border border-red-100 rounded-2xl font-bold text-sm cursor-pointer">Logout</button>
+            </form>
             {% else %}
-                <a href="{% url 'login' %}" class="block w-full py-4 bg-green-900 text-white text-center rounded-xl font-bold no-underline">Masuk</a>
+            <a href="{% url 'login' %}" class="w-full py-4 bg-green-900 text-white rounded-2xl font-bold text-center no-underline block">Masuk Sekarang</a>
             {% endif %}
         </div>
     </div>
@@ -35,33 +51,28 @@
     const btnClose = document.getElementById('btn-close-sidebar');
 
     function openSidebar() {
-        // 1. Tampilkan wrapper dulu
-        sidebarWrapper.classList.remove('hidden');
-        
-        // 2. Gunakan requestAnimationFrame agar browser sempat bernafas
-        requestAnimationFrame(() => {
-            sidebarOverlay.classList.add('opacity-100');
-            sidebarPanel.classList.remove('translate-x-full');
-            // Jika ingin pakai blur, tambahkan di sini secara terpisah
-            sidebarOverlay.classList.add('backdrop-blur-sm'); 
-        });
-
+        sidebarWrapper.classList.remove('hidden'); // Memungkinkan elemen terlihat
+        setTimeout(() => {
+            sidebarOverlay.classList.replace('bg-slate-900/0', 'bg-slate-900/60');
+            sidebarOverlay.classList.add('backdrop-blur-sm');
+            sidebarPanel.classList.replace('translate-x-full', 'translate-x-0');
+        }, 10);
         document.body.style.overflow = 'hidden';
     }
 
     function closeSidebar() {
-        sidebarOverlay.classList.remove('opacity-100', 'backdrop-blur-sm');
-        sidebarPanel.classList.add('translate-x-full');
+        sidebarOverlay.classList.replace('bg-slate-900/60', 'bg-slate-900/0');
+        sidebarOverlay.classList.remove('backdrop-blur-sm');
+        sidebarPanel.classList.replace('translate-x-0', 'translate-x-full');
         
-        // Tunggu transisi selesai sebelum hidden
         setTimeout(() => {
-            sidebarWrapper.classList.add('hidden');
-        }, 300); // Harus sama dengan duration-300 di class HTML
-        
+            sidebarWrapper.classList.add('hidden'); // Benar-benar menghilangkan elemen dari kalkulasi layar
+        }, 500); 
         document.body.style.overflow = '';
     }
 
     btnOpen.onclick = openSidebar;
     btnClose.onclick = closeSidebar;
     sidebarOverlay.onclick = closeSidebar;
-</script>
+                </script>
+                
