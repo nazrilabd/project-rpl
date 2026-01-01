@@ -52,11 +52,11 @@
 
     function openSidebar() {
         sidebarWrapper.classList.remove('hidden'); // Memungkinkan elemen terlihat
-        setTimeout(() => {
+        
             sidebarOverlay.classList.replace('bg-slate-900/0', 'bg-slate-900/60');
             sidebarOverlay.classList.add('backdrop-blur-sm');
             sidebarPanel.classList.replace('translate-x-full', 'translate-x-0');
-        }, 10);
+        
         document.body.style.overflow = 'hidden';
     }
 
@@ -65,9 +65,9 @@
         sidebarOverlay.classList.remove('backdrop-blur-sm');
         sidebarPanel.classList.replace('translate-x-0', 'translate-x-full');
         
-        setTimeout(() => {
+        
             sidebarWrapper.classList.add('hidden'); // Benar-benar menghilangkan elemen dari kalkulasi layar
-        }, 500); 
+        
         document.body.style.overflow = '';
     }
 
