@@ -1,7 +1,7 @@
 <div id="mobile-sidebar" class="fixed inset-0 z-[100] hidden">
-    <div id="sidebar-overlay" class="absolute inset-0 bg-slate-900/0 backdrop-blur-none transition-all duration-50 ease-out"></div>
+    <div id="sidebar-overlay" class="absolute inset-0 bg-slate-900/0 backdrop-blur-none transition-all ease-out"></div>
     
-    <div id="sidebar-panel" class="absolute right-0 top-0 bottom-0 w-[280px] bg-white flex flex-col shadow-2xl translate-x-full transition-transform duration-300 ease-[cubic-bezier(0.4,0,0.2,1)]">
+    <div id="sidebar-panel" class="absolute right-0 top-0 bottom-0 w-[280px] bg-white flex flex-col shadow-2xl translate-x-full transition-transform duration-50 ease-[cubic-bezier(0.4,0,0.2,1)]">
         
         <div class="flex items-center justify-between p-5 border-b border-slate-50">
             <span class="text-[10px] font-black text-green-900 tracking-[0.2em] uppercase">Menu</span>
@@ -17,7 +17,7 @@
                         <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                     </svg>
                 </div>
-                <input type="search" name="query" placeholder="Cari buku..." class="w-full bg-slate-50 border border-slate-100 rounded-xl py-3 pl-11 pr-4 text-sm outline-none focus:bg-white focus:border-green-900 transition-all">
+                <input type="search" name="q" placeholder="Cari buku..." class="w-full bg-slate-50 border border-slate-100 rounded-xl py-3 pl-11 pr-4 text-sm outline-none focus:bg-white focus:border-green-900 transition-all">
             </form>
 
             <nav class="flex flex-col gap-1.5">
@@ -50,7 +50,7 @@
                 <button type="submit" class="w-full py-3 bg-red-50 text-red-600 border-none rounded-xl font-bold text-xs cursor-pointer hover:bg-red-100 transition-colors">Logout</button>
             </form>
             {% else %}
-            <a href="{% url 'login' %}" class="w-full py-3.5 bg-green-900 text-white rounded-xl font-bold text-center no-underline block shadow-md">Masuk</a>
+            <a href="{% url 'login' %}?next={{ request.path }}" class="w-full py-3.5 bg-green-900 text-white rounded-xl font-bold text-center no-underline block shadow-md">Masuk</a>
             {% endif %}
         </div>
     </div>
@@ -62,13 +62,14 @@
     const overlay = document.getElementById('sidebar-overlay');
     const btnOpen = document.getElementById('btn-open-sidebar');
     const btnClose = document.getElementById('btn-close-sidebar');
-
+    const wrapperMainContent = document.getElementById('wrapperMainContent')
     function openSidebar() {
         wrapper.classList.remove('hidden');
         
         // Mencegah scroll pada body & html (Double protection)
-        document.body.style.overflow = 'hidden';
-        document.documentElement.style.overflow = 'hidden';
+        //document.body.style.overflow = 'hidden';
+        // document.documentElement.style.overflow = 'hidden';
+        wrapperMainContent.style.overflow = 'hidden';
         
         requestAnimationFrame(() => {
             overlay.classList.replace('bg-slate-900/0', 'bg-slate-900/60');
@@ -76,7 +77,7 @@
             panel.classList.replace('translate-x-full', 'translate-x-0');
         });
     }
-
+    
     function closeSidebar() {
         overlay.classList.replace('bg-slate-900/60', 'bg-slate-900/0');
         overlay.classList.remove('backdrop-blur-[2px]');
@@ -85,8 +86,9 @@
         setTimeout(() => {
             wrapper.classList.add('hidden');
             // Mengembalikan scroll
-            document.body.style.overflow = '';
-            document.documentElement.style.overflow = '';
+            wrapperMainContent.style.overflow = '';
+           // document.body.style.overflow = '';
+           // document.documentElement.style.overflow = '';
         }, 50); // Harus sama dengan durasi CSS (duration-300)
     }
 

@@ -1,146 +1,172 @@
 <div class="container mx-auto my-12 px-4 font-plus-jakarta overflow-visible">
-    
     <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-12 gap-6 relative z-30 animate-fade-in">
         <div>
             <nav class="mb-4">
                 <ol class="flex items-center gap-2 text-[10px] font-bold tracking-widest uppercase list-none p-0">
-                    <li>
-                        <a href="{% url 'home' %}" class="text-green-600 no-underline opacity-75 hover:opacity-100 flex items-center transition-all">
-                            <svg class="mr-2" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
-                            HOME
-                        </a>
-                    </li>
+                    <li><a href="{% url 'home' %}" class="text-green-600 no-underline opacity-75 flex items-center">HOME</a></li>
                     <li class="text-slate-300">•</li>
                     <li class="text-slate-400">DAFTAR BUKU</li>
                 </ol>
             </nav>
-            
             <div class="flex items-center gap-4">
                 <div class="bg-yellow-400 rounded-full h-11 w-1.5"></div>
-                <h2 class="text-4xl md:text-5xl font-black text-slate-900 tracking-tighter leading-none mb-0 uppercase">{{ title }}</h2>
+                <h2 class="text-4xl md:text-5xl font-black text-slate-900 tracking-tighter leading-none mb-0 uppercase italic">
+                    {% if request.GET.q %}Hasil Cari{% else %}{{ title }}{% endif %}
+                </h2>
             </div>
         </div>
-
-        <div class="flex flex-col items-start md:items-end gap-4 relative">
-            <div class="px-4 py-2 bg-green-50 border border-green-100 rounded-full flex items-center shadow-sm">
-                <svg class="mr-2 text-green-600" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
-                <span class="text-green-700 text-xs font-bold">{{ books|length }} Koleksi Ditampilkan</span>
-            </div>
-            
-            <div class="relative inline-block text-left" id="sortDropdownWrapper">
-                <button onclick="toggleSortDropdown()" class="bg-white border border-slate-200 py-3 px-6 rounded-full text-sm font-bold text-slate-600 flex items-center hover:border-green-600 hover:-translate-y-0.5 transition-all cursor-pointer relative z-[60]">
-                    <svg class="mr-2 text-slate-400" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="21" x2="4" y2="14"></line><line x1="4" y1="10" x2="4" y2="3"></line><line x1="12" y1="21" x2="12" y2="12"></line><line x1="12" y1="8" x2="12" y2="3"></line><line x1="20" y1="21" x2="20" y2="16"></line><line x1="20" y1="12" x2="20" y2="3"></line></svg>
-                    <span>Urutkan: </span>
-                    <span class="ml-1 text-green-900 font-black uppercase">
-                        {% if request.GET.sort == 'rating' %}Rating
-                        {% elif request.GET.sort == 'newest' %}Terbaru
-                        {% elif request.GET.sort == 'title' %}Judul
-                        {% else %}Default{% endif %}
-                    </span>
-                    <svg class="ml-2 w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-                </button>
-
-                <div id="sortDropdownContent" class="hidden absolute right-0 mt-3 w-60 bg-white rounded-[2rem] shadow-[0_20px_50px_rgba(0,0,0,0.2)] border border-slate-100 z-30 p-2 transform origin-top-right transition-all duration-200">
-                    <div class="px-4 py-2 text-[10px] font-black text-slate-400 tracking-widest uppercase">Filter Data</div>
-                    
-                    <a href="?sort=newest" class="flex items-center gap-3 px-4 py-3 text-sm font-bold text-slate-600 hover:bg-green-50 hover:text-green-700 rounded-2xl no-underline transition-all">Koleksi Terbaru</a>
-                    <a href="?sort=rating" class="flex items-center gap-3 px-4 py-3 text-sm font-bold text-slate-600 hover:bg-green-50 hover:text-green-700 rounded-2xl no-underline transition-all">Rating Tertinggi</a>
-                    <a href="?sort=title" class="flex items-center gap-3 px-4 py-3 text-sm font-bold text-slate-600 hover:bg-green-50 hover:text-green-700 rounded-2xl no-underline transition-all">Judul (A-Z)</a>
-
-                    {% if request.GET.sort %}
-                    <div class="h-px bg-slate-100 my-2 mx-2"></div>
-                    <a href="?" class="flex items-center gap-3 px-4 py-3 text-sm font-bold text-red-500 hover:bg-red-50 rounded-2xl no-underline transition-all">Reset Filter</a>
-                    {% endif %}
-                </div>
-            </div>
+        <div class="px-4 py-2 bg-green-50 border border-green-100 rounded-full flex items-center shadow-sm">
+            <svg class="mr-2 text-green-600" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+            <span class="text-green-700 text-xs font-bold uppercase tracking-tight">{{ books_count }} Koleksi</span>
         </div>
     </div>
 
-    {% if books %}
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 relative z-10">
-        {% for book in books %}
-        <div class="group h-full animate-fade-in-up" style="animation-delay: {{ forloop.counter0 }}0ms;">
-            <div class="bg-white h-full rounded-[2.5rem] shadow-sm hover:shadow-2xl hover:-translate-y-3 transition-all duration-500 overflow-hidden flex flex-col border border-slate-50">
-                <div class="relative h-[300px] overflow-hidden">
-                    <img src="{{book.cover_image.url}}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="{{ book.title }}">
-                    
-                    <div class="absolute top-4 left-4 flex flex-wrap gap-1 z-20">
-                        {% for tag in book.genre.all %}
-                        <a href="{% url 'book_list' %}?tag={{ tag.name }}" class="bg-green-950/70 backdrop-blur-md text-white py-1.5 px-3 rounded-full font-bold text-[10px] tracking-wider uppercase no-underline hover:bg-green-600 transition-colors">
-                            {{ tag.name }}
-                        </a>
+    <div class="bg-white rounded-[2.5rem] p-6 md:p-10 shadow-xl shadow-slate-200/50 border border-slate-50 mb-12 animate-fade-in relative z-30">
+        <form id="filterForm" method="GET" action="{% url 'book_list' %}" class="space-y-8">
+            
+            <div class="flex flex-col lg:flex-row gap-4">
+                <div class="flex-grow relative group">
+                    <div class="absolute left-5 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-green-600 transition-colors">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                    </div>
+                    <input type="text" name="q" value="{{ request.GET.q|default:'' }}" 
+                           placeholder="Cari judul buku atau ISBN..." 
+                           class="w-full pl-14 pr-6 py-5 bg-slate-50 border-2 border-transparent rounded-2xl focus:bg-white focus:border-green-500 focus:ring-4 focus:ring-green-500/10 transition-all font-bold text-slate-700">
+                </div>
+                
+                <button type="submit" class="bg-green-600 text-white px-10 py-5 rounded-2xl font-black hover:bg-green-700 hover:-translate-y-1 transition-all shadow-lg shadow-green-600/30 uppercase tracking-widest text-xs flex items-center justify-center gap-3">
+                    APPLY FILTER
+                </button>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                
+                <div class="relative space-y-2 custom-dropdown-container">
+                    <label class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] ml-1">Genre</label>
+                    <input type="hidden" name="genre" id="genre_input" value="{{ request.GET.genre }}">
+                    <div class="dropdown-trigger w-full bg-slate-50 border-2 border-slate-50 rounded-xl py-4 px-5 font-bold text-slate-600 text-sm flex justify-between items-center cursor-pointer hover:bg-white hover:border-green-500 transition-all">
+                        <span class="selected-text">{% if selected_genre %}{{ selected_genre.name }}{% else %}Semua Genre{% endif %}</span>
+                        <svg class="w-4 h-4 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M19 9l-7 7-7-7"></path></svg>
+                    </div>
+                    <div class="dropdown-menu hidden absolute left-0 w-full mt-2 bg-white border border-slate-100 rounded-2xl shadow-2xl z-50 py-2 max-h-60 overflow-y-auto">
+                        <div class="dropdown-item px-5 py-3 hover:bg-green-50 hover:text-green-700 font-bold text-sm cursor-pointer" data-value="">Semua Genre</div>
+                        {% for g in genres %}
+                        <div class="dropdown-item px-5 py-3 hover:bg-green-50 hover:text-green-700 font-bold text-sm cursor-pointer" data-value="{{ g.id }}">{{ g.name }}</div>
                         {% endfor %}
                     </div>
+                </div>
 
-                    <div class="absolute bottom-4 right-4">
-                        <div class="bg-black/50 backdrop-blur-md flex items-center gap-2 px-4 py-2 rounded-full border border-white/20">
-                            {% if book.average_rating > 0 %}
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="#FFC107"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
-                            <span class="text-white font-black text-sm">{{ book.average_rating|floatformat:1 }}</span>
-                            {% else %}
-                            <div class="w-2 h-2 bg-yellow-400 rounded-full animate-pulse"></div>
-                            <span class="text-white font-black text-[10px] tracking-widest uppercase">NEW</span>
-                            {% endif %}
-                        </div>
+                <div class="relative space-y-2 custom-dropdown-container">
+                    <label class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] ml-1">Penulis</label>
+                    <input type="hidden" name="author" id="author_input" value="{{ request.GET.author }}">
+                    <div class="dropdown-trigger w-full bg-slate-50 border-2 border-slate-50 rounded-xl py-4 px-5 font-bold text-slate-600 text-sm flex justify-between items-center cursor-pointer hover:bg-white hover:border-green-500 transition-all">
+                        <span class="selected-text">Semua Penulis</span>
+                        <svg class="w-4 h-4 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M19 9l-7 7-7-7"></path></svg>
+                    </div>
+                    <div class="dropdown-menu hidden absolute left-0 w-full mt-2 bg-white border border-slate-100 rounded-2xl shadow-2xl z-50 py-2 max-h-60 overflow-y-auto">
+                        <div class="dropdown-item px-5 py-3 hover:bg-green-50 hover:text-green-700 font-bold text-sm cursor-pointer" data-value="">Semua Penulis</div>
+                        {% for a in authors %}
+                        <div class="dropdown-item px-5 py-3 hover:bg-green-50 hover:text-green-700 font-bold text-sm cursor-pointer" data-value="{{ a.id }}">{{ a.name }}</div>
+                        {% endfor %}
                     </div>
                 </div>
 
-                <div class="p-6 flex flex-col flex-grow">
-                    <h5 class="text-lg font-black text-slate-900 leading-tight mb-1">{{ book.title|title|truncatechars:25 }}</h5>
-                    <p class="text-sm text-slate-400 mb-6 font-medium">Oleh <span class="text-green-600 font-bold">{{ book.author|title }}</span></p>
-                    
-                    <div class="mt-auto">
-                        <div class="flex justify-between items-center mb-4 text-xs font-bold uppercase tracking-tight">
-                            <span class="text-slate-400 flex items-center gap-1">STOK</span>
-                            <span class="bg-green-50 text-green-700 px-3 py-1 rounded-full border border-green-100">{{ book.stock }} Buku</span>
-                        </div>
-                        
-                        <a href="{% url 'detail_book' pk=book.pk %}" class="block w-full text-center bg-yellow-400 py-3.5 rounded-2xl text-green-950 font-black no-underline shadow-lg shadow-yellow-400/20 hover:bg-yellow-500 hover:shadow-yellow-500/40 transition-all active:scale-95">
-                            LIHAT DETAIL
-                        </a>
+                <div class="relative space-y-2 custom-dropdown-container">
+                    <label class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] ml-1">Lokasi Rak</label>
+                    <input type="hidden" name="location" id="location_input" value="{{ request.GET.location }}">
+                    <div class="dropdown-trigger w-full bg-slate-50 border-2 border-slate-50 rounded-xl py-4 px-5 font-bold text-slate-600 text-sm flex justify-between items-center cursor-pointer hover:bg-white hover:border-green-500 transition-all">
+                        <span class="selected-text">Semua Lokasi</span>
+                        <svg class="w-4 h-4 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M19 9l-7 7-7-7"></path></svg>
+                    </div>
+                    <div class="dropdown-menu hidden absolute left-0 w-full mt-2 bg-white border border-slate-100 rounded-2xl shadow-2xl z-50 py-2 max-h-60 overflow-y-auto">
+                        <div class="dropdown-item px-5 py-3 hover:bg-green-50 hover:text-green-700 font-bold text-sm cursor-pointer" data-value="">Semua Lokasi</div>
+                        {% for l in locations %}
+                        <div class="dropdown-item px-5 py-3 hover:bg-green-50 hover:text-green-700 font-bold text-sm cursor-pointer" data-value="{{ l.id }}">{{ l.description }}</div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div class="relative space-y-2 custom-dropdown-container">
+                    <label class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] ml-1">Urutan</label>
+                    <input type="hidden" name="sort" id="sort_input" value="{{ request.GET.sort }}">
+                    <div class="dropdown-trigger w-full bg-yellow-400 border-2 border-yellow-400 rounded-xl py-4 px-5 font-black text-green-950 text-sm flex justify-between items-center cursor-pointer hover:brightness-105 transition-all">
+                        <span class="selected-text">Default</span>
+                        <svg class="w-4 h-4 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M19 9l-7 7-7-7"></path></svg>
+                    </div>
+                    <div class="dropdown-menu hidden absolute left-0 w-full mt-2 bg-white border border-slate-100 rounded-2xl shadow-2xl z-50 py-2">
+                        <div class="dropdown-item px-5 py-3 hover:bg-yellow-50 hover:text-yellow-700 font-bold text-sm cursor-pointer" data-value="">Default</div>
+                        <div class="dropdown-item px-5 py-3 hover:bg-yellow-50 hover:text-yellow-700 font-bold text-sm cursor-pointer" data-value="newest">Terbaru</div>
+                        <div class="dropdown-item px-5 py-3 hover:bg-yellow-50 hover:text-yellow-700 font-bold text-sm cursor-pointer" data-value="rating">Rating Tertinggi</div>
+                        <div class="dropdown-item px-5 py-3 hover:bg-yellow-50 hover:text-yellow-700 font-bold text-sm cursor-pointer" data-value="title">Judul (A-Z)</div>
                     </div>
                 </div>
             </div>
-        </div>
-        {% endfor %}
+        </form>
     </div>
-    {% else %}
-    <div class="text-center py-24 bg-white rounded-[3rem] shadow-sm border border-slate-100">
-        <h3 class="text-2xl font-black text-slate-900 mb-2">Yah, Belum Ada Buku!</h3>
-        <p class="text-slate-500 mb-8 max-w-xs mx-auto text-sm">Database kami sedang beristirahat atau pencarianmu tidak ditemukan.</p>
-        <a href="{% url 'book_list'%}" class="inline-block border-2 border-green-600 text-green-600 px-8 py-3 rounded-full font-bold hover:bg-green-600 hover:text-white transition-all no-underline">
-            KEMBALI KE BERANDA
-        </a>
-    </div>
-    {% endif %}
-    {% include 'components/pagination.html' with halaman_buku=books %}
+{% include 'components/fragments/book_grid.html' with books=books %}
 </div>
 
-<script>
-    function toggleSortDropdown() {
-        const dropdown = document.getElementById('sortDropdownContent');
-        dropdown.classList.toggle('hidden');
+<style>
+    .font-plus-jakarta { font-family: 'Plus Jakarta Sans', sans-serif; }
+    .dropdown-menu {
+        animation: slideDown 0.3s ease-out forwards;
+        transform-origin: top;
     }
+    @keyframes slideDown {
+        from { opacity: 0; transform: scaleY(0); }
+        to { opacity: 1; transform: scaleY(1); }
+    }
+    .dropdown-trigger.active svg { transform: rotate(180deg); }
+    .dropdown-trigger.active { border-color: #22c55e; background-color: white; }
+    
+    /* Scrollbar Styling */
+    .dropdown-menu::-webkit-scrollbar { width: 6px; }
+    .dropdown-menu::-webkit-scrollbar-thumb { background: #e2e8f0; border-radius: 10px; }
+</style>
 
-    window.addEventListener('click', function(e) {
-        const wrapper = document.getElementById('sortDropdownWrapper');
-        const content = document.getElementById('sortDropdownContent');
-        if (wrapper && !wrapper.contains(e.target)) {
-            content.classList.add('hidden');
-        }
+<script>
+    document.querySelectorAll('.custom-dropdown-container').forEach(container => {
+        const trigger = container.querySelector('.dropdown-trigger');
+        const menu = container.querySelector('.dropdown-menu');
+        const input = container.querySelector('input[type="hidden"]');
+        const selectedText = container.querySelector('.selected-text');
+        const items = container.querySelectorAll('.dropdown-item');
+
+        // Toggle dropdown
+        trigger.addEventListener('click', (e) => {
+            // Close other dropdowns
+            document.querySelectorAll('.dropdown-menu').forEach(m => {
+                if (m !== menu) m.classList.add('hidden');
+            });
+            document.querySelectorAll('.dropdown-trigger').forEach(t => {
+                if (t !== trigger) t.classList.remove('active');
+            });
+
+            menu.classList.toggle('hidden');
+            trigger.classList.toggle('active');
+            e.stopPropagation();
+        });
+
+        // Select item
+        items.forEach(item => {
+            item.addEventListener('click', () => {
+                const val = item.getAttribute('data-value');
+                const text = item.innerText;
+
+                input.value = val;
+                selectedText.innerText = text;
+                menu.classList.add('hidden');
+                trigger.classList.remove('active');
+
+                // Auto-submit form when value changes
+                // document.getElementById('filterForm').submit(); 
+            });
+        });
+    });
+
+    // Close when clicking outside
+    window.addEventListener('click', () => {
+        document.querySelectorAll('.dropdown-menu').forEach(m => m.classList.add('hidden'));
+        document.querySelectorAll('.dropdown-trigger').forEach(t => t.classList.remove('active'));
     });
 </script>
-
-<style>
-    @keyframes fadeInUp {
-        from { opacity: 0; transform: translateY(30px); }
-        to { opacity: 1; transform: translateY(0); }
-    }
-    @keyframes fadeIn {
-        from { opacity: 0; }
-        to { opacity: 1; }
-    }
-    .animate-fade-in-up { animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; }
-    .animate-fade-in { animation: fadeIn 1s ease forwards; }
-    .font-plus-jakarta { font-family: 'Plus Jakarta Sans', sans-serif; }
-</style>

@@ -16,7 +16,7 @@
             display: flex; 
             flex-direction: column; 
             min-height: 100vh;
-            overflow-x: hidden; /* Kunci utama scroll kanan */
+         
             width: 100%;
         }
         main { flex: 1; width: 100%; }
@@ -26,17 +26,17 @@
     </style>
     {% block extra_head %}{% endblock %}
 </head>
-<body class="bg-slate-50 antialiased">
+<body class="bg-slate-50 antialiased relative overflow-clip" style="overflow-x: clip;">
 
     {% include 'components/navbar.html' %}
-
+    <div class="overflow-x-hidden w-full" id="wrapperMainContent">
     <main class="container mx-auto px-4 py-8 max-w-7xl">
         {% block content %}{% endblock %}
     </main>
 
 
     {% include 'components/footer.html' %}
-    
+</div>
     {% include 'components/sidebar_mobile.html' %}
 
     <div id="notifications" class="fixed bottom-5 right-5 z-[100]">

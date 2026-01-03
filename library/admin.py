@@ -1,30 +1,51 @@
 # library/admin.py
 
 from django.contrib import admin
-from .models import Book, Loan, Genre
+from .models import Book, Loan, Genre, Location, Author
 from django.utils import timezone
 from datetime import timedelta 
 from django.db.models import F
 from django.template.defaultfilters import truncatechars
-# --- Register Genre ---
+class BookInlineAuthors(admin.TabularInline):
+    model = Book.authors.through # Untuk ManyToMany
+    extra = 1 # Menampilkan 3 baris kosong sekaligus
 @admin.register(Genre)
 class GenreAdmin(admin.ModelAdmin):
     list_display = ('name',)
     search_fields = ('name',)
-
+# --- Register Location ---
+@admin.register(Location)
+class LocationAdmin(admin.ModelAdmin):
+    list_display = ('shelf_name', 'description')
+    search_fields = ('shelf_name',)
 # --- Register Book ---
+@admin.register(Author)
+class AuthorAdmin(admin.ModelAdmin):
+    inlines = [BookInlineAuthors]
+    list_display = ('name', )
+    search_fields = ('name',)
 @admin.register(Book)
 class BookAdmin(admin.ModelAdmin):
-    list_display = ('title','short_description','publication_year', 'author', 'get_genres', 'isbn', 'stock') 
-    search_fields = ('title','description', 'author', 'isbn')
-    list_filter = ('author', 'publication_year', 'genre')
-    # Menyertakan ManyToManyField (tags) di form admin
-    filter_horizontal = ('genre',) 
+    save_as=True
+    # Tambahkan 'location' ke dalam list_display
+    list_display = ('title', 'short_description', 'location', 'stock','display_authors','publication_year') 
+    
+    # Tambahkan 'location' ke filter agar admin bisa memfilter buku berdasarkan Rak
+    list_filter = ('publication_year', 'genre', 'location','authors')
+    
+    search_fields = ('title', 'description', 'authors', 'isbn')
+    filter_horizontal = ('genre','authors') 
+    # Fungsi untuk menampilkan daftar penulis di tabel admin (dipisahkan koma)
+    def display_authors(self, obj):
+        return ", ".join([a.name for a in obj.authors.all()])
+    display_authors.short_description = 'Penulis'
     def get_genres(self, obj):
         return ", ".join([g.name for g in obj.genre.all()])
     get_genres.short_description = 'Genre'
+
     def short_description(self, obj):
         return truncatechars(obj.description, 50)
+    short_description.short_description = "Deskripsi"
     
     # Memberikan nama kolom di header tabel admin
     short_description.short_description = "Deskripsi"

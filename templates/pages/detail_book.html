@@ -21,17 +21,21 @@
         <div class="flex flex-col lg:flex-row gap-8 lg:gap-12">
             
             <div class="w-full lg:w-1/3 lg:order-2">
-                <div class="sidebar">
+                <div class="sticky-sidebar">
                     <div class="bg-white rounded-[2rem] shadow-sm border border-gray-100 p-6 text-center">
                         <div class="bg-gray-50 rounded-2xl p-4 mb-6">
-                            <img src="{{ book.cover_image.url }}" class="mx-auto max-h-[400px] w-auto rounded-lg shadow-md" alt="{{ book.title }}">
+                            {% if book.cover_image %}
+                                <img src="{{ book.cover_image.url }}" class="mx-auto max-h-[400px] w-auto rounded-lg shadow-md" alt="{{ book.title }}">
+                            {% else %}
+                                <div class="h-64 bg-gray-200 flex items-center justify-center rounded-lg italic text-gray-400">Sampul tidak tersedia</div>
+                            {% endif %}
                         </div>
                         
                         <h4 class="fw-black text-gray-900 mb-2 lg:hidden uppercase">{{ book.title }}</h4>
                         <p class="text-gray-400 text-[10px] font-bold tracking-widest mb-6">ISBN: {{ book.isbn }}</p>
 
                         <div class="space-y-4">
-                            <a href="{% url 'request_loan' book.id %}" class="block w-full bg-yellow-400 hover:bg-yellow-500 text-green-950 font-black py-4 rounded-xl shadow-md transition-all no-underline text-sm tracking-widest">
+                            <a href="{% url 'request_loan' book.id %}" class="block w-full bg-yellow-400 hover:bg-yellow-500 text-green-950 font-black py-4 rounded-xl shadow-md transition-all no-underline text-sm tracking-widest text-center">
                                 PINJAM SEKARANG
                             </a>
                             
@@ -43,9 +47,9 @@
                                 <div class="text-right">
                                     <small class="block text-gray-400 font-bold text-[9px] uppercase">Rating</small>
                                     {% if book.average_rating > 0 %}
-                                    <span class="font-black text-gray-900">⭐ {{ book.average_rating|floatformat:1 }}</span>
+                                        <span class="font-black text-gray-900">⭐ {{ book.average_rating|floatformat:1 }}</span>
                                     {% else %}
-                                    <span class="font-black text-gray-900">belum ada </span>
+                                        <span class="font-black text-gray-400 text-[10px]">BELUM ADA</span>
                                     {% endif %}
                                 </div>
                             </div>
@@ -66,7 +70,15 @@
                 </nav>
 
                 <h1 class="text-4xl lg:text-6xl font-black text-gray-900 mb-4 leading-tight uppercase italic">{{ book.title }}</h1>
-                <p class="text-lg lg:text-xl text-gray-500 mb-8">Oleh <span class="text-green-700 font-black">{{ book.author|title }}</span></p>
+                
+                <p class="text-lg lg:text-xl text-gray-500 mb-8">
+                    Oleh 
+                    {% for author in book.author.all %}
+                        <span class="text-green-700 font-black">{{ author.name }}</span>{% if not forloop.last %}, {% endif %}
+                    {% empty %}
+                        <span class="text-gray-400 italic">Penulis tidak tersedia</span>
+                    {% endfor %}
+                </p>
 
                 <div class="flex flex-wrap gap-2 mb-10">
                     {% for tag in book.genre.all %}
@@ -83,7 +95,7 @@
                     </div>
                 </div>
 
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-16">
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-16">
                     <div class="bg-green-50 p-4 rounded-2xl border border-green-100 flex items-center gap-4">
                         <span class="text-2xl text-green-700 italic font-black">#</span>
                         <div>
@@ -91,23 +103,36 @@
                             <span class="font-bold text-green-900">{{ book.publication_year|default:"-" }}</span>
                         </div>
                     </div>
+
+                    <div class="bg-blue-50 p-4 rounded-2xl border border-blue-100 flex items-center gap-4">
+                        <span class="text-2xl text-blue-700 italic font-black">L</span>
+                        <div>
+                            <small class="block text-blue-900/50 font-bold text-[9px] uppercase">Lokasi Rak</small>
+                            <span class="font-bold text-blue-900">{{ book.location.description|default:"Tidak tersedia" }}</span>
+                        </div>
+                    </div>
+
                     <div class="bg-yellow-50 p-4 rounded-2xl border border-yellow-100 flex items-center gap-4">
                         <span class="text-2xl text-yellow-700 italic font-black">@</span>
                         <div>
-                            <small class="block text-yellow-900/50 font-bold text-[9px] uppercase">Penulis Utama</small>
-                            <span class="font-bold text-yellow-900">{{ book.author|title }}</span>
+                            <small class="block text-yellow-900/50 font-bold text-[9px] uppercase">Penulis</small>
+                            <span class="font-bold text-yellow-900 text-xs">
+                                {% for author in book.authors.all %}
+                                    {{ author.name }}{% if not forloop.last %}, {% endif %}
+                                {% empty %}
+                                    -
+                                {% endfor %}
+                            </span>
                         </div>
                     </div>
                 </div>
 
-          
             </div>
-
         </div>
     </div>
-          <div class="pt-8 border-t border-gray-100">
-                    <h4 class="fw-black text-gray-900 mb-8 uppercase tracking-[0.3em] text-center lg:text-left text-sm">Ulasan Pembaca</h4>
-                    {% include "components/review.html" with book=book reviews=reviews %}
-                </div>
+    <div class="pt-8 border-t border-gray-100">
+        <h4 class="fw-black text-gray-900 mb-8 uppercase tracking-[0.3em] text-center lg:text-left text-sm">Ulasan Pembaca</h4>
+        {% include "components/review.html" with book=book reviews=reviews %}
+    </div>
 </div>
 {% endblock content %}
