@@ -70,7 +70,7 @@
                     </div>
                 </div>
 
-              <div class="flex flex-wrap gap-3 p-2 bg-slate-50/50 backdrop-blur-md rounded-[2.5rem] border border-slate-100 shadow-inner">
+<div class="flex flex-wrap gap-3 p-2 bg-slate-50/50 backdrop-blur-md rounded-[2.5rem] border border-slate-100 shadow-inner">
     {% with current_status=request.GET.status %}
     
     <a href="?status=" 
@@ -90,7 +90,7 @@
        {% else %}
             bg-transparent text-slate-400 border-slate-200 hover:border-emerald-600 hover:text-emerald-600
        {% endif %}">
-        Pending
+        Diajukan
     </a>
 
     <a href="?status=approved" 
@@ -106,6 +106,25 @@
     <a href="?status=returned" 
        class="px-8 py-2.5 rounded-full text-[10px] font-black uppercase tracking-widest transition-all duration-300 no-underline border-2
        {% if current_status == 'returned' %}
+            bg-emerald-600 text-white border-emerald-600 shadow-lg shadow-emerald-200
+       {% else %}
+            bg-transparent text-slate-400 border-slate-200 hover:border-emerald-600 hover:text-emerald-600
+       {% endif %}">
+        Dikembalikan
+    </a>
+    <a href="?status=not-paid" 
+       class="px-8 py-2.5 rounded-full text-[10px] font-black uppercase tracking-widest transition-all duration-300 no-underline border-2
+       {% if current_status == 'not-paid' %}
+            bg-emerald-600 text-white border-emerald-600 shadow-lg shadow-emerald-200
+       {% else %}
+            bg-transparent text-slate-400 border-slate-200 hover:border-emerald-600 hover:text-emerald-600
+       {% endif %}">
+        Belum Lunas
+    </a>
+
+    <a href="?status=finished" 
+       class="px-8 py-2.5 rounded-full text-[10px] font-black uppercase tracking-widest transition-all duration-300 no-underline border-2
+       {% if current_status == 'finished' %}
             bg-emerald-600 text-white border-emerald-600 shadow-lg shadow-emerald-200
        {% else %}
             bg-transparent text-slate-400 border-slate-200 hover:border-emerald-600 hover:text-emerald-600
@@ -149,31 +168,31 @@
                     </div>
 
                     <div class="w-full lg:w-80 flex flex-col gap-3">
-                        <div class="flex items-center justify-between px-6 py-3.5 bg-emerald-50/50 rounded-2xl border border-emerald-100/50 transition-colors group-hover:bg-emerald-50">
+                        <div class="flex items-center justify-between px-6 py-3.5 bg-emerald-50/50 rounded-2xl border border-emerald-100/50">
                             <div>
-                                <p class="text-[9px] font-black text-emerald-600/60 uppercase tracking-widest mb-0">
-                                    {% if pinjam.status == 'pending' %}Diajukan Pada{% else %}Tgl. Pinjam{% endif %}
-                                </p>
-                
-                                <span class="text-sm font-black text-emerald-900">
-                                    {% if pinjam.status == 'pending' %} {{ pinjam.created_at|date:"d M Y"}} {% else %} {{pinjam.created_at|date:"d M Y" }}{% endif%}
-                                </span>
+                                <p class="text-[9px] font-black text-emerald-600/60 uppercase tracking-widest mb-0">Tgl. Pinjam</p>
+                                <span class="text-sm font-black text-emerald-900">{{ pinjam.created_at|date:"d M Y"}}</span>
                             </div>
-                            <i class="bi bi-calendar-event text-emerald-300 text-xl"></i>
+                            <i class="bi bi-calendar-check text-emerald-300 text-xl"></i>
                         </div>
 
                         <div class="flex items-center justify-between px-6 py-3.5 {% if pinjam.current_fine > 0 and not pinjam.is_paid %} bg-red-50 border-red-100 {% else %} bg-slate-50 border-slate-100 {% endif %} rounded-2xl border">
                             <div>
-                                <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-0">Tenggat Waktu</p>
+                                <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-0">Status Transaksi</p>
                                 <span class="text-sm font-black {% if pinjam.current_fine > 0 and not pinjam.is_paid %}text-red-600{% else %}text-slate-900{% endif %}">
-                                    {{ pinjam.due_date|date:"d M Y"|default:"---" }}
+                                    {% if pinjam.status == 'pending' %} DIAJUKAN
+                                    {% elif pinjam.status == 'approved' %} DIPINJAM
+                                    {% elif pinjam.status == 'returned' and pinjam.fine_amount > 0 and not pinjam.is_paid %} DIKEMBALIKAN
+                                    {% else %} SELESAI {% endif %}
                                 </span>
                             </div>
                             
                             {% if pinjam.status == 'approved' %}
                                 <span class="px-3 py-1 bg-green-100 text-green-700 text-[9px] font-black uppercase rounded-lg border border-green-200">Aktif</span>
+                            {% elif pinjam.status == 'returned' and pinjam.fine_amount > 0 and not pinjam.is_paid %}
+                                <span class="px-3 py-1 bg-red-100 text-red-600 text-[9px] font-black uppercase rounded-lg border border-red-200 animate-pulse">Denda</span>
                             {% elif pinjam.status == 'returned' %}
-                                <span class="px-3 py-1 bg-slate-200 text-slate-600 text-[9px] font-black uppercase rounded-lg">Selesai</span>
+                                <span class="px-3 py-1 bg-emerald-600 text-white text-[9px] font-black uppercase rounded-lg shadow-sm">✓ Selesai</span>
                             {% else %}
                                 <span class="px-3 py-1 bg-yellow-400 text-emerald-900 text-[9px] font-black uppercase rounded-lg shadow-sm">Pending</span>
                             {% endif %}
@@ -183,37 +202,33 @@
                             <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-0">Biaya Denda</p>
                             <span class="text-sm font-black {% if pinjam.current_fine > 0 and not pinjam.is_paid %}text-red-600{% else %}text-emerald-900{% endif %}">
                                 Rp{{ pinjam.current_fine|floatformat:0 }}
-                                {% if pinjam.is_paid %}<i class="bi bi-patch-check-fill text-green-500 ml-1" title="Lunas"></i>{% endif %}
+                                {% if pinjam.is_paid %}<i class="bi bi-patch-check-fill text-green-500 ml-1"></i>{% endif %}
                             </span>
                         </div>
                     </div>
 
-<div class="w-full lg:w-40 text-center lg:text-right">
-    {% if pinjam.status == 'pending' %}
-        <button onclick="openDeleteModal('{% url 'cancel_loan' pinjam.pk %}')" class="w-full px-6 py-3 bg-red-50 text-red-600 text-[10px] font-black uppercase tracking-widest rounded-full hover:bg-red-600 hover:text-white transition-all border-none shadow-sm">
-            BATALKAN
-        </button>
-    {% elif pinjam.status == 'returned' and not pinjam.is_paid and pinjam.fine_amount > 0 %}
-        <button onclick="payFine('{{ pinjam.pk }}','{% url 'checkout_midtrans' pinjam.pk %}')" class="w-full px-6 py-4 bg-emerald-950 text-yellow-400 text-[10px] font-black uppercase tracking-widest rounded-full hover:bg-emerald-800 transition-all shadow-lg shadow-emerald-900/20 border-none flex items-center justify-center gap-2">
-            <i class="bi bi-wallet2"></i> BAYAR DENDA
-        </button>
-    {% elif pinjam.is_paid %}
-        <div class="inline-flex items-center gap-2 px-5 py-2.5 bg-emerald-50 text-emerald-700 text-[10px] font-black rounded-full italic border border-emerald-100">
-            <i class="bi bi-check-circle-fill"></i> LUNAS
-        </div>
-    {% elif pinjam.current_fine > 0 and not pinjam.is_paid %}
-         <div class="flex flex-col items-center lg:items-end gap-1">
-            <div class="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center text-red-600 mb-1 animate-bounce">
-                <i class="bi bi-shield-lock-fill"></i>
-            </div>
-            <span class="text-[9px] font-black text-red-600 uppercase tracking-tighter text-center">Kembalikan Buku <br> Untuk Bayar</span>
-         </div>
-    {% else %}
-         <div class="inline-flex items-center gap-2 px-5 py-2.5 bg-emerald-50 text-emerald-700 text-[10px] font-black rounded-full italic border border-emerald-100">
-            <i class="bi bi-check-circle-fill"></i> TERVERIFIKASI
-         </div>
-    {% endif %}
-</div>
+                    <div class="w-full lg:w-40 text-center lg:text-right">
+                        {% if pinjam.status == 'pending' %}
+                            <button onclick="openDeleteModal('{% url 'cancel_loan' pinjam.pk %}')" class="w-full px-6 py-3 bg-red-50 text-red-600 text-[10px] font-black uppercase tracking-widest rounded-full hover:bg-red-600 hover:text-white transition-all border-none">
+                                BATALKAN
+                            </button>
+                        {% elif pinjam.status == 'approved' %}
+                            <div class="flex flex-col items-center lg:items-end gap-1 opacity-60">
+                                <div class="w-10 h-10 bg-slate-100 rounded-full flex items-center justify-center text-slate-400 mb-1">
+                                    <i class="bi bi-book-half"></i>
+                                </div>
+                                <span class="text-[9px] font-black text-slate-400 uppercase tracking-tighter">Buku Dipinjam</span>
+                            </div>
+                        {% elif pinjam.status == 'returned' and not pinjam.is_paid and pinjam.fine_amount > 0 %}
+                            <button onclick="payFine('{{ pinjam.pk }}','{% url 'checkout_midtrans' pinjam.pk %}')" class="w-full px-6 py-4 bg-emerald-950 text-yellow-400 text-[10px] font-black uppercase tracking-widest rounded-full hover:bg-emerald-800 transition-all shadow-lg flex items-center justify-center gap-2 border-none">
+                                <i class="bi bi-wallet2"></i> BAYAR DENDA
+                            </button>
+                        {% elif pinjam.status == 'returned' %}
+                            <div class="inline-flex items-center gap-2 px-5 py-2.5 bg-emerald-50 text-emerald-700 text-[10px] font-black rounded-full italic border border-emerald-100">
+                                <i class="bi bi-check-circle-fill"></i> SELESAI
+                            </div>
+                        {% endif %}
+                    </div>
                 </div>
             </div>
             {% endfor %}
@@ -224,13 +239,13 @@
         </div>
 
         {% else %}
-        <div class="bg-white rounded-[50px] p-20 text-center border border-slate-100 shadow-2xl shadow-slate-200/50 animate-fade-in-up">
+        <div class="bg-white rounded-[50px] p-20 text-center border border-slate-100 shadow-2xl animate-fade-in-up">
             <div class="w-24 h-24 bg-emerald-50 rounded-3xl flex items-center justify-center mx-auto mb-8 rotate-12 transition-transform hover:rotate-0 duration-500">
                 <i class="bi bi-journal-x text-5xl text-emerald-600"></i>
             </div>
-            <h3 class="text-3xl font-black text-slate-900 uppercase italic mb-3 tracking-tighter">Katalog Masih Kosong</h3>
-            <p class="text-slate-400 text-sm max-w-sm mx-auto mb-10 font-medium">Jendela Bangsa menanti petualanganmu. Pilih buku pertamamu hari ini!</p>
-            <a href="{% url 'book_list' %}" class="inline-flex items-center gap-3 px-12 py-5 bg-emerald-950 text-white text-[11px] font-black uppercase tracking-widest rounded-full no-underline hover:bg-emerald-800 transition-all shadow-xl shadow-emerald-900/20 transform hover:-translate-y-1">
+            <h3 class="text-3xl font-black text-slate-900 uppercase italic mb-3 tracking-tighter">Riwayat Kosong</h3>
+            <p class="text-slate-400 text-sm max-w-sm mx-auto mb-10 font-medium">Anda belum pernah meminjam buku. Mulai petualangan literasi Anda sekarang!</p>
+            <a href="{% url 'book_list' %}" class="inline-flex items-center gap-3 px-12 py-5 bg-emerald-950 text-white text-[11px] font-black uppercase tracking-widest rounded-full no-underline hover:bg-emerald-800 transition-all">
                 Jelajahi Koleksi <i class="bi bi-arrow-right"></i>
             </a>
         </div>

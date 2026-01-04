@@ -148,13 +148,24 @@ def request_loan(request, book_id):
 
 @login_required
 def my_loans(request):
-    loans_list = Loan.objects.filter(member=request.user).order_by('-id')
+    loans = Loan.objects.filter(member=request.user).order_by('-id')
     
     status_filter = request.GET.get('status')
-    if status_filter:
-        loans_list = loans_list.filter(status=status_filter)
-        
-    paginator = Paginator(loans_list, 8)
+    if status_filter == 'pending':
+        loans = loans.filter(status='pending')
+    elif status_filter == 'approved':
+        loans = loans.filter(status='approved')
+    elif status_filter == 'returned':
+        # Menampilkan yang sudah dikembalikan tapi belum lunas (opsional)
+        # atau semua yang statusnya returned
+        loans = loans.filter(status='returned')
+    elif status_filter == 'finished':
+        # Filter khusus: Status sudah returned DAN is_paid=True
+        loans = loans.filter(status='returned', is_paid=True)
+    elif status_filter == 'not-paid':
+        # Filter khusus: Status sudah returned DAN is_paid=True
+        loans = loans.filter(status__in=['approved', 'returned'],is_paid=False)
+    paginator = Paginator(loans, 8)
     page_number = request.GET.get('page') or 1
     loans = paginator.get_page(page_number)
     
