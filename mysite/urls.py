@@ -7,6 +7,7 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('library.urls')),
+    path('payment/', include('midtrans.urls')),
     path('accounts/', include('django.contrib.auth.urls')), # Rute Login/Logout
 ]
 if settings.DEBUG:

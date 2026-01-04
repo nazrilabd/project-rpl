@@ -14,7 +14,10 @@ from pathlib import Path
 import dj_database_url
 import os
 from django.contrib.messages import constants as messages
+import os
+from dotenv import load_dotenv
 
+load_dotenv()
 MESSAGE_TAGS = {
     messages.ERROR: 'danger',  # Ini wajib ada agar class bg-danger muncul
     messages.SUCCESS: 'success',
@@ -47,6 +50,7 @@ INSTALLED_APPS = [
     'library.apps.LibraryConfig',
     'cloudinary_storage',
     'cloudinary',
+    'midtrans.apps.MidtransConfig',
 ]
 
 MIDDLEWARE = [
@@ -87,7 +91,7 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 
 DATABASES = {
     'default': dj_database_url.config(
-        default='postgresql://neondb_owner:npg_9HhSNYBpnC4w@ep-shy-smoke-a45fjvzz-pooler.us-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require',
+        default=os.getenv('NEON_SECRET_URL'),
         conn_max_age=600
     )
 }
@@ -142,9 +146,9 @@ LOGIN_REDIRECT_URL = "/"
 # CLOUDINARY_API_KEY = '484759343223795'
 # CLOUDINARY_API_SECRET = 'hb2BrS7fjv9JF1vDn70l8lWdsNs'
 CLOUDINARY_STORAGE = {
-    'CLOUD_NAME': 'dh7irimdt',
-    'API_KEY':'484759343223795',
-    'API_SECRET': 'hb2BrS7fjv9JF1vDn70l8lWdsNs'
+    'CLOUD_NAME': os.getenv('CLOUD_NAME'),
+    'API_KEY':os.getenv('CLOUD_API_KEY'),
+    'API_SECRET': os.getenv('CLOUD_API_SECRET')
 }
 # Ganti DEFAULT_FILE_STORAGE agar Django menyimpan file media di Cloudinary
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
@@ -159,3 +163,10 @@ STORAGES = {
         "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
     },
 }
+
+
+#mitrands
+
+MIDTRANS_SERVER_KEY = os.getenv('MIDTRANS_SERVER_KEY')
+MIDTRANS_CLIENT_KEY = os.getenv('MIDTRANS_CLIENT_KEY')
+IS_PRODUCTION = os.getenv('MIDTRANS_IS_PRODUCTION') or False  # Set ke True jika sudah live

@@ -41,7 +41,12 @@
 
     <div id="notifications" class="fixed bottom-5 right-5 z-[100]">
         {% include "components/messages_err.html" %}
+        {% include "components/confirm_popup.html" %}
     </div>
+    <script type="text/javascript"
+    src="https://app.sandbox.midtrans.com/snap/snap.js"
+    data-client-key="{{ settings.MIDTRANS_CLIENT_KEY }}"></script>
+    {% include "components/loan_checkout.html" %}
 
 </body>
 </html>

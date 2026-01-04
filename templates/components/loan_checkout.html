@@ -1,0 +1,63 @@
+<script type="text/javascript">
+/**
+ * Fungsi untuk menangani pembayaran denda menggunakan Midtrans Snap
+ * @param {number} loanId - ID dari objek Loan yang akan dibayar
+ */
+function payFine(loanId,url) {
+    // 1. Cari elemen tombol yang diklik untuk memberikan feedback visual
+    const btn = event.currentTarget;
+    const originalContent = btn.innerHTML;
+    
+    // Disable tombol agar tidak terjadi double-click
+    btn.disabled = true;
+    btn.innerHTML = '<span class="animate-pulse">PROCESSING...</span>';
+
+    // 2. Ambil Snap Token dari view Django
+    // Pastikan URL ini sesuai dengan path di urls.py kamu
+    fetch(url, {
+        method: 'GET',
+        headers: {
+            'X-Requested-With': 'XMLHttpRequest',
+            'Content-Type': 'application/json',
+        }
+    })
+    .then(response => {
+        if (!response.ok) {
+            // Jika status code bukan 200, ambil pesan error dari JSON
+            return response.json().then(err => { throw err });
+        }
+        return response.json();
+    })
+    .then(data => {
+        // 3. Panggil Snap Midtrans (window.snap otomatis ada jika script snap.js sudah dimuat)
+        window.snap.pay(data.token, {
+            onSuccess: function(result) {
+                // Redirect ke handler sukses agar Python bisa kasih messages.success
+                window.location.href = "/payment/payment-callback/?status=success";
+            },
+            onPending: function(result) {
+                // Biasanya diperlakukan sama dengan success untuk status 'pending'
+                window.location.href = "/payment/payment-callback/?status=success";
+            },
+            onError: function(result) {
+                // Redirect ke handler error agar Python bisa kasih messages.error
+                window.location.href = "/payment/payment-callback/?status=error";
+            },
+            onClose: function() {
+                // Jika user menutup pop-up tanpa bayar, kembalikan tombol ke semula
+                btn.disabled = false;
+                btn.innerHTML = originalContent;
+            }
+        });
+    })
+    .catch(error => {
+        // Tangani error dari fetch (misal: buku belum dikembalikan)
+        console.error('Payment Error:', error);
+        alert(error.error || "Terjadi kesalahan koneksi ke server.");
+        
+        // Kembalikan status tombol
+        btn.disabled = false;
+        btn.innerHTML = originalContent;
+    });
+}
+</script>
