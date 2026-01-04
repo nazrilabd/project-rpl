@@ -61,8 +61,8 @@ class ReviewAdmin(admin.ModelAdmin):
 # --- Register Loan ---
 @admin.register(Loan)
 class LoanAdmin(admin.ModelAdmin):
-    list_display = ('book', 'member', 'status', 'borrow_date', 'due_date', 'fine_amount') 
-    list_filter = ('status', 'due_date', 'borrow_date') 
+    list_display = ('book', 'member', 'status', 'borrow_date', 'due_date', 'fine_amount','is_paid') 
+    list_filter = ('status', 'due_date', 'borrow_date','is_paid') 
     raw_id_fields = ('book', 'member')
     actions = ['approve_loan', 'mark_as_returned', 'reject_loan','mark_fine_as_paid']
     # readonly_fields = ('fine_amount',) 
@@ -71,7 +71,8 @@ class LoanAdmin(admin.ModelAdmin):
         ('book', 'member'), 
         ('status', 'borrow_date', 'due_date'),
         'return_date', 
-        'fine_amount'
+        'fine_amount',
+        'is_paid'
     )
     
     # Action Kustom: Menyetujui Peminjaman

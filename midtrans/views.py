@@ -37,30 +37,44 @@ def create_payment(request, loan_id):
         return JsonResponse({'token': transaction['token']})
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=500)
-
 @csrf_exempt
 def midtrans_webhook(request):
     if request.method == 'POST':
-        data = json.loads(request.body)
-        order_id_raw = data.get('order_id')
-        status = data.get('transaction_status')
-        
         try:
-            loan_id = order_id_raw.split('-')[1]
-            loan = Loan.objects.get(id=loan_id)
-            if status in ['settlement', 'capture']:
-                loan.is_paid = True
-                loan.save()
-            return HttpResponse(status=200)
-        except:
-            return HttpResponse(status=404)
-    return HttpResponse(status=405)
+            data = json.loads(request.body)
+            order_id_raw = data.get('order_id')
+            status = data.get('transaction_status')
+            
+            print(f"Webhook Received: {order_id_raw} - Status: {status}") # DEBUG
 
+            # Pecah ID
+            parts = order_id_raw.split('-')
+            if len(parts) < 2:
+                return HttpResponse(status=400) # Bad Request jika format salah
+                
+            loan_id = parts[1]
+            loan = Loan.objects.filter(id=loan_id).first() # Gunakan filter agar tidak crash
+            
+            if loan:
+                if status in ['settlement', 'capture']:
+                    loan.is_paid = True
+                    loan.save()
+                    print(f"Loan {loan_id} marked as PAID")
+                return HttpResponse(status=200)
+            else:
+                print(f"Loan ID {loan_id} not found in database!")
+                return HttpResponse(status=404) # Ini yang bikin 404 jika ID ga ada
+        except Exception as e:
+            print(f"Webhook Error: {str(e)}")
+            return HttpResponse(status=500)
+            
+    return HttpResponse(status=405)
 # Handler untuk memicu Django Messages
 def payment_callback(request):
     status = request.GET.get('status')
+    mess = request.GET.get('message')
     if status == 'success':
-        messages.success(request, "Terima kasih! Pembayaran denda Anda telah kami terima.")
+        messages.success(request, mess)
     else:
-        messages.error(request, "Pembayaran dibatalkan atau terjadi kesalahan.")
-    return redirect('loan_history')
+        messages.error(request, mess)
+    return redirect('my_loans')

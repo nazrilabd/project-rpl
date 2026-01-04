@@ -33,15 +33,15 @@ function payFine(loanId,url) {
         window.snap.pay(data.token, {
             onSuccess: function(result) {
                 // Redirect ke handler sukses agar Python bisa kasih messages.success
-                window.location.href = "/payment/payment-callback/?status=success";
+                window.location.href = "/payment/payment-callback/?status=success?message=selamat pembayaran anda berhasil";
             },
             onPending: function(result) {
                 // Biasanya diperlakukan sama dengan success untuk status 'pending'
-                window.location.href = "/payment/payment-callback/?status=success";
+                window.location.href = "/payment/payment-callback/?status=success?message=selamat pembayaran anda berhasil";
             },
             onError: function(result) {
                 // Redirect ke handler error agar Python bisa kasih messages.error
-                window.location.href = "/payment/payment-callback/?status=error";
+                window.location.href = "/payment/payment-callback/?status=error?message=maaf pembayaran anda telah gagal";
             },
             onClose: function() {
                 // Jika user menutup pop-up tanpa bayar, kembalikan tombol ke semula
@@ -52,8 +52,8 @@ function payFine(loanId,url) {
     })
     .catch(error => {
         // Tangani error dari fetch (misal: buku belum dikembalikan)
+        window.location.href = "/payment/payment-callback/?status=error?message="+error;
         console.error('Payment Error:', error);
-        alert(error.error || "Terjadi kesalahan koneksi ke server.");
         
         // Kembalikan status tombol
         btn.disabled = false;
