@@ -11,7 +11,7 @@ urlpatterns = [
     path('user/profile/', views.profile, name='profile'),
     path('books', views.book_list, name='book_list'), 
     path('request/<int:book_id>/', views.request_loan, name='request_loan'), 
-   
+   path('loan/<int:pk>/', views.loan_detail_view, name='loan_detail'),
     path('books/<int:pk>/',views.detail_buku,name="detail_book"),
     path('books/<int:book_id>/review/', views.submit_review, name='submit_review'),
 

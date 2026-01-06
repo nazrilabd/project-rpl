@@ -1,0 +1,136 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<main class="bg-[#FDFFF5] min-h-screen py-12 lg:py-20 font-inter">
+    <div class="container px-4 mx-auto">
+        <div class="max-w-3xl mx-auto">
+            
+            <a href="{% url 'my_loans' %}" class="inline-flex items-center gap-2 text-emerald-800 font-bold no-underline mb-8 hover:translate-x-1 transition-transform">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+                Kembali ke Peminjaman Saya
+            </a>
+
+            <div class="bg-white rounded-[3rem] shadow-xl shadow-emerald-900/5 overflow-hidden border border-emerald-50">
+                
+                <div class="px-8 py-6 bg-slate-50 border-b border-slate-100 flex flex-wrap justify-between items-center gap-4">
+                    <div>
+                        <span class="text-[10px] font-black uppercase tracking-widest text-slate-400 block mb-1">ID Transaksi</span>
+                        <h2 class="text-lg font-bold text-slate-900 mb-0">#TRX-{{ loan.id|add:"10000" }}</h2>
+                    </div>
+                    
+                    {% if loan.status == 'approved' %}
+                        <div class="px-4 py-2 bg-emerald-100 text-emerald-700 rounded-2xl border border-emerald-200 font-bold text-xs uppercase tracking-wide">
+                            Sedang Dipinjam
+                        </div>
+                    {% elif loan.status == 'returned' %}
+                        <div class="px-4 py-2 bg-blue-100 text-blue-700 rounded-2xl border border-blue-200 font-bold text-xs uppercase tracking-wide">
+                            Sudah Dikembalikan
+                        </div>
+                    {% elif loan.status == 'pending' %}
+                        <div class="px-4 py-2 bg-amber-100 text-amber-700 rounded-2xl border border-amber-200 font-bold text-xs uppercase tracking-wide">
+                            Menunggu Persetujuan
+                        </div>
+                    {% else %}
+                        <div class="px-4 py-2 bg-red-100 text-red-700 rounded-2xl border border-red-200 font-bold text-xs uppercase tracking-wide">
+                            {{ loan.get_status_display }}
+                        </div>
+                    {% endif %}
+                </div>
+
+                <div class="p-8">
+                    <div class="flex flex-col md:flex-row gap-10">
+                        <div class="w-full md:w-48 flex-shrink-0">
+                            <div class="aspect-[3/4] rounded-[2rem] overflow-hidden shadow-2xl shadow-emerald-900/20 bg-slate-100">
+                                {% if loan.book.cover_image %}
+                                    <img src="{{ loan.book.cover_image.url }}" class="w-full h-full object-cover">
+                                {% else %}
+                                    <div class="w-full h-full flex items-center justify-center text-emerald-200">
+                                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div class="flex-1">
+                            <h1 class="text-2xl font-black text-slate-900 mb-2 leading-tight">{{ loan.book.title }}</h1>
+                            <p class="text-slate-500 font-medium mb-8">Karya {{ loan.book.author }}</p>
+
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-8">
+                                <div>
+                                    <small class="text-slate-400 font-bold uppercase text-[9px] tracking-widest block mb-1">Tanggal Pinjam</small>
+                                    <p class="text-slate-800 font-bold">{{ loan.borrow_date|date:"d F Y"|default:"-" }}</p>
+                                </div>
+                                <div>
+                                    <small class="text-slate-400 font-bold uppercase text-[9px] tracking-widest block mb-1">Jatuh Tempo</small>
+                                    <p class="text-red-600 font-bold">{{ loan.due_date|date:"d F Y"|default:"-" }}</p>
+                                </div>
+                                <div>
+                                    <small class="text-slate-400 font-bold uppercase text-[9px] tracking-widest block mb-1">Tanggal Kembali</small>
+                                    <p class="text-slate-800 font-bold">{{ loan.return_date|date:"d F Y"|default:"Belum Kembali" }}</p>
+                                </div>
+                                <div>
+                                    <small class="text-slate-400 font-bold uppercase text-[9px] tracking-widest block mb-1">ISBN</small>
+                                    <p class="text-slate-800 font-bold">{{ loan.book.isbn }}</p>
+                                </div>
+                            </div>
+
+                            <div class="p-6 rounded-[2rem] {% if loan.current_fine > 0 %}bg-red-50 border border-red-100{% else %}bg-emerald-50 border border-emerald-100{% endif %}">
+                                <div class="flex justify-between items-center">
+                                    <div>
+                                        <p class="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1">Informasi Denda</p>
+                                        <h3 class="text-xl font-black {% if loan.current_fine > 0 %}text-red-600{% else %}text-emerald-800{% endif %} mb-0">
+                                            Rp {{ loan.current_fine|floatformat:0 }}
+                                        </h3>
+                                    </div>
+                                    {% if loan.current_fine > 0 %}
+                                        <div class="text-right">
+                                            <span class="px-3 py-1 bg-white text-red-600 text-[10px] font-black rounded-lg shadow-sm border border-red-100">
+                                                {% if loan.is_paid %}LUNAS{% else %}BELUM DIBAYAR{% endif %}
+                                            </span>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                            <div class="mt-8 flex flex-col sm:flex-row gap-3">
+                                {% if loan.status == 'pending' %}
+                                    <button onclick="openDeleteModal('{% url 'cancel_loan' loan.pk %}')" 
+                                            class="w-full sm:w-auto px-8 py-4 bg-red-50 text-red-600 text-[11px] font-black uppercase tracking-widest rounded-full hover:bg-red-600 hover:text-white transition-all border border-red-100 flex items-center justify-center gap-2">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>
+                                        BATALKAN PERMINTAAN
+                                    </button>
+
+                                {% elif loan.status == 'returned' and not loan.is_paid and loan.current_fine > 0 %}
+                                    <button onclick="payFine('{{ loan.pk }}','{% url 'checkout_midtrans' loan.pk %}')" 
+                                            class="w-full sm:w-auto px-8 py-4 bg-emerald-950 text-yellow-400 text-[11px] font-black uppercase tracking-widest rounded-full hover:bg-emerald-800 transition-all shadow-lg flex items-center justify-center gap-2">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"></rect><path d="M7 15h0M2 9.5h20"></path></svg>
+                                        BAYAR DENDA SEKARANG
+                                    </button>
+
+                                {% elif loan.status == 'approved' %}
+                                    <div class="inline-flex items-center gap-3 px-6 py-3 bg-blue-50 text-blue-700 text-[11px] font-black rounded-full border border-blue-100 uppercase tracking-widest">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+                                        Buku Sedang Anda Baca
+                                    </div>
+
+                                {% elif loan.status == 'returned' %}
+                                    <div class="inline-flex items-center gap-3 px-6 py-3 bg-emerald-50 text-emerald-700 text-[11px] font-black rounded-full italic border border-emerald-100 uppercase tracking-widest">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                        TRANSAKSI SELESAI
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="px-8 py-5 bg-slate-900 text-white flex items-center gap-3">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-yellow-400"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+                    <p class="text-xs font-medium mb-0 opacity-80">Harap kembalikan buku tepat waktu untuk menghindari denda Rp 1.000/hari.</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</main>
+{% endblock %}

@@ -164,7 +164,11 @@ def my_loans(request):
         loans = loans.filter(status='returned', is_paid=True)
     elif status_filter == 'not-paid':
         # Filter khusus: Status sudah returned DAN is_paid=True
-        loans = loans.filter(status__in=['approved', 'returned'],is_paid=False)
+        loans = Loan.objects.filter(
+            status__in=['approved',"returned"],
+            due_date__lt=date.today(),
+            is_paid=False
+        )
     paginator = Paginator(loans, 8)
     page_number = request.GET.get('page') or 1
     loans = paginator.get_page(page_number)
@@ -175,7 +179,16 @@ def my_loans(request):
         'loans': loans, 
         'active_loans_count': active_count
     })
-
+@login_required
+def loan_detail_view(request, pk):
+    # Mengambil detail loan milik user yang sedang login
+    loan = get_object_or_404(Loan, pk=pk, member=request.user)
+    
+    context = {
+        'loan': loan,
+        'today': date.today(),
+    }
+    return render(request, 'pages/detail_loans.html', context)
 @login_required
 def cancel_loan(request, loan_id):
     loan = get_object_or_404(Loan, pk=loan_id, member=request.user)

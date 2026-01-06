@@ -207,28 +207,40 @@
                         </div>
                     </div>
 
-                    <div class="w-full lg:w-40 text-center lg:text-right">
-                        {% if pinjam.status == 'pending' %}
-                            <button onclick="openDeleteModal('{% url 'cancel_loan' pinjam.pk %}')" class="w-full px-6 py-3 bg-red-50 text-red-600 text-[10px] font-black uppercase tracking-widest rounded-full hover:bg-red-600 hover:text-white transition-all border-none">
-                                BATALKAN
-                            </button>
-                        {% elif pinjam.status == 'approved' %}
-                            <div class="flex flex-col items-center lg:items-end gap-1 opacity-60">
-                                <div class="w-10 h-10 bg-slate-100 rounded-full flex items-center justify-center text-slate-400 mb-1">
-                                    <i class="bi bi-book-half"></i>
-                                </div>
-                                <span class="text-[9px] font-black text-slate-400 uppercase tracking-tighter">Buku Dipinjam</span>
-                            </div>
-                        {% elif pinjam.status == 'returned' and not pinjam.is_paid and pinjam.fine_amount > 0 %}
-                            <button onclick="payFine('{{ pinjam.pk }}','{% url 'checkout_midtrans' pinjam.pk %}')" class="w-full px-6 py-4 bg-emerald-950 text-yellow-400 text-[10px] font-black uppercase tracking-widest rounded-full hover:bg-emerald-800 transition-all shadow-lg flex items-center justify-center gap-2 border-none">
-                                <i class="bi bi-wallet2"></i> BAYAR DENDA
-                            </button>
-                        {% elif pinjam.status == 'returned' %}
-                            <div class="inline-flex items-center gap-2 px-5 py-2.5 bg-emerald-50 text-emerald-700 text-[10px] font-black rounded-full italic border border-emerald-100">
-                                <i class="bi bi-check-circle-fill"></i> SELESAI
-                            </div>
-                        {% endif %}
-                    </div>
+                 <div class="w-full lg:w-48 flex flex-col gap-2 items-center lg:items-end justify-center">
+    
+    <a href="{% url 'loan_detail' pinjam.pk %}" 
+       class="w-full px-4 py-3 bg-transparent border-2 border-yellow-400 text-yellow-400 text-[10px] font-black uppercase tracking-widest rounded-full hover:bg-yellow-400 hover:text-emerald-950 transition-all shadow-md flex items-center justify-center gap-2">
+        DETAIL
+    </a>
+
+    {% if pinjam.status == 'pending' %}
+        <button onclick="openDeleteModal('{% url 'cancel_loan' pinjam.pk %}')" 
+                class="w-full px-4 py-3 bg-red-50 text-red-600 text-[10px] font-black uppercase tracking-widest rounded-full hover:bg-red-600 hover:text-white transition-all border border-red-100">
+            BATALKAN
+        </button>
+
+    {% elif pinjam.status == 'approved' %}
+        <div class="flex flex-row lg:flex-col items-center lg:items-end gap-2 px-2 opacity-70">
+            <div class="w-8 h-8 bg-slate-100 rounded-full flex items-center justify-center text-slate-500">
+                <i class="bi bi-book-half"></i>
+            </div>
+            <span class="text-[9px] font-black text-slate-500 uppercase tracking-tighter text-center lg:text-right">Buku Dipinjam</span>
+        </div>
+
+    {% elif pinjam.status == 'returned' and not pinjam.is_paid and pinjam.fine_amount > 0 %}
+        <button onclick="payFine('{{ pinjam.pk }}','{% url 'checkout_midtrans' pinjam.pk %}')" 
+                class="w-full px-4 py-3 bg-emerald-950 text-yellow-400 text-[10px] font-black uppercase tracking-widest rounded-full hover:bg-emerald-800 transition-all shadow-lg flex items-center justify-center gap-2">
+            <i class="bi bi-wallet2"></i> BAYAR DENDA
+        </button>
+
+    {% elif pinjam.status == 'returned' %}
+        <div class="w-full lg:w-auto inline-flex items-center justify-center lg:justify-end gap-2 px-5 py-2.5 bg-emerald-50 text-emerald-700 text-[10px] font-black rounded-full italic border border-emerald-100">
+            <i class="bi bi-check-circle-fill"></i> SELESAI
+        </div>
+    {% endif %}
+
+</div>
                 </div>
             </div>
             {% endfor %}
